@@ -1,0 +1,9 @@
+﻿  main.cpp
+C:\Installed-Libraries\SFML-3.0.0\include\SFML\System\Exception.hpp(41,47): warning C4275: non dll-interface class 'std::runtime_error' used as base for dll-interface class 'sf::Exception'
+  (compiling source file 'main.cpp')
+  C:\Program Files\Microsoft Visual Studio\2022\Community\VC\Tools\MSVC\14.38.33130\include\stdexcept(100,19):
+  see declaration of 'std::runtime_error'
+  C:\Installed-Libraries\SFML-3.0.0\include\SFML\System\Exception.hpp(41,23):
+  see declaration of 'sf::Exception'
+  
+  Snaykee.vcxproj -> C:\Game Development Projects\C++\SNAKE_SFML\Snaykee\Snaykee\x64\Debug\Snaykee.exe
