@@ -18,5 +18,43 @@
     <ClCompile Include="main.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
+    <ClCompile Include="Game.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="MTigerCore_SFML\Animation2D_SFML.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="MTigerCore_SFML\Collider_SFML.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="MTigerCore_SFML\Player_Platformer_SFML.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="MTigerCore_SFML\Player_SFML.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="MTigerCore_SFML\Player_TopDown_SFML.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+  </ItemGroup>
+  <ItemGroup>
+    <ClInclude Include="Game.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="MTigerCore_SFML\Animation2D_SFML.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="MTigerCore_SFML\Collider_SFML.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="MTigerCore_SFML\Player_Platformer_SFML.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="MTigerCore_SFML\Player_SFML.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="MTigerCore_SFML\Player_TopDown_SFML.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
   </ItemGroup>
 </Project>
