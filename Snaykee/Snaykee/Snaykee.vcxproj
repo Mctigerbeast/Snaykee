@@ -143,8 +143,10 @@
     </Link>
   </ItemDefinitionGroup>
   <ItemGroup>
+    <ClCompile Include="Border.cpp" />
     <ClCompile Include="Game.cpp" />
     <ClCompile Include="main.cpp" />
+    <ClCompile Include="MTigerCore_Math\MR_Math.cpp" />
     <ClCompile Include="MTigerCore_SFML\Animation2D_SFML.cpp" />
     <ClCompile Include="MTigerCore_SFML\Collider_SFML.cpp" />
     <ClCompile Include="MTigerCore_SFML\Player_Platformer_SFML.cpp" />
@@ -152,12 +154,15 @@
     <ClCompile Include="MTigerCore_SFML\Player_TopDown_SFML.cpp" />
   </ItemGroup>
   <ItemGroup>
+    <ClInclude Include="Border.h" />
     <ClInclude Include="Game.h" />
+    <ClInclude Include="MTigerCore_Math\MR_Math.h" />
     <ClInclude Include="MTigerCore_SFML\Animation2D_SFML.h" />
     <ClInclude Include="MTigerCore_SFML\Collider_SFML.h" />
     <ClInclude Include="MTigerCore_SFML\Player_Platformer_SFML.h" />
     <ClInclude Include="MTigerCore_SFML\Player_SFML.h" />
     <ClInclude Include="MTigerCore_SFML\Player_TopDown_SFML.h" />
+    <ClInclude Include="resource.h" />
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
   <ImportGroup Label="ExtensionTargets">
