@@ -2,6 +2,7 @@
 #include <iostream>
 //#include <SFML/Graphics.hpp>
 #include "MTigerCore_SFML/Player_TopDown_SFML.h"
+#include "Obstacle.h"
 
 class Game
 {
@@ -34,7 +35,24 @@ public:
 	Player_TopDown_SFML& Get_Player_Ref() { return this->_player; }
 
 private:
+	/// <summary>
+	/// Functionality/logic for generating obstacles.
+	/// </summary>
+	void GenerateObstacles();
+
+	/// <summary>
+	/// Functionality/logic for checking obstacle collisions with player and bottom border.
+	/// </summary>
+	void CheckObstacleCollisions();
+
+	/// <summary>
+	/// Functionality/logic for game over.
+	/// </summary>
+	void Execute_GameOver();
+
+private:
 	std::string _gameTitle = "[Game Name/Title]";
+	float score = 0;
 
 	// Time (clock)
 	double _deltaTime;
@@ -43,5 +61,8 @@ private:
 	int _direction;
 	Player_TopDown_SFML _player;
 	sf::Texture* _playertexture;
+
+	// Obstacles
+	std::vector<Obstacle> _obstacles;
 };
 

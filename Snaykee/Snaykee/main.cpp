@@ -104,3 +104,8 @@ sf::Vector2f Get_CenterOfScreen()
 	return sf::Vector2f{ static_cast<float>(WINDOW_WIDTH / 2), static_cast<float>(WINDOW_HEIGHT / 2) };
 }
 #pragma endregion
+
+// TODO: Maybe create array or vector to hold window borders. Pass this array/vector to the Game Instance.
+// Game instance will do collision calculations between player anmd borders in update function.
+
+// TODO: Delete obstacles once they reach bottom of screen/window (collision with bottom border).
