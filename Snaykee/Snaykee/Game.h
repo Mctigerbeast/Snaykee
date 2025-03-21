@@ -1,11 +1,30 @@
 #pragma once
 #include <iostream>
-//#include <SFML/Graphics.hpp>
 #include "MTigerCore_SFML/Player_TopDown_SFML.h"
+#include "MTigerCore_Math/MR_Math.h"
+
 #include "Obstacle.h"
+#include "Border.h"
 
 class Game
 {
+public:
+	unsigned int WINDOW_WIDTH = 1200;
+	unsigned int WINDOW_HEIGHT = 1200;
+
+	double GAME_STARTING_TIME = 0.0001;
+	sf::Clock GAME_CLOCK;
+	double GAME_DELTA_TIME;
+
+	/// <summary>
+	/// Returns center/middle of screen.
+	/// </summary>
+	/// <returns></returns>
+	sf::Vector2f Get_CenterOfScreen()
+	{
+		return sf::Vector2f{ static_cast<float>(WINDOW_WIDTH / 2), static_cast<float>(WINDOW_HEIGHT / 2) };
+	}
+
 public:
 	/// <summary>
 	/// [Constructor] Setup the class.
@@ -30,9 +49,6 @@ public:
 	void Draw(sf::RenderWindow& window);
 
 	std::string Get_GameTitle() { return this->_gameTitle; }
-	double GetDeltaTime() { return this->_deltaTime; }
-	Player_TopDown_SFML Get_Player_Copy() { return this->_player; }
-	Player_TopDown_SFML& Get_Player_Ref() { return this->_player; }
 
 private:
 	/// <summary>
@@ -64,5 +80,11 @@ private:
 
 	// Obstacles
 	std::vector<Obstacle> _obstacles;
+
+	// Screen (window) borders
+	Border* leftBorder;
+	Border* rightBorder;
+	Border* topBorder;
+	Border* bottomBorder;
 };
 

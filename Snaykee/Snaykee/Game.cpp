@@ -1,5 +1,4 @@
 #include "Game.h"
-#include "MTigerCore_Math/MR_Math.h"
 
 Game::Game(std::string gameTitle)
 	: _gameTitle(gameTitle)
@@ -9,11 +8,22 @@ Game::Game(std::string gameTitle)
 
 	this->_player = Player_TopDown_SFML(_playertexture, sf::Vector2u({ 8, 4 }), 0.1f, 500.0f);
 	this->_player.SetupAnimation(1, 2, 3, 0);
+
+	// Create game's screen (window) borders
+	this->leftBorder = new Border({ 20.0f, static_cast<float>(WINDOW_HEIGHT) }, { 20.0f, Get_CenterOfScreen().y }, nullptr, sf::Color::Black);
+	this->rightBorder = new Border({ 20.0f, static_cast<float>(WINDOW_HEIGHT) }, { MR_Math::Convert_To_Float(WINDOW_WIDTH) - 20.f, Get_CenterOfScreen().y }, nullptr, sf::Color::Black);
+	this->topBorder = new Border({ static_cast<float>(WINDOW_WIDTH), 20.0f }, { Get_CenterOfScreen().x, 20.0f }, nullptr, sf::Color::Black);
+	this->bottomBorder = new Border({ static_cast<float>(WINDOW_WIDTH), 20.0f }, { Get_CenterOfScreen().x, MR_Math::Convert_To_Float(WINDOW_HEIGHT) - 20.0f }, nullptr, sf::Color::Black);
 }
 
 Game::~Game()
 {
 	delete this->_playertexture;
+
+	delete leftBorder;
+	delete rightBorder;
+	delete topBorder;
+	delete bottomBorder;
 }
 
 void Game::Tick(float fDeltaTime)
@@ -39,6 +49,12 @@ void Game::Draw(sf::RenderWindow& window)
 
 	for (Obstacle& ob : this->_obstacles) // Draw obstacles
 		ob.Draw(window);
+
+	// Screen (window) borders
+	leftBorder->Draw(window);
+	rightBorder->Draw(window);
+	topBorder->Draw(window);
+	bottomBorder->Draw(window);
 }
 
 void Game::GenerateObstacles()
@@ -66,6 +82,12 @@ void Game::CheckObstacleCollisions()
 		if (ob.Get_Collider().CheckCollision(playerCollider, 1.0f))
 			this->Execute_GameOver();
 	}
+
+	// Screen (window) borders
+	this->leftBorder->Get_Collider().CheckCollision(playerCollider, 1.0f);
+	this->rightBorder->Get_Collider().CheckCollision(playerCollider, 1.0f);
+	this->topBorder->Get_Collider().CheckCollision(playerCollider, 1.0f);
+	this->bottomBorder->Get_Collider().CheckCollision(playerCollider, 1.0f);
 }
 
 void Game::Execute_GameOver()
