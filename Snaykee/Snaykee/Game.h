@@ -1,7 +1,8 @@
 #pragma once
 #include <iostream>
-#include "MTigerCore_SFML/Player_TopDown_SFML.h"
+//#include "MTigerCore_SFML/Player_TopDown_SFML.h"
 #include "MTigerCore_Math/MR_Math.h"
+#include "Player_SpaceShip.h"
 
 #include "Obstacle.h"
 #include "Border.h"
@@ -62,6 +63,16 @@ private:
 	void CheckObstacleCollisions();
 
 	/// <summary>
+	/// Functionality/logic for generating star energy.
+	/// </summary>
+	void GenerateStaeEnergy();
+
+	/// <summary>
+	/// Functionality/logic for checking star energy collisions with player.
+	/// </summary>
+	void CheckStarEnergyCollisions();
+
+	/// <summary>
 	/// Functionality/logic for game over.
 	/// </summary>
 	void Execute_GameOver();
@@ -75,7 +86,7 @@ private:
 
 	// Player
 	int _direction;
-	Player_TopDown_SFML _player;
+	Player_SpaceShip _player;
 	sf::Texture* _playertexture;
 
 	// Obstacles

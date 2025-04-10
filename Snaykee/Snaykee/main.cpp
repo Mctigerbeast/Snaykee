@@ -66,3 +66,13 @@ void Handle_FPS(double deltaTime)
 		deltaTime = 1.0f / 20.0f;
 }
 #pragma endregion
+
+// TODO: Make player energy deplete by 1 every second.
+// TODO: Create star spawning functionality. Maybe also create a star array.
+// TODO: Game over functionality.
+// TODO: Link scoring to star energy.
+// TODO: 
+// TODO: 
+// TODO: 
+// TODO: 
+// TODO: 

@@ -154,6 +154,8 @@
     <ClCompile Include="MTigerCore_SFML\Player_SFML.cpp" />
     <ClCompile Include="MTigerCore_SFML\Player_TopDown_SFML.cpp" />
     <ClCompile Include="Obstacle.cpp" />
+    <ClCompile Include="Player_SpaceShip.cpp" />
+    <ClCompile Include="StarEnergy.cpp" />
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="Border.h" />
@@ -166,7 +168,9 @@
     <ClInclude Include="MTigerCore_SFML\Player_SFML.h" />
     <ClInclude Include="MTigerCore_SFML\Player_TopDown_SFML.h" />
     <ClInclude Include="Obstacle.h" />
+    <ClInclude Include="Player_SpaceShip.h" />
     <ClInclude Include="resource.h" />
+    <ClInclude Include="StarEnergy.h" />
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
   <ImportGroup Label="ExtensionTargets">

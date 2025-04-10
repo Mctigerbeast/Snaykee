@@ -6,7 +6,7 @@ Game::Game(std::string gameTitle)
 	this->_playertexture = new sf::Texture;
 	_playertexture->loadFromFile("Resources/SpriteSheet_Example.png");
 
-	this->_player = Player_TopDown_SFML(_playertexture, sf::Vector2u({ 8, 4 }), 0.1f, 500.0f);
+	this->_player = Player_SpaceShip(_playertexture, sf::Vector2u({ 8, 4 }), 0.1f, 500.0f);
 	this->_player.SetupAnimation(1, 2, 3, 0);
 
 	// Create game's screen (window) borders
@@ -76,11 +76,30 @@ void Game::GenerateObstacles()
 void Game::CheckObstacleCollisions()
 {
 	Collider_SFML playerCollider = this->_player.Get_Gollider();
+	Collider_SFML bottomBorderCollider = this->bottomBorder->Get_Collider();
 
-	for (Obstacle& ob : this->_obstacles)
+	/*for (Obstacle& ob : this->_obstacles)
 	{
+		// Collision(s) with player
 		if (ob.Get_Collider().CheckCollision(playerCollider, 1.0f))
 			this->Execute_GameOver();
+	}*/
+
+	for (int i = 0; i < this->_obstacles.size(); ++i)
+	{
+		// Collision(s) with player
+		if (this->_obstacles[i].Get_Collider().CheckCollision(playerCollider, 1.0f))
+		{
+			this->_player.OnObstacleHit();
+			this->_obstacles.erase(this->_obstacles.begin() + i); // TODO: May cause some issues
+
+			if (!this->_player.IsAlive())
+				this->Execute_GameOver();
+		}
+
+		// Collision(s) with border(s)
+		if (this->_obstacles[i].Get_Collider().CheckCollision(bottomBorderCollider, 0.0f))
+			this->_obstacles.erase(this->_obstacles.begin() + i); // TODO: May cause some issues
 	}
 
 	// Screen (window) borders
@@ -88,6 +107,16 @@ void Game::CheckObstacleCollisions()
 	this->rightBorder->Get_Collider().CheckCollision(playerCollider, 1.0f);
 	this->topBorder->Get_Collider().CheckCollision(playerCollider, 1.0f);
 	this->bottomBorder->Get_Collider().CheckCollision(playerCollider, 1.0f);
+}
+
+void Game::GenerateStaeEnergy()
+{
+
+}
+
+void Game::CheckStarEnergyCollisions()
+{
+
 }
 
 void Game::Execute_GameOver()
