@@ -10,7 +10,7 @@ public:
 	/// <param name="size"></param>
 	/// <param name="position"></param>
 	/// <param name="texture"></param>
-	StarEnergy(unsigned int energyPwr, sf::Vector2f position, sf::Texture* texture = nullptr, sf::Color color = sf::Color::White);
+	StarEnergy(sf::Vector2f position, sf::Texture* texture = nullptr, sf::Color color = sf::Color::White);
 
 	/// <summary>
 	/// [Destructor] Cleans up the class.
@@ -24,6 +24,12 @@ public:
 	void Draw(sf::RenderWindow& window);
 
 	/// <summary>
+	/// Get the border's collider.
+	/// </summary>
+	/// <returns></returns>
+	Collider_SFML Get_Collider();
+
+	/// <summary>
 	/// To be called every frame.
 	/// </summary>
 	/// <param name="fDeltaTime"></param>
@@ -31,10 +37,10 @@ public:
 	virtual void Update(float fDeltaTime, int row);
 
 	/// <summary>
-	/// Get the border's collider.
+	/// 
 	/// </summary>
 	/// <returns></returns>
-	Collider_SFML Get_Collider();
+	unsigned int Get_EnergyPower();
 
 private:
 	sf::RectangleShape _body;

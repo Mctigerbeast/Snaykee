@@ -1,5 +1,6 @@
 #pragma once
 #include "MTigerCore_SFML/Player_TopDown_SFML.h"
+#include "MTigerCore_Utils/CountdownTimer.h"
 
 class Player_SpaceShip : public Player_TopDown_SFML
 {
@@ -59,7 +60,15 @@ public:
 	bool IsAlive();
 
 private:
+	/// <summary>
+	/// Logic for player ship's energy depletion.
+	/// Continuously decrease energy by one, every second.
+	/// </summary>
+	void Execute_EnergyDepletion();
+
+private:
 	int _energy = 100;
 	bool _isAlive = true;
+	CountdownTimer _energyTimer;
 };
 

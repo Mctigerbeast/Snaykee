@@ -153,6 +153,7 @@
     <ClCompile Include="MTigerCore_SFML\Player_Platformer_SFML.cpp" />
     <ClCompile Include="MTigerCore_SFML\Player_SFML.cpp" />
     <ClCompile Include="MTigerCore_SFML\Player_TopDown_SFML.cpp" />
+    <ClCompile Include="MTigerCore_Utils\CountdownTimer.cpp" />
     <ClCompile Include="Obstacle.cpp" />
     <ClCompile Include="Player_SpaceShip.cpp" />
     <ClCompile Include="StarEnergy.cpp" />
@@ -167,6 +168,7 @@
     <ClInclude Include="MTigerCore_SFML\Player_Platformer_SFML.h" />
     <ClInclude Include="MTigerCore_SFML\Player_SFML.h" />
     <ClInclude Include="MTigerCore_SFML\Player_TopDown_SFML.h" />
+    <ClInclude Include="MTigerCore_Utils\CountdownTimer.h" />
     <ClInclude Include="Obstacle.h" />
     <ClInclude Include="Player_SpaceShip.h" />
     <ClInclude Include="resource.h" />

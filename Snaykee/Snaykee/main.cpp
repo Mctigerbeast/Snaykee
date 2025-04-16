@@ -33,7 +33,8 @@ int main()
 
 		LeGame.Tick(static_cast<float>(LeGame.GAME_DELTA_TIME));
 
-		window->clear(sf::Color(106, 146, 166));
+		//window->clear(sf::Color(106, 146, 166));
+		window->clear(sf::Color::Black);
 
 		// Drawing
 		LeGame.Draw(*window);
@@ -67,12 +68,16 @@ void Handle_FPS(double deltaTime)
 }
 #pragma endregion
 
-// TODO: Make player energy deplete by 1 every second.
-// TODO: Create star spawning functionality. Maybe also create a star array.
 // TODO: Game over functionality.
-// TODO: Link scoring to star energy.
-// TODO: 
-// TODO: 
-// TODO: 
-// TODO: 
-// TODO: 
+// TODO: Add space background.
+// TODO: Add spacehip texture.
+// TODO: Add asteroid texture(s).
+// TODO: Make obstacles (asteroids) spin.
+// TODO: Add background objects (planets, shiprecks, etc.) that slowly move down giving illusion of player flying by them.
+
+
+
+// DONE: Make player energy deplete by 1 every second.
+// DONE: Add countdown timer to C++ Utils folder
+// DONE: Link scoring to star energy.
+// DONE: Create star spawning functionality. Maybe also create a star array.

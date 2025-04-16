@@ -1,11 +1,11 @@
 #pragma once
 #include <iostream>
-//#include "MTigerCore_SFML/Player_TopDown_SFML.h"
 #include "MTigerCore_Math/MR_Math.h"
 #include "Player_SpaceShip.h"
 
 #include "Obstacle.h"
 #include "Border.h"
+#include "StarEnergy.h"
 
 class Game
 {
@@ -65,7 +65,7 @@ private:
 	/// <summary>
 	/// Functionality/logic for generating star energy.
 	/// </summary>
-	void GenerateStaeEnergy();
+	void GenerateStarEnergy();
 
 	/// <summary>
 	/// Functionality/logic for checking star energy collisions with player.
@@ -92,10 +92,20 @@ private:
 	// Obstacles
 	std::vector<Obstacle> _obstacles;
 
+	// Star Energy
+	std::vector<StarEnergy> _starEnergies;
+
 	// Screen (window) borders
 	Border* leftBorder;
 	Border* rightBorder;
 	Border* topBorder;
 	Border* bottomBorder;
+
+	// Other Visuals
+	sf::RectangleShape _background;
+	sf::Texture* _backgroundTexture;
+	sf::Texture* _asteroid_1_Texture;
+	sf::Texture* _asteroid_2_Texture;
+	sf::Texture* _asteroid_3_Texture;
 };
 
