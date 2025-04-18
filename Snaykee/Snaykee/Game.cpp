@@ -3,17 +3,28 @@
 Game::Game(std::string gameTitle)
 	: _gameTitle(gameTitle)
 {
-	this->_playertexture = new sf::Texture;
-	_playertexture->loadFromFile("Resources/SpriteSheet_Example.png");
-
-	this->_player = Player_SpaceShip(_playertexture, sf::Vector2u({ 8, 4 }), 0.1f, 500.0f);
-	this->_player.SetupAnimation(1, 2, 3, 0);
-
 	// Create game's screen (window) borders
 	this->leftBorder = new Border({ 20.0f, static_cast<float>(WINDOW_HEIGHT) }, { 20.0f, Get_CenterOfScreen().y }, nullptr, sf::Color::Black);
 	this->rightBorder = new Border({ 20.0f, static_cast<float>(WINDOW_HEIGHT) }, { MR_Math::Convert_To_Float(WINDOW_WIDTH) - 20.f, Get_CenterOfScreen().y }, nullptr, sf::Color::Black);
 	this->topBorder = new Border({ static_cast<float>(WINDOW_WIDTH), 20.0f }, { Get_CenterOfScreen().x, 20.0f }, nullptr, sf::Color::Black);
 	this->bottomBorder = new Border({ static_cast<float>(WINDOW_WIDTH), 20.0f }, { Get_CenterOfScreen().x, MR_Math::Convert_To_Float(WINDOW_HEIGHT) - 20.0f }, nullptr, sf::Color::Black);
+
+	// Player
+	/*this->_playertexture = new sf::Texture;
+	this->_playertexture->loadFromFile("Resources/SpriteSheet_Example.png");
+	this->_player = Player_SpaceShip(_playertexture, sf::Vector2u({ 8, 4 }), 0.1f, 500.0f);
+	this->_player.SetupAnimation(1, 2, 3, 0);*/
+
+	this->_playertexture = new sf::Texture;
+
+	//_playertexture->loadFromFile("Resources/Temp_Spaceship.jpg");
+	this->_playertexture->loadFromFile("Resources/Temp_Spaceship_Green.png");
+	//this->_playertexture->loadFromFile("Resources/Temp_Spaceship_Blue.png");
+
+	this->_player = Player_SpaceShip(_playertexture, sf::Vector2u({ 1, 1 }), 0.1f, 500.0f);
+	//this->_player.SetupAnimation(1, 2, 3, 0);
+	this->_player.Set_PlayerSize({ 80.0f, 100.0f });
+	this->_player.Set_PlayerPostition({ static_cast<float>(this->WINDOW_WIDTH / 2.0f),  static_cast<float>(this->WINDOW_HEIGHT / 2.0f) });
 
 	// Other Visuals
 	this->_backgroundTexture = new sf::Texture;

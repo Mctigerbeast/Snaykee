@@ -37,9 +37,9 @@ public:
 	virtual void Update(float fDeltaTime, int row);
 
 	/// <summary>
-	/// 
+	/// Star's energy power.
 	/// </summary>
-	/// <returns></returns>
+	/// <returns>The star's energy power value/ammount.</returns>
 	unsigned int Get_EnergyPower();
 
 private:

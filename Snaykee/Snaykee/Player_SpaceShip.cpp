@@ -58,7 +58,7 @@ void Player_SpaceShip::RemoveEnergy(int energyToRemove)
 	this->CheckEnergyBounds();
 
 	// TODO: Testing purposes only!!!
-	std::cout << "Energy Removed. Player Energy = " << this->_energy << "\n";
+	//std::cout << "Energy Removed. Player Energy = " << this->_energy << "\n";
 }
 
 void Player_SpaceShip::CheckEnergyBounds()
