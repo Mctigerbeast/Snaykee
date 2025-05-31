@@ -48,6 +48,15 @@ Game::~Game()
 
 void Game::Tick(float fDeltaTime)
 {
+	if (this->_isGameOVer)
+	{
+		// TODO: Testing purposes only!!! Update to be linked to on screen button press (Game over menu).
+		if (sf::Keyboard::isKeyPressed(sf::Keyboard::Key::P))
+			this->Execute_StartGame();
+
+		return;
+	}
+
 	this->_deltaTime = fDeltaTime;
 
 	this->score += this->_deltaTime;
@@ -173,5 +182,25 @@ void Game::CheckStarEnergyCollisions()
 
 void Game::Execute_GameOver()
 {
+	this->_isGameOVer = true;
 	std::cout << "GAME OVER!!! [Score: " << this->score << "]\n";
+
+	// TODO: Save player's score
+
+	// TODO: Show game over screen
+}
+
+void Game::Execute_StartGame()
+{
+	this->score = 0; // Reset player score
+	this->_player.Set_PlayerPostition({ static_cast<float>(this->WINDOW_WIDTH / 2.0f),  static_cast<float>(this->WINDOW_HEIGHT / 2.0f) }); // Reset player's position
+	this->_player.ResetPlayer(); // Reset player's health, etc.
+
+	// Clean and reset obstacles vector
+	std::vector<Obstacle>().swap(this->_obstacles);
+
+	// Clean and reset star energies vector
+	std::vector<StarEnergy>().swap(this->_starEnergies);
+
+	this->_isGameOVer = false;
 }

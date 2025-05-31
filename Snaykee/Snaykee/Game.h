@@ -77,9 +77,15 @@ private:
 	/// </summary>
 	void Execute_GameOver();
 
+	/// <summary>
+	/// Functionality for starting (resetting) the game.
+	/// </summary>
+	void Execute_StartGame();
+
 private:
 	std::string _gameTitle = "[Game Name/Title]";
 	float score = 0;
+	bool _isGameOVer = false;
 
 	// Time (clock)
 	double _deltaTime;

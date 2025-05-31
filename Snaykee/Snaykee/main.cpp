@@ -68,15 +68,28 @@ void Handle_FPS(double deltaTime)
 }
 #pragma endregion
 
-// TODO: Game over functionality.
+// TODO: Create button class.
+
+// TODO: Implement Save/load sytem.
+	// Save player score.
+	// Save player ship.
+
+// TODO: Add pregame menu screen.
+	// Menu screen should have play button.
+	// High-score.
+	// Ship selection (3 ships).
+
 // TODO: Add space background.
 // TODO: Add spacehip texture.
 // TODO: Add asteroid texture(s).
 // TODO: Make obstacles (asteroids) spin.
 // TODO: Add background objects (planets, shiprecks, etc.) that slowly move down giving illusion of player flying by them.
 
+// TODO: Maybe have event for resetting player. Event will be sent from Game and player will listen.
 
 
+
+// DONE: Game over functionality.
 // DONE: Make player energy deplete by 1 every second.
 // DONE: Add countdown timer to C++ Utils folder
 // DONE: Link scoring to star energy.

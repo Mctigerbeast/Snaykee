@@ -78,6 +78,15 @@ void Player_SpaceShip::Execute_EnergyDepletion()
 	}
 }
 
+void Player_SpaceShip::ResetPlayer()
+{
+	if (!this->_isAlive)
+	{
+		this->_energy = 100;
+		this->_isAlive = true;
+	}
+}
+
 int Player_SpaceShip::Get_Energy() { return this->_energy; }
 bool Player_SpaceShip::HasEnergy() { return this->_energy > 0; }
 bool Player_SpaceShip::IsAlive() { return this->_isAlive > 0; }

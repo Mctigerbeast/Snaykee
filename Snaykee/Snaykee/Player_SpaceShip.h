@@ -45,6 +45,11 @@ public:
 	void CheckEnergyBounds();
 
 	/// <summary>
+	/// Resets the player, after death. If user chooses to play again.
+	/// </summary>
+	void ResetPlayer();
+
+	/// <summary>
 	/// </summary>
 	/// <returns>The player ship's current energy.</returns>
 	int Get_Energy();
