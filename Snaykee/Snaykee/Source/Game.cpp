@@ -47,6 +47,10 @@ Game::~Game()
 	delete bottomBorder;
 
 	delete this->_backgroundTexture;
+
+	delete this->_asteroid_1_Texture;
+	delete this->_asteroid_2_Texture;
+	delete this->_asteroid_3_Texture;
 }
 
 void Game::Tick(float fDeltaTime)

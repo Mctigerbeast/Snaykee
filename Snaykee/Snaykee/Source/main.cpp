@@ -2,6 +2,9 @@
 //#include <SFML/Graphics.hpp>
 #include "Game.h"
 
+// TODO: Testing Button
+#include "Button_SFML.h"
+
 #pragma region Forward Declarations (Time/Clock)
 void Handle_FPS(double deltaTime);
 void Handle_GameClock();
@@ -18,6 +21,13 @@ int main()
 	sf::RenderWindow* window = new sf::RenderWindow(sf::VideoMode({ (unsigned int)(LeGame.WINDOW_WIDTH), (unsigned int)(LeGame.WINDOW_HEIGHT) }), LeGame.Get_GameTitle());
 	window->setFramerateLimit(60);
 
+	// TODO: Testing Button
+	//Button_SFML playButton({ static_cast<float>(LeGame.WINDOW_WIDTH / 2.0f),  static_cast<float>(LeGame.WINDOW_HEIGHT / 2.0f) });
+	//playButton.Set_ButtonText("  PLAY  ");
+	//playButton.MutiplyButtonSize(4.0f);
+	//playButton.Set_ButtonColor_Hover(sf::Color(170.0f, 170.0f, 170.0f));
+	//playButton.Set_ButtonPressedFunction([]() {std::cout << "Button Clicked!!" << "\n"; });
+
 	while (window->isOpen())
 	{
 		// Handle FPS
@@ -32,13 +42,23 @@ int main()
 				window->close();
 		}
 
+		// Keep track of mouse position (relative to window).
+		sf::Vector2f mousePosView = window->mapPixelToCoords(sf::Mouse::getPosition(*window));
+
 		LeGame.Tick(static_cast<float>(LeGame.GAME_DELTA_TIME));
+
+		// TODO: Testing Button
+		//playButton.Update(mousePosView);
 
 		//window->clear(sf::Color(106, 146, 166));
 		window->clear(sf::Color::Black);
 
 		// Drawing
 		LeGame.Draw(*window);
+
+		// TODO: Testing Button
+		//playButton.Draw(*window);
+
 		window->display();
 	}
 
@@ -69,7 +89,9 @@ void Handle_FPS(double deltaTime)
 }
 #pragma endregion
 
-// TODO: Create button class.
+
+// TODO: Add text on screen for player score.
+// TODO: Create resources manager class.
 
 // TODO: Implement Save/load sytem.
 	// Save player score.
@@ -95,3 +117,5 @@ void Handle_FPS(double deltaTime)
 // DONE: Add countdown timer to C++ Utils folder
 // DONE: Link scoring to star energy.
 // DONE: Create star spawning functionality. Maybe also create a star array.
+// DONE: Create button class.
+	// Add function pointer to button class for when button is pressed.

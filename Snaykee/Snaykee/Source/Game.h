@@ -113,5 +113,8 @@ private:
 	sf::Texture* _asteroid_1_Texture;
 	sf::Texture* _asteroid_2_Texture;
 	sf::Texture* _asteroid_3_Texture;
+
+	// UI Visuals
+	sf::Texture* _buttonTextures[3];
 };
 

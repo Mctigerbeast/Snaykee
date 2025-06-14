@@ -152,6 +152,7 @@
   </ItemDefinitionGroup>
   <ItemGroup>
     <ClInclude Include="Source\Animation2D_SFML.h" />
+    <ClInclude Include="Source\Button_SFML.h" />
     <ClInclude Include="Source\Collider_SFML.h" />
     <ClInclude Include="Source\GameObject_Rectangle_SFML.h" />
     <ClInclude Include="Source\Player_Platformer_SFML.h" />
@@ -160,6 +161,7 @@
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="Source\Animation2D_SFML.cpp" />
+    <ClCompile Include="Source\Button_SFML.cpp" />
     <ClCompile Include="Source\Collider_SFML.cpp" />
     <ClCompile Include="Source\GameObject_Rectangle_SFML.cpp" />
     <ClCompile Include="Source\Player_Platformer_SFML.cpp" />
