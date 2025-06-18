@@ -7,16 +7,23 @@
 
 #pragma region Forward Declarations (Time/Clock)
 void Handle_FPS(double deltaTime);
-void Handle_GameClock();
+void Handle_GameClock(Game& game);
 #pragma endregion
 
-Game LeGame("Snaykee");
 
 int main()
 {
+	// Seed time
 	//srand(time(0));
 	srand(static_cast<unsigned>(time(0)));
 
+	// Create asset manager
+	AssetManager_SFML AssetManager;
+
+	// Create game
+	Game LeGame("Snaykee", AssetManager);
+
+	// Create game window
 	//sf::RenderWindow window(sf::VideoMode({ 200, 200 }), snakeGame.Get_GameTitle());
 	sf::RenderWindow* window = new sf::RenderWindow(sf::VideoMode({ (unsigned int)(LeGame.WINDOW_WIDTH), (unsigned int)(LeGame.WINDOW_HEIGHT) }), LeGame.Get_GameTitle());
 	window->setFramerateLimit(60);
@@ -31,7 +38,7 @@ int main()
 	while (window->isOpen())
 	{
 		// Handle FPS
-		Handle_GameClock();
+		Handle_GameClock(LeGame);
 		Handle_FPS(LeGame.GAME_DELTA_TIME);
 		std::string fps = std::to_string(static_cast<int>(1 / LeGame.GAME_DELTA_TIME));
 		window->setTitle(LeGame.Get_GameTitle() + "     FPS: " + fps);
@@ -69,11 +76,11 @@ int main()
 /// <summary>
 /// Perform game clock/time calculations.
 /// </summary>
-void Handle_GameClock()
+void Handle_GameClock(Game& game)
 {
-	double ending = LeGame.GAME_CLOCK.getElapsedTime().asSeconds();
-	LeGame.GAME_DELTA_TIME = ending - LeGame.GAME_STARTING_TIME;
-	LeGame.GAME_STARTING_TIME = ending;
+	double ending = game.GAME_CLOCK.getElapsedTime().asSeconds();
+	game.GAME_DELTA_TIME = ending - game.GAME_STARTING_TIME;
+	game.GAME_STARTING_TIME = ending;
 }
 
 #pragma region HELPERS
@@ -90,8 +97,8 @@ void Handle_FPS(double deltaTime)
 #pragma endregion
 
 
-// TODO: Add text on screen for player score.
-// TODO: Create resources manager class.
+
+// TODO: Maybe use object pooling for asteroids. Creacte a vector of 200-300 asteroids and just keep using those, instead of creating and deleting them constantly.
 
 // TODO: Implement Save/load sytem.
 	// Save player score.
@@ -100,16 +107,15 @@ void Handle_FPS(double deltaTime)
 // TODO: Add pregame menu screen.
 	// Menu screen should have play button.
 	// High-score.
-	// Ship selection (3 ships).
+	// Ship selection (3 ships). Use button class. May need to create a new one (that has image instead of text).
 
 // TODO: Add space background.
-// TODO: Add spacehip texture.
 // TODO: Add asteroid texture(s).
 // TODO: Make obstacles (asteroids) spin.
 // TODO: Add background objects (planets, shiprecks, etc.) that slowly move down giving illusion of player flying by them.
 
 // TODO: Maybe have event for resetting player. Event will be sent from Game and player will listen.
-
+// TODO: Create function that determines values based (relative-to) on window or screen) Use this function when setting position and size of objects.
 
 
 // DONE: Game over functionality.
@@ -119,3 +125,7 @@ void Handle_FPS(double deltaTime)
 // DONE: Create star spawning functionality. Maybe also create a star array.
 // DONE: Create button class.
 	// Add function pointer to button class for when button is pressed.
+// DONE: Add text on screen for player score.
+// DONE: Add namespaces to SFMLCore files (.h and .cpp).
+// DONE: Create resources manager class.
+// DONE: Add spacehip texture(s).

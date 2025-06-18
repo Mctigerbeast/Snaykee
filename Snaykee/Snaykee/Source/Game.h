@@ -6,12 +6,17 @@
 #include "Obstacle.h"
 #include "Border.h"
 #include "StarEnergy.h"
+#include "AssetManager_SFML.h"
 
 class Game
 {
 public:
-	unsigned int WINDOW_WIDTH = 1200;
-	unsigned int WINDOW_HEIGHT = 1200;
+	// TODO: Get size of screen and do math so that game window is relative to size of screen.
+	/*unsigned int WINDOW_WIDTH = 1200;
+	unsigned int WINDOW_HEIGHT = 1200;*/
+
+	unsigned int WINDOW_WIDTH = 900;
+	unsigned int WINDOW_HEIGHT = 900;
 
 	double GAME_STARTING_TIME = 0.0001;
 	sf::Clock GAME_CLOCK;
@@ -21,17 +26,26 @@ public:
 	/// Returns center/middle of screen.
 	/// </summary>
 	/// <returns></returns>
-	sf::Vector2f Get_CenterOfScreen()
-	{
-		return sf::Vector2f{ static_cast<float>(WINDOW_WIDTH / 2), static_cast<float>(WINDOW_HEIGHT / 2) };
-	}
+	sf::Vector2f Get_CenterOfScreen();
+
+	/// <summary>
+	/// Returns the title of the game.
+	/// </summary>
+	/// <returns></returns>
+	const std::string& Get_GameTitle() const;
+
+	/// <summary>
+	/// Returns reference of/to the game's resource manager.
+	/// </summary>
+	/// <returns></returns>
+	AssetManager_SFML& Get_ResourceManager();
 
 public:
 	/// <summary>
 	/// [Constructor] Setup the class.
 	/// </summary>
-	/// <param name="tt"></param>
-	Game(std::string gameTitle);
+	/// <param name="gameTitle"></param>
+	Game(std::string gameTitle, AssetManager_SFML& assetManager);
 
 	/// <summary>
 	/// [Destructor] Cleans up the class.
@@ -48,8 +62,6 @@ public:
 	/// </summary>
 	/// <param name="window"></param>
 	void Draw(sf::RenderWindow& window);
-
-	std::string Get_GameTitle() { return this->_gameTitle; }
 
 private:
 	/// <summary>
@@ -84,8 +96,10 @@ private:
 
 private:
 	std::string _gameTitle = "[Game Name/Title]";
-	float score = 0;
+	float _score = 0;
 	bool _isGameOVer = false;
+
+	AssetManager_SFML& _gameAssetManager;
 
 	// Time (clock)
 	double _deltaTime;
@@ -93,7 +107,11 @@ private:
 	// Player
 	int _direction;
 	Player_SpaceShip _player;
-	sf::Texture* _playertexture;
+	sf::Texture* _playerTexture_1;
+	sf::Texture* _playerTexture_2;
+	sf::Texture* _playerTexture_3;
+	sf::Texture* _playerTexture_4;
+	int _playerShipModel = 0; // 0 = ship (green), 1 = ship (yellow), 2 = ship (white), 3 = ship (dark)
 
 	// Obstacles
 	std::vector<Obstacle> _obstacles;
@@ -115,6 +133,10 @@ private:
 	sf::Texture* _asteroid_3_Texture;
 
 	// UI Visuals
-	sf::Texture* _buttonTextures[3];
+	// TODO: Maybe move into UI class/manager/handler.
+	sf::Text _scoreText_UI;
+	sf::Font* _scoreTextFont_UI;
+	sf::Text _energyText_UI;
+	sf::Font* _energyTextFont_UI;
 };
 

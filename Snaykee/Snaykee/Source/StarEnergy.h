@@ -1,6 +1,8 @@
 #pragma once
 #include "GameObject_Rectangle_SFML.h"
 
+using namespace MR_SFML;
+
 class StarEnergy
 {
 public:

@@ -2,6 +2,8 @@
 #include "Player_TopDown_SFML.h"
 #include "MTigerCore/CountdownTimer.h"
 
+using namespace MR_SFML;
+
 class Player_SpaceShip : public Player_TopDown_SFML
 {
 public:

@@ -1,56 +1,79 @@
 #include "Game.h"
 
-Game::Game(std::string gameTitle)
-	: _gameTitle(gameTitle)
+const std::string& Game::Get_GameTitle() const { return this->_gameTitle; }
+
+sf::Vector2f Game::Get_CenterOfScreen()
 {
+	return sf::Vector2f{ static_cast<float>(WINDOW_WIDTH / 2), static_cast<float>(WINDOW_HEIGHT / 2) };
+}
+
+AssetManager_SFML& Game::Get_ResourceManager() { return this->_gameAssetManager; }
+
+Game::Game(std::string gameTitle, AssetManager_SFML& assetManager)
+	: _gameTitle(gameTitle), _gameAssetManager(assetManager), _scoreText_UI(*_scoreTextFont_UI), _energyText_UI(*_energyTextFont_UI)
+{
+	// Load and set resources
+	this->_gameAssetManager.LoadTexture("greenShip", "Resources/spr_spaceship_green.png");
+	this->_gameAssetManager.LoadTexture("yellowShip", "Resources/spr_spaceship_yellow.png");
+	this->_gameAssetManager.LoadTexture("whiteShip", "Resources/spr_spaceship_white.png");
+	this->_gameAssetManager.LoadTexture("darkShip", "Resources/spr_spaceship_dark.png");
+	this->_gameAssetManager.LoadTexture("purpleBackground", "Resources/bg_space_purple.jpg");
+	this->_gameAssetManager.LoadTexture("asteroid_1_Texture", "Resources/Asteroid1.png");
+
+	this->_playerTexture_1 = &this->_gameAssetManager.Get_Texture("greenShip");
+	this->_playerTexture_2 = &this->_gameAssetManager.Get_Texture("yellowShip");
+	this->_playerTexture_3 = &this->_gameAssetManager.Get_Texture("whiteShip");
+	this->_playerTexture_4 = &this->_gameAssetManager.Get_Texture("darkShip");
+	this->_backgroundTexture = &this->_gameAssetManager.Get_Texture("purpleBackground");
+	this->_asteroid_1_Texture = &this->_gameAssetManager.Get_Texture("asteroid_1_Texture");
+
+	this->_gameAssetManager.LoadFont("mainFont", "Resources/font_playful_time_star.ttf");
+	this->_scoreTextFont_UI = &this->_gameAssetManager.Get_Font("mainFont");
+	this->_energyTextFont_UI = &this->_gameAssetManager.Get_Font("mainFont");
+
 	// Create game's screen (window) borders
-	this->leftBorder = new Border({ 20.0f, static_cast<float>(WINDOW_HEIGHT) }, { 20.0f, Get_CenterOfScreen().y }, nullptr, sf::Color::Black);
-	this->rightBorder = new Border({ 20.0f, static_cast<float>(WINDOW_HEIGHT) }, { MR_Math::Convert_To_Float(WINDOW_WIDTH) - 20.f, Get_CenterOfScreen().y }, nullptr, sf::Color::Black);
-	this->topBorder = new Border({ static_cast<float>(WINDOW_WIDTH), 20.0f }, { Get_CenterOfScreen().x, 20.0f }, nullptr, sf::Color::Black);
-	this->bottomBorder = new Border({ static_cast<float>(WINDOW_WIDTH), 20.0f }, { Get_CenterOfScreen().x, MR_Math::Convert_To_Float(WINDOW_HEIGHT) - 20.0f }, nullptr, sf::Color::Black);
+	this->leftBorder = new Border({ 20.0f, static_cast<float>(WINDOW_HEIGHT) }, { 10.0f, Get_CenterOfScreen().y }, nullptr, sf::Color::Black);
+	this->rightBorder = new Border({ 20.0f, static_cast<float>(WINDOW_HEIGHT) }, { MR_Math::Convert_To_Float(WINDOW_WIDTH) - 10.f, Get_CenterOfScreen().y }, nullptr, sf::Color::Black);
+	this->topBorder = new Border({ static_cast<float>(WINDOW_WIDTH), 20.0f }, { Get_CenterOfScreen().x, 10.0f }, nullptr, sf::Color::Black);
+	this->bottomBorder = new Border({ static_cast<float>(WINDOW_WIDTH), 20.0f }, { Get_CenterOfScreen().x, MR_Math::Convert_To_Float(WINDOW_HEIGHT) - 10.0f }, nullptr, sf::Color::Black);
 
 	// Player
-	/*this->_playertexture = new sf::Texture;
-	this->_playertexture->loadFromFile("Resources/SpriteSheet_Example.png");
-	this->_player = Player_SpaceShip(_playertexture, sf::Vector2u({ 8, 4 }), 0.1f, 500.0f);
-	this->_player.SetupAnimation(1, 2, 3, 0);*/
-
-	this->_playertexture = new sf::Texture;
-
-	//_playertexture->loadFromFile("Resources/Temp_Spaceship.jpg");
-	this->_playertexture->loadFromFile("Resources/Temp_Spaceship_Green.png");
-	//this->_playertexture->loadFromFile("Resources/Temp_Spaceship_Blue.png");
-
-	this->_player = Player_SpaceShip(_playertexture, sf::Vector2u({ 1, 1 }), 0.1f, 500.0f);
+	this->_player = Player_SpaceShip(this->_playerTexture_2, sf::Vector2u({ 1, 1 }), 0.1f, 500.0f);
 	//this->_player.SetupAnimation(1, 2, 3, 0);
 	this->_player.Set_PlayerSize({ 80.0f, 100.0f });
 	this->_player.Set_PlayerPostition({ static_cast<float>(this->WINDOW_WIDTH / 2.0f),  static_cast<float>(this->WINDOW_HEIGHT / 2.0f) });
 
 	// Other Visuals
-	this->_backgroundTexture = new sf::Texture;
-	this->_backgroundTexture->loadFromFile("Resources/Space-Background.jpg");
 	this->_background = sf::RectangleShape({ 1800.0f, static_cast<float>(this->WINDOW_HEIGHT) });
 	this->_background.setTexture(this->_backgroundTexture);
 	this->_background.setFillColor(sf::Color{ 255,255,255,100 });
 
-	this->_asteroid_1_Texture = new sf::Texture;
-	this->_asteroid_1_Texture->loadFromFile("Resources/Asteroid1.png");;
+	// UI (score text)
+	this->_scoreText_UI = sf::Text(*this->_scoreTextFont_UI);
+	this->_scoreText_UI.setPosition({ static_cast<float>(this->WINDOW_WIDTH) * 0.05f, static_cast<float>(this->WINDOW_HEIGHT) * 0.95f });
+	this->_scoreText_UI.setOrigin(this->_scoreText_UI.getGlobalBounds().size / 2.0f);
+	this->_scoreText_UI.setLetterSpacing(2.0f);
+	this->_scoreText_UI.setFillColor(sf::Color::Black);
+	this->_scoreText_UI.setOutlineThickness(2.0f);
+	this->_scoreText_UI.setOutlineColor(sf::Color::White);
+	this->_scoreText_UI.setCharacterSize(20.0f);
+
+	this->_energyText_UI = sf::Text(*this->_energyTextFont_UI);
+	this->_energyText_UI.setPosition({ static_cast<float>(this->WINDOW_WIDTH) * 0.825f, static_cast<float>(this->WINDOW_HEIGHT) * 0.95f });
+	this->_energyText_UI.setOrigin(this->_energyText_UI.getGlobalBounds().size / 2.0f);
+	this->_energyText_UI.setLetterSpacing(2.0f);
+	this->_energyText_UI.setFillColor(sf::Color::Black);
+	this->_energyText_UI.setOutlineThickness(2.0f);
+	this->_energyText_UI.setOutlineColor(sf::Color::White);
+	this->_energyText_UI.setCharacterSize(20.0f);
 }
 
 Game::~Game()
 {
-	delete this->_playertexture;
-
 	delete leftBorder;
 	delete rightBorder;
 	delete topBorder;
 	delete bottomBorder;
-
-	delete this->_backgroundTexture;
-
-	delete this->_asteroid_1_Texture;
-	delete this->_asteroid_2_Texture;
-	delete this->_asteroid_3_Texture;
 }
 
 void Game::Tick(float fDeltaTime)
@@ -66,7 +89,7 @@ void Game::Tick(float fDeltaTime)
 
 	this->_deltaTime = fDeltaTime;
 
-	this->score += this->_deltaTime;
+	this->_score += this->_deltaTime;
 
 	// Calculations
 	this->GenerateObstacles();
@@ -79,25 +102,36 @@ void Game::Tick(float fDeltaTime)
 
 	for (Obstacle& ob : this->_obstacles) // Update obstacles
 		ob.Update(fDeltaTime);
+
+	this->_scoreText_UI.setString("SCORE: " + std::to_string(this->_score));
+	this->_energyText_UI.setString("ENERGY: " + std::to_string(this->_player.Get_Energy()));
 }
 
 void Game::Draw(sf::RenderWindow& window)
 {
+	// Draw background
 	window.draw(this->_background);
 
+	// Draw player
 	this->_player.Draw(window);
 
-	for (Obstacle& ob : this->_obstacles) // Draw obstacles
+	// Draw obstacles
+	for (Obstacle& ob : this->_obstacles)
 		ob.Draw(window);
 
+	// Draw star energys
 	for (StarEnergy& se : this->_starEnergies)
 		se.Draw(window);
 
-	// Screen (window) borders
+	// Draw Screen (window) borders
 	leftBorder->Draw(window);
 	rightBorder->Draw(window);
 	topBorder->Draw(window);
 	bottomBorder->Draw(window);
+
+	// Draw UI (score text)
+	window.draw(this->_scoreText_UI);
+	window.draw(this->_energyText_UI);
 }
 
 void Game::GenerateObstacles()
@@ -182,7 +216,7 @@ void Game::CheckStarEnergyCollisions()
 	{
 		if (this->_starEnergies[i].Get_Collider().CheckCollision(playerCollider, 1.0f))
 		{
-			this->score += 5;
+			this->_score += 5;
 			this->_player.AddEnergy(this->_starEnergies[i].Get_EnergyPower());
 			this->_starEnergies.erase(this->_starEnergies.begin() + i);
 		}
@@ -192,7 +226,7 @@ void Game::CheckStarEnergyCollisions()
 void Game::Execute_GameOver()
 {
 	this->_isGameOVer = true;
-	std::cout << "GAME OVER!!! [Score: " << this->score << "]\n";
+	std::cout << "GAME OVER!!! [Score: " << this->_score << "]\n";
 
 	// TODO: Save player's score
 
@@ -201,7 +235,7 @@ void Game::Execute_GameOver()
 
 void Game::Execute_StartGame()
 {
-	this->score = 0; // Reset player score
+	this->_score = 0; // Reset player score
 	this->_player.Set_PlayerPostition({ static_cast<float>(this->WINDOW_WIDTH / 2.0f),  static_cast<float>(this->WINDOW_HEIGHT / 2.0f) }); // Reset player's position
 	this->_player.ResetPlayer(); // Reset player's health, etc.
 
@@ -213,3 +247,4 @@ void Game::Execute_StartGame()
 
 	this->_isGameOVer = false;
 }
+

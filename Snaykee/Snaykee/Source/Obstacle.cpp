@@ -4,6 +4,10 @@ Obstacle::Obstacle(sf::Vector2f size, sf::Vector2f position, float moveSpeed, sf
 	: GameObject_Rectangle_SFML(size, position, texture, color)
 {
 	this->_movementSpeed = moveSpeed;
+
+	// TODO: Testing purposes only!!! Shows collider (outline) of object.
+	//this->_body.setOutlineColor(sf::Color::Yellow);
+	//this->_body.setOutlineThickness(3.0f);
 }
 
 Obstacle::~Obstacle() {}

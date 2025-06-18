@@ -2,6 +2,8 @@
 #include <SFML\Graphics.hpp>
 #include "Collider_SFML.h"
 
+using namespace MR_SFML;
+
 class Border
 {
 public:

@@ -151,6 +151,7 @@
     </Link>
   </ItemDefinitionGroup>
   <ItemGroup>
+    <ClInclude Include="Source\AssetManager_SFML.h" />
     <ClInclude Include="Source\Animation2D_SFML.h" />
     <ClInclude Include="Source\Button_SFML.h" />
     <ClInclude Include="Source\Collider_SFML.h" />
@@ -160,6 +161,7 @@
     <ClInclude Include="Source\Player_TopDown_SFML.h" />
   </ItemGroup>
   <ItemGroup>
+    <ClCompile Include="Source\AssetManager_SFML.cpp" />
     <ClCompile Include="Source\Animation2D_SFML.cpp" />
     <ClCompile Include="Source\Button_SFML.cpp" />
     <ClCompile Include="Source\Collider_SFML.cpp" />
