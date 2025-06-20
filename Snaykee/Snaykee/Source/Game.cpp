@@ -7,29 +7,27 @@ sf::Vector2f Game::Get_CenterOfScreen()
 	return sf::Vector2f{ static_cast<float>(WINDOW_WIDTH / 2), static_cast<float>(WINDOW_HEIGHT / 2) };
 }
 
-AssetManager_SFML& Game::Get_ResourceManager() { return this->_gameAssetManager; }
-
-Game::Game(std::string gameTitle, AssetManager_SFML& assetManager)
-	: _gameTitle(gameTitle), _gameAssetManager(assetManager), _scoreText_UI(*_scoreTextFont_UI), _energyText_UI(*_energyTextFont_UI)
+Game::Game(std::string gameTitle, GameContext& gameContext)
+	: _gameTitle(gameTitle), _gameContext(gameContext), _scoreText_UI(*_scoreTextFont_UI), _energyText_UI(*_energyTextFont_UI)
 {
 	// Load and set resources
-	this->_gameAssetManager.LoadTexture("greenShip", "Resources/spr_spaceship_green.png");
-	this->_gameAssetManager.LoadTexture("yellowShip", "Resources/spr_spaceship_yellow.png");
-	this->_gameAssetManager.LoadTexture("whiteShip", "Resources/spr_spaceship_white.png");
-	this->_gameAssetManager.LoadTexture("darkShip", "Resources/spr_spaceship_dark.png");
-	this->_gameAssetManager.LoadTexture("purpleBackground", "Resources/bg_space_purple.jpg");
-	this->_gameAssetManager.LoadTexture("asteroid_1_Texture", "Resources/Asteroid1.png");
+	this->_gameContext.AssetManager.LoadTexture("greenShip", "Resources/spr_spaceship_green.png");
+	this->_gameContext.AssetManager.LoadTexture("yellowShip", "Resources/spr_spaceship_yellow.png");
+	this->_gameContext.AssetManager.LoadTexture("whiteShip", "Resources/spr_spaceship_white.png");
+	this->_gameContext.AssetManager.LoadTexture("darkShip", "Resources/spr_spaceship_dark.png");
+	this->_gameContext.AssetManager.LoadTexture("purpleBackground", "Resources/bg_space_purple.jpg");
+	this->_gameContext.AssetManager.LoadTexture("asteroid_1_Texture", "Resources/Asteroid1.png");
 
-	this->_playerTexture_1 = &this->_gameAssetManager.Get_Texture("greenShip");
-	this->_playerTexture_2 = &this->_gameAssetManager.Get_Texture("yellowShip");
-	this->_playerTexture_3 = &this->_gameAssetManager.Get_Texture("whiteShip");
-	this->_playerTexture_4 = &this->_gameAssetManager.Get_Texture("darkShip");
-	this->_backgroundTexture = &this->_gameAssetManager.Get_Texture("purpleBackground");
-	this->_asteroid_1_Texture = &this->_gameAssetManager.Get_Texture("asteroid_1_Texture");
+	this->_playerTexture_1 = &this->_gameContext.AssetManager.Get_Texture("greenShip");
+	this->_playerTexture_2 = &this->_gameContext.AssetManager.Get_Texture("yellowShip");
+	this->_playerTexture_3 = &this->_gameContext.AssetManager.Get_Texture("whiteShip");
+	this->_playerTexture_4 = &this->_gameContext.AssetManager.Get_Texture("darkShip");
+	this->_backgroundTexture = &this->_gameContext.AssetManager.Get_Texture("purpleBackground");
+	this->_asteroid_1_Texture = &this->_gameContext.AssetManager.Get_Texture("asteroid_1_Texture");
 
-	this->_gameAssetManager.LoadFont("mainFont", "Resources/font_playful_time_star.ttf");
-	this->_scoreTextFont_UI = &this->_gameAssetManager.Get_Font("mainFont");
-	this->_energyTextFont_UI = &this->_gameAssetManager.Get_Font("mainFont");
+	this->_gameContext.AssetManager.LoadFont("mainFont", "Resources/font_playful_time_star.ttf");
+	this->_scoreTextFont_UI = &this->_gameContext.AssetManager.Get_Font("mainFont");
+	this->_energyTextFont_UI = &this->_gameContext.AssetManager.Get_Font("mainFont");
 
 	// Create game's screen (window) borders
 	this->leftBorder = new Border({ 20.0f, static_cast<float>(WINDOW_HEIGHT) }, { 10.0f, Get_CenterOfScreen().y }, nullptr, sf::Color::Black);

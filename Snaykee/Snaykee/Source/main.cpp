@@ -4,6 +4,9 @@
 
 // TODO: Testing Button
 #include "Button_SFML.h"
+#include "GameStateManager_SFML.h"
+#include "Defines_SFML.h"
+#include "SplashScreen_State.h"
 
 #pragma region Forward Declarations (Time/Clock)
 void Handle_FPS(double deltaTime);
@@ -17,16 +20,31 @@ int main()
 	//srand(time(0));
 	srand(static_cast<unsigned>(time(0)));
 
+	GameContext LeGameContext;
+
+	// Initialize game window
+	LeGameContext.window = new sf::RenderWindow(sf::VideoMode({ (unsigned int)(Game::WINDOW_WIDTH), (unsigned int)(Game::WINDOW_HEIGHT) }), "Snaykee");
+	LeGameContext.window->setFramerateLimit(60.0f);
+
+	LeGameContext.GameStateManager.AddState(std::unique_ptr<GameState_SFML>(new SplashScreen_State(LeGameContext)));
+	LeGameContext.GameStateManager.HandleStateChange();
+
+	Game LeGame("Snaykee", LeGameContext);
+
+	/*
 	// Create asset manager
-	AssetManager_SFML AssetManager;
+	//AssetManager_SFML AssetManager;
+
+	// Create game state manager
+	//GameStateManager_SFML GameStateManager;
 
 	// Create game
-	Game LeGame("Snaykee", AssetManager);
+	Game LeGame("Snaykee", LeGameResources.AssetManager);
 
 	// Create game window
 	//sf::RenderWindow window(sf::VideoMode({ 200, 200 }), snakeGame.Get_GameTitle());
-	sf::RenderWindow* window = new sf::RenderWindow(sf::VideoMode({ (unsigned int)(LeGame.WINDOW_WIDTH), (unsigned int)(LeGame.WINDOW_HEIGHT) }), LeGame.Get_GameTitle());
-	window->setFramerateLimit(60);
+	//sf::RenderWindow* window = new sf::RenderWindow(sf::VideoMode({ (unsigned int)(LeGame.WINDOW_WIDTH), (unsigned int)(LeGame.WINDOW_HEIGHT) }), LeGame.Get_GameTitle());
+	//window->setFramerateLimit(60);
 
 	// TODO: Testing Button
 	//Button_SFML playButton({ static_cast<float>(LeGame.WINDOW_WIDTH / 2.0f),  static_cast<float>(LeGame.WINDOW_HEIGHT / 2.0f) });
@@ -34,7 +52,9 @@ int main()
 	//playButton.MutiplyButtonSize(4.0f);
 	//playButton.Set_ButtonColor_Hover(sf::Color(170.0f, 170.0f, 170.0f));
 	//playButton.Set_ButtonPressedFunction([]() {std::cout << "Button Clicked!!" << "\n"; });
+	*/
 
+	sf::RenderWindow* window = LeGameContext.window;
 	while (window->isOpen())
 	{
 		// Handle FPS
@@ -52,21 +72,50 @@ int main()
 		// Keep track of mouse position (relative to window).
 		sf::Vector2f mousePosView = window->mapPixelToCoords(sf::Mouse::getPosition(*window));
 
-		LeGame.Tick(static_cast<float>(LeGame.GAME_DELTA_TIME));
+		// Update
+		if (LeGameContext.CurrentGameState == GAME)
+			LeGame.Tick(static_cast<float>(LeGame.GAME_DELTA_TIME));
+		else
+		{
+			if (LeGameContext.GameStateManager.Get_CurrentActiveState() != nullptr)
+				LeGameContext.GameStateManager.Get_CurrentActiveState()->Update(static_cast<float>(LeGame.GAME_DELTA_TIME));
+		}
 
+		window->clear(sf::Color::Black);
+
+		// Drawing
+		if (LeGameContext.CurrentGameState == GAME)
+			LeGame.Draw(*window);
+		else
+		{
+			if (LeGameContext.GameStateManager.Get_CurrentActiveState() != nullptr)
+				LeGameContext.GameStateManager.Get_CurrentActiveState()->Draw(*window);
+		}
+
+		window->display();
+
+		/*
+		// Update
+		//GameStateManager.Get_CurrentActiveState()->HandleInput();
+		//GameStateManager.Get_CurrentActiveState()->Update(static_cast<float>(LeGame.GAME_DELTA_TIME));
+		LeGame.Tick(static_cast<float>(LeGame.GAME_DELTA_TIME));
 		// TODO: Testing Button
 		//playButton.Update(mousePosView);
+		//LeGameResources.GameStateManager.HandleStateChange();
+		LeGameResources.GameStateManager.Get_CurrentActiveState()->Update(static_cast<float>(LeGame.GAME_DELTA_TIME));
 
 		//window->clear(sf::Color(106, 146, 166));
 		window->clear(sf::Color::Black);
 
 		// Drawing
 		LeGame.Draw(*window);
-
+		LeGameResources.GameStateManager.Get_CurrentActiveState()->Draw(*window);
+		//GameStateManager.Get_CurrentActiveState()->Draw(*window);
 		// TODO: Testing Button
 		//playButton.Draw(*window);
 
 		window->display();
+		*/
 	}
 
 	delete window;
@@ -116,6 +165,8 @@ void Handle_FPS(double deltaTime)
 
 // TODO: Maybe have event for resetting player. Event will be sent from Game and player will listen.
 // TODO: Create function that determines values based (relative-to) on window or screen) Use this function when setting position and size of objects.
+// TODO: Maybe change eneryscor UI ouline color based on how much energy. Red (0-24), Orange(25-49), Yellow(50-74), Green(75-100)
+// TODO: Maybe move game window dimensions 'WINDOW_WIDTH' and "WINDOW_HEIGHT' into GameContext struct. Make const/read-only.
 
 
 // DONE: Game over functionality.

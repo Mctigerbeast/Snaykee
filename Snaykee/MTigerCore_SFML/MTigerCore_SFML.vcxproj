@@ -151,16 +151,20 @@
     </Link>
   </ItemDefinitionGroup>
   <ItemGroup>
+    <ClInclude Include="Source\Defines_SFML.h" />
+    <ClInclude Include="Source\GameStateManager_SFML.h" />
     <ClInclude Include="Source\AssetManager_SFML.h" />
     <ClInclude Include="Source\Animation2D_SFML.h" />
     <ClInclude Include="Source\Button_SFML.h" />
     <ClInclude Include="Source\Collider_SFML.h" />
     <ClInclude Include="Source\GameObject_Rectangle_SFML.h" />
+    <ClInclude Include="Source\GameState_SFML.h" />
     <ClInclude Include="Source\Player_Platformer_SFML.h" />
     <ClInclude Include="Source\Player_SFML.h" />
     <ClInclude Include="Source\Player_TopDown_SFML.h" />
   </ItemGroup>
   <ItemGroup>
+    <ClCompile Include="Source\GameStateManager_SFML.cpp" />
     <ClCompile Include="Source\AssetManager_SFML.cpp" />
     <ClCompile Include="Source\Animation2D_SFML.cpp" />
     <ClCompile Include="Source\Button_SFML.cpp" />

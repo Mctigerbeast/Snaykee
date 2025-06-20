@@ -6,7 +6,7 @@
 #include "Obstacle.h"
 #include "Border.h"
 #include "StarEnergy.h"
-#include "AssetManager_SFML.h"
+#include "Defines_SFML.h"
 
 class Game
 {
@@ -15,8 +15,8 @@ public:
 	/*unsigned int WINDOW_WIDTH = 1200;
 	unsigned int WINDOW_HEIGHT = 1200;*/
 
-	unsigned int WINDOW_WIDTH = 900;
-	unsigned int WINDOW_HEIGHT = 900;
+	static const unsigned int WINDOW_WIDTH = 900;
+	static const unsigned int WINDOW_HEIGHT = 900;
 
 	double GAME_STARTING_TIME = 0.0001;
 	sf::Clock GAME_CLOCK;
@@ -34,18 +34,12 @@ public:
 	/// <returns></returns>
 	const std::string& Get_GameTitle() const;
 
-	/// <summary>
-	/// Returns reference of/to the game's resource manager.
-	/// </summary>
-	/// <returns></returns>
-	AssetManager_SFML& Get_ResourceManager();
-
 public:
 	/// <summary>
 	/// [Constructor] Setup the class.
 	/// </summary>
 	/// <param name="gameTitle"></param>
-	Game(std::string gameTitle, AssetManager_SFML& assetManager);
+	Game(std::string gameTitle, GameContext& gameContext);
 
 	/// <summary>
 	/// [Destructor] Cleans up the class.
@@ -99,7 +93,7 @@ private:
 	float _score = 0;
 	bool _isGameOVer = false;
 
-	AssetManager_SFML& _gameAssetManager;
+	GameContext& _gameContext;
 
 	// Time (clock)
 	double _deltaTime;
