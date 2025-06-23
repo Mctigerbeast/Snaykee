@@ -17,5 +17,11 @@ namespace MR_SFML
 
 		// Tracks game's current state
 		CurrentGameState CurrentGameState = SPLASH_SCREEN;
+
+		// Keep track of mouse position (relative to window).
+		sf::Vector2f CurrentMousePositionView()
+		{
+			return this->window->mapPixelToCoords(sf::Mouse::getPosition(*window));
+		}
 	};
 }

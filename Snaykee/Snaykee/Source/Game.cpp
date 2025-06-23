@@ -25,7 +25,7 @@ Game::Game(std::string gameTitle, GameContext& gameContext)
 	this->_backgroundTexture = &this->_gameContext.AssetManager.Get_Texture("purpleBackground");
 	this->_asteroid_1_Texture = &this->_gameContext.AssetManager.Get_Texture("asteroid_1_Texture");
 
-	this->_gameContext.AssetManager.LoadFont("mainFont", "Resources/font_playful_time_star.ttf");
+	//this->_gameContext.AssetManager.LoadFont("mainFont", "Resources/font_playful_time_star.ttf");
 	this->_scoreTextFont_UI = &this->_gameContext.AssetManager.Get_Font("mainFont");
 	this->_energyTextFont_UI = &this->_gameContext.AssetManager.Get_Font("mainFont");
 
@@ -129,6 +129,16 @@ void Game::Draw(sf::RenderWindow& window)
 
 	// Draw UI (score text)
 	window.draw(this->_scoreText_UI);
+
+	if (this->_player.Get_Energy() > 75)
+		this->_energyText_UI.setOutlineColor(sf::Color::Green);
+	else if (this->_player.Get_Energy() > 49)
+		this->_energyText_UI.setOutlineColor(sf::Color::Yellow);
+	else if (this->_player.Get_Energy() > 24)
+		this->_energyText_UI.setOutlineColor(sf::Color(255, 165, 0));
+	else
+		this->_energyText_UI.setOutlineColor(sf::Color::Red);
+
 	window.draw(this->_energyText_UI);
 }
 

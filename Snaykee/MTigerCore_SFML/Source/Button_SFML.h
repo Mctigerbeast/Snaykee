@@ -1,7 +1,8 @@
 #pragma once
+#include <iostream>
 #include <SFML/System.hpp>
 #include <SFML/Graphics.hpp>
-#include <iostream>
+#include "AssetManager_SFML.h"
 
 namespace MR_SFML
 {
@@ -15,7 +16,8 @@ namespace MR_SFML
 	class Button_SFML
 	{
 	public:
-		Button_SFML(sf::Vector2f buttonPosition, sf::Vector2f buttonSize = { 100.0f, 35.0f }, sf::Texture* btnTexture = nullptr);
+		Button_SFML(AssetManager_SFML& assetManager);
+		Button_SFML(AssetManager_SFML& assetManager, sf::Vector2f buttonPosition, sf::Vector2f buttonSize = { 100.0f, 35.0f }, sf::Texture* btnTexture = nullptr);
 		~Button_SFML();
 
 		void Update(sf::Vector2f mousePositionInWindow);
@@ -24,6 +26,8 @@ namespace MR_SFML
 
 		// Setters (mutators)
 		void Set_ButtonText(const std::string& newText);
+		void Set_ButtonTextFont(sf::Font& newFont);
+		void Set_ButtonPosition(float posX, float posY);
 		void Set_ButtonPressedFunction(void(*newButnPressFunc)());
 
 		void Set_ButtonColors(sf::Color idleColor, sf::Color hoverColor, sf::Color pressedColor);
@@ -38,19 +42,23 @@ namespace MR_SFML
 		const std::string& Get_ButtonText() const;
 
 	private:
+		AssetManager_SFML& _assetManager;
 		sf::RectangleShape _buttonBody;
 
 		sf::Color _buttonColor_Idle = sf::Color::White;
 		sf::Color _buttonColor_Hover = sf::Color::Blue;
 		sf::Color _buttonColor_Pressed = sf::Color::Green;
-		sf::Texture* _buttonTexture;
+		sf::Texture* _buttonTexture = nullptr;
 
 		uint32_t _buttonState = BUTTON_IDLE; // 0 = idle, 1 = hover, 2 = pressed
 
-		sf::Font _buttonTextFont;
 		sf::Text _buttonText;
-		std::string _buttonTextString = "";
+		sf::Font* _buttonTextFont;
+		std::string _buttonTextString = "BUTTON";
 
 		void(*ButtonPressedFunction)() = nullptr;
+
+	private:
+		void UpdateButtonOrigin();
 	};
 }

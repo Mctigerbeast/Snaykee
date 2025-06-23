@@ -1,9 +1,6 @@
 #pragma once
-
-#include "GameState_SFML.h"
-#include "AssetManager_SFML.h"
-#include "MTigerCore/CountdownTimer.h"
 #include "Defines_SFML.h"
+#include "MTigerCore/CountdownTimer.h"
 
 using namespace MR_SFML;
 using namespace MR_Utils;
@@ -29,5 +26,5 @@ private:
 	CountdownTimer _splashScreenTimer;
 	bool _isSplashScreenDone = false;
 
-	sf::RectangleShape _splashScreenLogo;
+	sf::RectangleShape _splashScreenLogoBanner;
 };

@@ -7,6 +7,7 @@
 #include "GameStateManager_SFML.h"
 #include "Defines_SFML.h"
 #include "SplashScreen_State.h"
+#include "MainMenu_State.h"
 
 #pragma region Forward Declarations (Time/Clock)
 void Handle_FPS(double deltaTime);
@@ -26,7 +27,10 @@ int main()
 	LeGameContext.window = new sf::RenderWindow(sf::VideoMode({ (unsigned int)(Game::WINDOW_WIDTH), (unsigned int)(Game::WINDOW_HEIGHT) }), "Snaykee");
 	LeGameContext.window->setFramerateLimit(60.0f);
 
-	LeGameContext.GameStateManager.AddState(std::unique_ptr<GameState_SFML>(new SplashScreen_State(LeGameContext)));
+	LeGameContext.GameStateManager.AddState(std::unique_ptr<GameState_SFML>(new MainMenu_State(LeGameContext)));
+	LeGameContext.GameStateManager.HandleStateChange();
+
+	LeGameContext.GameStateManager.AddState(std::unique_ptr<GameState_SFML>(new SplashScreen_State(LeGameContext)), false);
 	LeGameContext.GameStateManager.HandleStateChange();
 
 	Game LeGame("Snaykee", LeGameContext);
@@ -70,7 +74,7 @@ int main()
 		}
 
 		// Keep track of mouse position (relative to window).
-		sf::Vector2f mousePosView = window->mapPixelToCoords(sf::Mouse::getPosition(*window));
+		//sf::Vector2f mousePosView = window->mapPixelToCoords(sf::Mouse::getPosition(*window));
 
 		// Update
 		if (LeGameContext.CurrentGameState == GAME)
@@ -148,6 +152,7 @@ void Handle_FPS(double deltaTime)
 
 
 // TODO: Maybe use object pooling for asteroids. Creacte a vector of 200-300 asteroids and just keep using those, instead of creating and deleting them constantly.
+// TODO: Create Button class for iamge buttons. Buttons that have image.
 
 // TODO: Implement Save/load sytem.
 	// Save player score.
@@ -165,8 +170,8 @@ void Handle_FPS(double deltaTime)
 
 // TODO: Maybe have event for resetting player. Event will be sent from Game and player will listen.
 // TODO: Create function that determines values based (relative-to) on window or screen) Use this function when setting position and size of objects.
-// TODO: Maybe change eneryscor UI ouline color based on how much energy. Red (0-24), Orange(25-49), Yellow(50-74), Green(75-100)
 // TODO: Maybe move game window dimensions 'WINDOW_WIDTH' and "WINDOW_HEIGHT' into GameContext struct. Make const/read-only.
+// TODO: Make asteroid travel faster as time goes by.
 
 
 // DONE: Game over functionality.
@@ -174,9 +179,16 @@ void Handle_FPS(double deltaTime)
 // DONE: Add countdown timer to C++ Utils folder
 // DONE: Link scoring to star energy.
 // DONE: Create star spawning functionality. Maybe also create a star array.
+
 // DONE: Create button class.
 	// Add function pointer to button class for when button is pressed.
+
 // DONE: Add text on screen for player score.
 // DONE: Add namespaces to SFMLCore files (.h and .cpp).
 // DONE: Create resources manager class.
 // DONE: Add spacehip texture(s).
+// DONE: Maybe change energyScore UI ouline color based on how much energy. Red (0-24), Orange(25-49), Yellow(50-74), Green(75-100)
+
+// DONE: Update button class. 
+	// Create function for setting/changing button's text font.
+	// Add default button font to resources.

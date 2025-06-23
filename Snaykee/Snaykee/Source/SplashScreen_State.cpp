@@ -9,17 +9,19 @@ SplashScreen_State::~SplashScreen_State() {}
 
 void SplashScreen_State::Initialize()
 {
-	this->_gameContext.AssetManager.LoadTexture("splashScreen", "Resources/spr_splashscreen_logo.jpg");
-	this->_gameContext.AssetManager.LoadFont("splashScreenFont", "Resources/font_playful_time_star.ttf");
+	this->_gameContext.AssetManager.LoadTexture("splashScreenBanner", "Resources/spr_splashscreen_logo_banner.jpg");
 
-	// Logo
-	this->_splashScreenLogo = sf::RectangleShape({ static_cast<float>(this->_gameContext.window->getSize().x) / 2.50f,static_cast<float>(this->_gameContext.window->getSize().y) / 2.50f });
-	this->_splashScreenLogo.setTexture(&this->_gameContext.AssetManager.Get_Texture("splashScreen"));
-	this->_splashScreenLogo.setOrigin(this->_splashScreenLogo.getSize() / 2.0f);
+	// Create splashscreen logo
 	float logoPosX = static_cast<float>(this->_gameContext.window->getSize().x) / 2.0f;
 	float logoPosY = static_cast<float>(this->_gameContext.window->getSize().y) / 2.0f;
-	this->_splashScreenLogo.setPosition({ logoPosX, logoPosY - 100.0f });
+	this->_splashScreenLogoBanner = sf::RectangleShape({ static_cast<float>(this->_gameContext.window->getSize().x) * 0.75f,static_cast<float>(this->_gameContext.window->getSize().y) * 0.1558f });
+	this->_splashScreenLogoBanner.setTexture(&this->_gameContext.AssetManager.Get_Texture("splashScreenBanner"));
+	this->_splashScreenLogoBanner.setOrigin(this->_splashScreenLogoBanner.getSize() / 2.0f);
+	this->_splashScreenLogoBanner.setPosition({ logoPosX, logoPosY - 50.0f });
+	this->_splashScreenLogoBanner.setOutlineThickness(5.0f);
+	this->_splashScreenLogoBanner.setOutlineColor(sf::Color::Black);
 
+	// Start splashscreen timer
 	this->_splashScreenTimer = CountdownTimer(this->_splashScreenDuration);
 	this->_splashScreenTimer.StartCountdown();
 }
@@ -35,15 +37,15 @@ void SplashScreen_State::HandleInput()
 
 void SplashScreen_State::Update(float fDeltaTime)
 {
-	this->_splashScreenTimer.UpdateTimer(fDeltaTime);
 	this->HandleInput();
+	this->_splashScreenTimer.UpdateTimer(fDeltaTime);
 
 	if (this->_splashScreenTimer.IsCountingDown() == false && this->_isSplashScreenDone == false)
 	{
 		this->_isSplashScreenDone = true;
 
 		// TODO: Change "GAME" to "MAIN_MENU", when all game states have been created.
-		this->_gameContext.CurrentGameState = GAME;
+		this->_gameContext.CurrentGameState = MAIN_MENU;
 
 		this->_gameContext.GameStateManager.RemoveState();
 		this->_gameContext.GameStateManager.HandleStateChange();
@@ -52,6 +54,6 @@ void SplashScreen_State::Update(float fDeltaTime)
 
 void SplashScreen_State::Draw(sf::RenderWindow& window)
 {
-	window.clear();
-	window.draw(this->_splashScreenLogo);
+	window.clear(sf::Color(255, 116, 88)); // Set splashscreen background color
+	window.draw(this->_splashScreenLogoBanner);
 }
