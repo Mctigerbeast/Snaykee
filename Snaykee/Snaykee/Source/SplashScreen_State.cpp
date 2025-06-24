@@ -44,7 +44,6 @@ void SplashScreen_State::Update(float fDeltaTime)
 	{
 		this->_isSplashScreenDone = true;
 
-		// TODO: Change "GAME" to "MAIN_MENU", when all game states have been created.
 		this->_gameContext.CurrentGameState = MAIN_MENU;
 
 		this->_gameContext.GameStateManager.RemoveState();

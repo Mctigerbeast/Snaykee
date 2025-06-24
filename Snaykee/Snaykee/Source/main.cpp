@@ -1,11 +1,4 @@
-#include <iostream>
-//#include <SFML/Graphics.hpp>
 #include "Game.h"
-
-// TODO: Testing Button
-#include "Button_SFML.h"
-#include "GameStateManager_SFML.h"
-#include "Defines_SFML.h"
 #include "SplashScreen_State.h"
 #include "MainMenu_State.h"
 
@@ -21,10 +14,13 @@ int main()
 	//srand(time(0));
 	srand(static_cast<unsigned>(time(0)));
 
-	GameContext LeGameContext;
+	// Screen/window dimensions
+	//std::cout << "Screen Dimensions: " << sf::VideoMode::getDesktopMode().size.x << " x " << sf::VideoMode::getDesktopMode().size.y << "\n";
+	int windowX = sf::VideoMode::getDesktopMode().size.y * 0.80f;
+	int windowY = sf::VideoMode::getDesktopMode().size.y * 0.80f;
 
-	// Initialize game window
-	LeGameContext.window = new sf::RenderWindow(sf::VideoMode({ (unsigned int)(Game::WINDOW_WIDTH), (unsigned int)(Game::WINDOW_HEIGHT) }), "Snaykee");
+	// Create game context
+	GameContext LeGameContext("Snaykee", windowX, windowY);
 	LeGameContext.window->setFramerateLimit(60.0f);
 
 	LeGameContext.GameStateManager.AddState(std::unique_ptr<GameState_SFML>(new MainMenu_State(LeGameContext)));
@@ -33,30 +29,8 @@ int main()
 	LeGameContext.GameStateManager.AddState(std::unique_ptr<GameState_SFML>(new SplashScreen_State(LeGameContext)), false);
 	LeGameContext.GameStateManager.HandleStateChange();
 
-	Game LeGame("Snaykee", LeGameContext);
-
-	/*
-	// Create asset manager
-	//AssetManager_SFML AssetManager;
-
-	// Create game state manager
-	//GameStateManager_SFML GameStateManager;
-
 	// Create game
-	Game LeGame("Snaykee", LeGameResources.AssetManager);
-
-	// Create game window
-	//sf::RenderWindow window(sf::VideoMode({ 200, 200 }), snakeGame.Get_GameTitle());
-	//sf::RenderWindow* window = new sf::RenderWindow(sf::VideoMode({ (unsigned int)(LeGame.WINDOW_WIDTH), (unsigned int)(LeGame.WINDOW_HEIGHT) }), LeGame.Get_GameTitle());
-	//window->setFramerateLimit(60);
-
-	// TODO: Testing Button
-	//Button_SFML playButton({ static_cast<float>(LeGame.WINDOW_WIDTH / 2.0f),  static_cast<float>(LeGame.WINDOW_HEIGHT / 2.0f) });
-	//playButton.Set_ButtonText("  PLAY  ");
-	//playButton.MutiplyButtonSize(4.0f);
-	//playButton.Set_ButtonColor_Hover(sf::Color(170.0f, 170.0f, 170.0f));
-	//playButton.Set_ButtonPressedFunction([]() {std::cout << "Button Clicked!!" << "\n"; });
-	*/
+	Game LeGame(LeGameContext);
 
 	sf::RenderWindow* window = LeGameContext.window;
 	while (window->isOpen())
@@ -65,16 +39,13 @@ int main()
 		Handle_GameClock(LeGame);
 		Handle_FPS(LeGame.GAME_DELTA_TIME);
 		std::string fps = std::to_string(static_cast<int>(1 / LeGame.GAME_DELTA_TIME));
-		window->setTitle(LeGame.Get_GameTitle() + "     FPS: " + fps);
+		window->setTitle(LeGameContext.GAME_TITLE + "     FPS: " + fps);
 
 		while (const std::optional event = window->pollEvent())
 		{
 			if (event->is<sf::Event::Closed>())
 				window->close();
 		}
-
-		// Keep track of mouse position (relative to window).
-		//sf::Vector2f mousePosView = window->mapPixelToCoords(sf::Mouse::getPosition(*window));
 
 		// Update
 		if (LeGameContext.CurrentGameState == GAME)
@@ -97,35 +68,13 @@ int main()
 		}
 
 		window->display();
-
-		/*
-		// Update
-		//GameStateManager.Get_CurrentActiveState()->HandleInput();
-		//GameStateManager.Get_CurrentActiveState()->Update(static_cast<float>(LeGame.GAME_DELTA_TIME));
-		LeGame.Tick(static_cast<float>(LeGame.GAME_DELTA_TIME));
-		// TODO: Testing Button
-		//playButton.Update(mousePosView);
-		//LeGameResources.GameStateManager.HandleStateChange();
-		LeGameResources.GameStateManager.Get_CurrentActiveState()->Update(static_cast<float>(LeGame.GAME_DELTA_TIME));
-
-		//window->clear(sf::Color(106, 146, 166));
-		window->clear(sf::Color::Black);
-
-		// Drawing
-		LeGame.Draw(*window);
-		LeGameResources.GameStateManager.Get_CurrentActiveState()->Draw(*window);
-		//GameStateManager.Get_CurrentActiveState()->Draw(*window);
-		// TODO: Testing Button
-		//playButton.Draw(*window);
-
-		window->display();
-		*/
 	}
 
 	delete window;
 	return 0;
 }
 
+#pragma region HELPERS
 /// <summary>
 /// Perform game clock/time calculations.
 /// </summary>
@@ -136,7 +85,6 @@ void Handle_GameClock(Game& game)
 	game.GAME_STARTING_TIME = ending;
 }
 
-#pragma region HELPERS
 /// <summary>
 /// Performs FPS calculations.
 /// </summary>
@@ -170,7 +118,6 @@ void Handle_FPS(double deltaTime)
 
 // TODO: Maybe have event for resetting player. Event will be sent from Game and player will listen.
 // TODO: Create function that determines values based (relative-to) on window or screen) Use this function when setting position and size of objects.
-// TODO: Maybe move game window dimensions 'WINDOW_WIDTH' and "WINDOW_HEIGHT' into GameContext struct. Make const/read-only.
 // TODO: Make asteroid travel faster as time goes by.
 
 
@@ -192,3 +139,5 @@ void Handle_FPS(double deltaTime)
 // DONE: Update button class. 
 	// Create function for setting/changing button's text font.
 	// Add default button font to resources.
+
+// DONE: Maybe move game window dimensions 'WINDOW_WIDTH' and "WINDOW_HEIGHT' into GameContext struct. Make const/read-only.

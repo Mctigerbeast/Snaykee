@@ -38,7 +38,12 @@ namespace MR_SFML
 		bool _isRemovingState = false;
 		bool _isAddingState = false;
 		bool _isReplacingState = false;
+
+		/// <summary>
+		/// Contains/holds game states.
+		/// </summary>
 		std::stack<std::unique_ptr<GameState_SFML>> _statesStack;
+
 		std::unique_ptr<GameState_SFML> _newState = nullptr;
 	};
 }

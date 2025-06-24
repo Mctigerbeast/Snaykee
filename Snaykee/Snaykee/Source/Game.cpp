@@ -1,14 +1,12 @@
 #include "Game.h"
 
-const std::string& Game::Get_GameTitle() const { return this->_gameTitle; }
-
 sf::Vector2f Game::Get_CenterOfScreen()
 {
-	return sf::Vector2f{ static_cast<float>(WINDOW_WIDTH / 2), static_cast<float>(WINDOW_HEIGHT / 2) };
+	return sf::Vector2f{ this->Get_Window_WidthF() / 2.0f, this->Get_Window_HeightF() / 2.0f };
 }
 
-Game::Game(std::string gameTitle, GameContext& gameContext)
-	: _gameTitle(gameTitle), _gameContext(gameContext), _scoreText_UI(*_scoreTextFont_UI), _energyText_UI(*_energyTextFont_UI)
+Game::Game(GameContext& gameContext)
+	: _gameContext(gameContext), _scoreText_UI(*_scoreTextFont_UI), _energyText_UI(*_energyTextFont_UI)
 {
 	// Load and set resources
 	this->_gameContext.AssetManager.LoadTexture("greenShip", "Resources/spr_spaceship_green.png");
@@ -30,25 +28,25 @@ Game::Game(std::string gameTitle, GameContext& gameContext)
 	this->_energyTextFont_UI = &this->_gameContext.AssetManager.Get_Font("mainFont");
 
 	// Create game's screen (window) borders
-	this->leftBorder = new Border({ 20.0f, static_cast<float>(WINDOW_HEIGHT) }, { 10.0f, Get_CenterOfScreen().y }, nullptr, sf::Color::Black);
-	this->rightBorder = new Border({ 20.0f, static_cast<float>(WINDOW_HEIGHT) }, { MR_Math::Convert_To_Float(WINDOW_WIDTH) - 10.f, Get_CenterOfScreen().y }, nullptr, sf::Color::Black);
-	this->topBorder = new Border({ static_cast<float>(WINDOW_WIDTH), 20.0f }, { Get_CenterOfScreen().x, 10.0f }, nullptr, sf::Color::Black);
-	this->bottomBorder = new Border({ static_cast<float>(WINDOW_WIDTH), 20.0f }, { Get_CenterOfScreen().x, MR_Math::Convert_To_Float(WINDOW_HEIGHT) - 10.0f }, nullptr, sf::Color::Black);
+	this->leftBorder = new Border({ 20.0f, this->Get_Window_HeightF() }, { 10.0f, Get_CenterOfScreen().y }, nullptr, sf::Color::Black);
+	this->rightBorder = new Border({ 20.0f, this->Get_Window_HeightF() }, { this->Get_Window_WidthF() - 10.f, Get_CenterOfScreen().y }, nullptr, sf::Color::Black);
+	this->topBorder = new Border({ this->Get_Window_WidthF(), 20.0f }, { Get_CenterOfScreen().x, 10.0f }, nullptr, sf::Color::Black);
+	this->bottomBorder = new Border({ this->Get_Window_WidthF(), 20.0f }, { Get_CenterOfScreen().x, this->Get_Window_HeightF() - 10.0f }, nullptr, sf::Color::Black);
 
 	// Player
 	this->_player = Player_SpaceShip(this->_playerTexture_2, sf::Vector2u({ 1, 1 }), 0.1f, 500.0f);
 	//this->_player.SetupAnimation(1, 2, 3, 0);
 	this->_player.Set_PlayerSize({ 80.0f, 100.0f });
-	this->_player.Set_PlayerPostition({ static_cast<float>(this->WINDOW_WIDTH / 2.0f),  static_cast<float>(this->WINDOW_HEIGHT / 2.0f) });
+	this->_player.Set_PlayerPostition({ this->Get_Window_WidthF() / 2.0f,  this->Get_Window_HeightF() / 2.0f });
 
 	// Other Visuals
-	this->_background = sf::RectangleShape({ 1800.0f, static_cast<float>(this->WINDOW_HEIGHT) });
+	this->_background = sf::RectangleShape({ 1800.0f, this->Get_Window_HeightF() });
 	this->_background.setTexture(this->_backgroundTexture);
 	this->_background.setFillColor(sf::Color{ 255,255,255,100 });
 
 	// UI (score text)
 	this->_scoreText_UI = sf::Text(*this->_scoreTextFont_UI);
-	this->_scoreText_UI.setPosition({ static_cast<float>(this->WINDOW_WIDTH) * 0.05f, static_cast<float>(this->WINDOW_HEIGHT) * 0.95f });
+	this->_scoreText_UI.setPosition({ this->Get_Window_WidthF() * 0.05f, this->Get_Window_HeightF() * 0.95f });
 	this->_scoreText_UI.setOrigin(this->_scoreText_UI.getGlobalBounds().size / 2.0f);
 	this->_scoreText_UI.setLetterSpacing(2.0f);
 	this->_scoreText_UI.setFillColor(sf::Color::Black);
@@ -57,7 +55,7 @@ Game::Game(std::string gameTitle, GameContext& gameContext)
 	this->_scoreText_UI.setCharacterSize(20.0f);
 
 	this->_energyText_UI = sf::Text(*this->_energyTextFont_UI);
-	this->_energyText_UI.setPosition({ static_cast<float>(this->WINDOW_WIDTH) * 0.825f, static_cast<float>(this->WINDOW_HEIGHT) * 0.95f });
+	this->_energyText_UI.setPosition({ this->Get_Window_WidthF() * 0.825f, this->Get_Window_HeightF() * 0.95f });
 	this->_energyText_UI.setOrigin(this->_energyText_UI.getGlobalBounds().size / 2.0f);
 	this->_energyText_UI.setLetterSpacing(2.0f);
 	this->_energyText_UI.setFillColor(sf::Color::Black);
@@ -152,11 +150,11 @@ void Game::GenerateObstacles()
 
 	// Used to spawn obstacles within a certain percentage of the window.
 	// In this case, obstcles won't spawn within the outer 5% of the window.
-	float percentage = this->WINDOW_WIDTH * 0.05f; // (5%)
+	float percentage = this->Get_Window_WidthF() * 0.05f; // (5%)
 
 	//float randSize = MR_Math::RandomFloatRange(5.0f, 10.0f);
 	float randSize = MR_Math::RandomFloatRange(20.0f, 50.0f); // TODO: Testing value
-	float randPosX = MR_Math::RandomFloatRange(percentage, (this->WINDOW_WIDTH - percentage));
+	float randPosX = MR_Math::RandomFloatRange(percentage, (this->Get_Window_WidthF() - percentage));
 	float randPosY = MR_Math::RandomFloat(percentage);
 	float randSpeed = MR_Math::RandomFloat(1.0f);
 
@@ -205,11 +203,11 @@ void Game::GenerateStarEnergy()
 
 	// Used to spawn star energy within a certain percentage of the window.
 	// In this case, star energy won't spawn within the outer 10% of the window.
-	float percentageX = this->WINDOW_WIDTH * 0.10f;
-	float percentageY = this->WINDOW_HEIGHT * 0.10f;
+	float percentageX = this->Get_Window_WidthF() * 0.10f;
+	float percentageY = this->Get_Window_HeightF() * 0.10f;
 
-	float randPosX = MR_Math::RandomFloatRange(percentageX, (this->WINDOW_WIDTH - percentageX));
-	float randPosY = MR_Math::RandomFloatRange(percentageY, (this->WINDOW_HEIGHT - percentageY));
+	float randPosX = MR_Math::RandomFloatRange(percentageX, (this->Get_Window_WidthF() - percentageX));
+	float randPosY = MR_Math::RandomFloatRange(percentageY, (this->Get_Window_HeightF() - percentageY));
 
 	StarEnergy se({ randPosX, randPosY });
 	this->_starEnergies.push_back(se);
@@ -244,7 +242,7 @@ void Game::Execute_GameOver()
 void Game::Execute_StartGame()
 {
 	this->_score = 0; // Reset player score
-	this->_player.Set_PlayerPostition({ static_cast<float>(this->WINDOW_WIDTH / 2.0f),  static_cast<float>(this->WINDOW_HEIGHT / 2.0f) }); // Reset player's position
+	this->_player.Set_PlayerPostition({ static_cast<float>(this->Get_Window_WidthF() / 2.0f),  static_cast<float>(this->Get_Window_HeightF() / 2.0f) }); // Reset player's position
 	this->_player.ResetPlayer(); // Reset player's health, etc.
 
 	// Clean and reset obstacles vector
@@ -256,3 +254,6 @@ void Game::Execute_StartGame()
 	this->_isGameOVer = false;
 }
 
+float Game::Get_Window_WidthF() { return static_cast<float>(this->_gameContext.WINDOW_WIDTH); }
+
+float Game::Get_Window_HeightF() { return static_cast<float>(this->_gameContext.WINDOW_HEIGHT); }

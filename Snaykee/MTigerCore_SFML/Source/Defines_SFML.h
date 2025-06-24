@@ -6,6 +6,12 @@ namespace MR_SFML
 {
 	struct GameContext
 	{
+		GameContext(const std::string& gameTitle, int windowWidth, int windowHeight)
+			: GAME_TITLE(gameTitle), WINDOW_WIDTH(windowWidth), WINDOW_HEIGHT(windowHeight)
+		{
+			this->window = new sf::RenderWindow(sf::VideoMode({ this->WINDOW_WIDTH, this->WINDOW_HEIGHT }), gameTitle);
+		}
+
 		// Create asset manager
 		AssetManager_SFML AssetManager;
 
@@ -23,5 +29,12 @@ namespace MR_SFML
 		{
 			return this->window->mapPixelToCoords(sf::Mouse::getPosition(*window));
 		}
+
+		// Game window size (dimensions)
+		const unsigned int WINDOW_WIDTH;
+		const unsigned int WINDOW_HEIGHT;
+
+		// Game's Title
+		const std::string GAME_TITLE;
 	};
 }

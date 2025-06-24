@@ -20,25 +20,93 @@ namespace MR_SFML
 		Button_SFML(AssetManager_SFML& assetManager, sf::Vector2f buttonPosition, sf::Vector2f buttonSize = { 100.0f, 35.0f }, sf::Texture* btnTexture = nullptr);
 		~Button_SFML();
 
+		/// <summary>
+		/// Update the buton.
+		/// </summary>
+		/// <param name="mousePositionInWindow">Position of the mouse in the game window.</param>
 		void Update(sf::Vector2f mousePositionInWindow);
+
+		/// <summary>
+		/// Perform Draw functionality/logic.
+		/// </summary>
+		/// <param name="window"></param>
 		void Draw(sf::RenderWindow& window);
+
+		/// <summary>
+		/// Multiplies the button's size by a passed in value.
+		/// </summary>
+		/// <param name="multiplier"></param>
 		void MutiplyButtonSize(float multiplier);
 
-		// Setters (mutators)
+		/// <summary>
+		/// Changes the button's text.
+		/// </summary>
+		/// <param name="newText">The button's new text.</param>
 		void Set_ButtonText(const std::string& newText);
+
+		/// <summary>
+		/// Changes the button's text font
+		/// </summary>
+		/// <param name="newFont">The button's new text font.</param>
 		void Set_ButtonTextFont(sf::Font& newFont);
+
+		/// <summary>
+		/// Changes the button's position.
+		/// </summary>
+		/// <param name="posX">X position of button.</param>
+		/// <param name="posY">Y position of button.</param>
 		void Set_ButtonPosition(float posX, float posY);
+
+
 		void Set_ButtonPressedFunction(void(*newButnPressFunc)());
 
+		/// <summary>
+		/// Changes the button's colors.
+		/// </summary>
+		/// <param name="idleColor">Color for when button is idle.</param>
+		/// <param name="hoverColor">Color for when button is being hovered on by the mouse.</param>
+		/// <param name="pressedColor">Color for when button is pressed (clicked).</param>
 		void Set_ButtonColors(sf::Color idleColor, sf::Color hoverColor, sf::Color pressedColor);
+
+		/// <summary>
+		/// Changes the button's 'idle' color.
+		/// </summary>
+		/// <param name="idleColor">Color for when button is idle.</param>
 		void Set_ButtonColor_Idle(sf::Color idleColor);
+
+		/// <summary>
+		/// Changes the button's 'hover' color.
+		/// </summary>
+		/// <param name="hoverColor">Color for when button is being hovered on by the mouse.</param>
 		void Set_ButtonColor_Hover(sf::Color hoverColor);
+
+		/// <summary>
+		/// Changes the button's 'pressed' color.
+		/// </summary>
+		/// <param name="pressedColor">Color for when button is pressed (clicked).</param>
 		void Set_ButtonColor_Pressed(sf::Color pressedColor);
+
+		/// <summary>
+		/// Set/changes the button's texture.
+		/// </summary>
+		/// <param name="newTexture">The button's new texture.</param>
 		void Set_ButtonTexture(sf::Texture* newTexture);
 
-		// Getters (accessors)
+		/// <summary>
+		/// Determines if button is being hovered on.
+		/// </summary>
+		/// <returns>True, if button is being hovered.</returns>
 		const bool IsHover() const;
+
+		/// <summary>
+		/// Determines if button is pressed (clicked).
+		/// </summary>
+		/// <returns>True, if button is pressed (clicked).</returns>
 		const bool IsPressed() const;
+
+		/// <summary>
+		/// </summary>
+		/// <returns>The button's text.</returns>
 		const std::string& Get_ButtonText() const;
 
 	private:
@@ -59,6 +127,9 @@ namespace MR_SFML
 		void(*ButtonPressedFunction)() = nullptr;
 
 	private:
+		/// <summary>
+		/// Updates the button's origin, to be the center of the button.
+		/// </summary>
 		void UpdateButtonOrigin();
 	};
 }

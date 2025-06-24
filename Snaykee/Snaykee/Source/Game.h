@@ -1,23 +1,16 @@
 #pragma once
 #include <iostream>
 #include "MTigerCore/MR_Math.h"
-#include "Player_SpaceShip.h"
+#include "Defines_SFML.h"
 
+#include "Player_SpaceShip.h"
 #include "Obstacle.h"
 #include "Border.h"
 #include "StarEnergy.h"
-#include "Defines_SFML.h"
 
 class Game
 {
 public:
-	// TODO: Get size of screen and do math so that game window is relative to size of screen.
-	/*unsigned int WINDOW_WIDTH = 1200;
-	unsigned int WINDOW_HEIGHT = 1200;*/
-
-	static const unsigned int WINDOW_WIDTH = 900;
-	static const unsigned int WINDOW_HEIGHT = 900;
-
 	double GAME_STARTING_TIME = 0.0001;
 	sf::Clock GAME_CLOCK;
 	double GAME_DELTA_TIME;
@@ -28,18 +21,12 @@ public:
 	/// <returns></returns>
 	sf::Vector2f Get_CenterOfScreen();
 
-	/// <summary>
-	/// Returns the title of the game.
-	/// </summary>
-	/// <returns></returns>
-	const std::string& Get_GameTitle() const;
-
 public:
 	/// <summary>
 	/// [Constructor] Setup the class.
 	/// </summary>
-	/// <param name="gameTitle"></param>
-	Game(std::string gameTitle, GameContext& gameContext);
+	/// <param name="gameContext"></param>
+	Game(GameContext& gameContext);
 
 	/// <summary>
 	/// [Destructor] Cleans up the class.
@@ -88,8 +75,19 @@ private:
 	/// </summary>
 	void Execute_StartGame();
 
+	/// <summary>
+	/// Get game window's width, as a float.
+	/// </summary>
+	/// <returns>Return game window's width.</returns>
+	float Get_Window_WidthF();
+
+	/// <summary>
+	/// Get game window's height, as a float.
+	/// </summary>
+	/// <returns>Return game window's height.</returns>
+	float Get_Window_HeightF();
+
 private:
-	std::string _gameTitle = "[Game Name/Title]";
 	float _score = 0;
 	bool _isGameOVer = false;
 
