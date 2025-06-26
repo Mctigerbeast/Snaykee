@@ -58,7 +58,7 @@ namespace MR_SFML
 				this->_buttonState = BUTTON_PRESSED;
 				this->_buttonBody.setFillColor(this->_buttonColor_Pressed);
 
-				if (this->ButtonPressedFunction != nullptr)
+				if (this->ButtonPressedFunction)
 					this->ButtonPressedFunction();
 			}
 		}
@@ -85,6 +85,17 @@ namespace MR_SFML
 		this->UpdateButtonOrigin();
 	}
 
+	void Button_SFML::Set_ButtonPressedFunction(std::function<void()> newButnPressFunc)
+	{
+		this->ButtonPressedFunction = newButnPressFunc;
+	}
+
+	void Button_SFML::Set_ButtonText(const std::string& newText)
+	{
+		this->_buttonText.setString(newText);
+		this->_buttonTextString = newText;
+	}
+
 	void Button_SFML::Set_ButtonTextFont(sf::Font& newFont)
 	{
 		this->_buttonTextFont = &newFont;
@@ -98,28 +109,48 @@ namespace MR_SFML
 		this->UpdateButtonOrigin();
 	}
 
-	void Button_SFML::Set_ButtonColors(sf::Color idleColor, sf::Color hoverColor, sf::Color pressedColor)
+	void Button_SFML::Set_ButtonSize(float width, float height)
+	{
+		this->_buttonBody.setSize({ width, height });
+		this->UpdateButtonOrigin();
+	}
+
+	void Button_SFML::Set_ButtonOulineThickness(float newThicknessVal)
+	{
+		this->_buttonBody.setOutlineThickness(newThicknessVal);
+	}
+	
+	void Button_SFML::Set_ButtonTextOulineThickness(float newThicknessVal)
+	{
+		this->_buttonText.setOutlineThickness(newThicknessVal);
+	}
+
+	void Button_SFML::Set_ButtonTexture(sf::Texture* newTexture)
+	{
+		this->_buttonTexture = newTexture;
+		this->_buttonBody.setTexture(_buttonTexture);
+	}
+
+	void Button_SFML::Set_ButtonOulineColor(sf::Color newOutlineColor)
+	{
+		this->_buttonBody.setOutlineColor(newOutlineColor);
+	}
+	
+	void Button_SFML::Set_ButtonTextOulineColor(sf::Color newOutlineColor)
+	{
+		this->_buttonText.setOutlineColor(newOutlineColor);
+	}
+
+	void Button_SFML::Set_ButtonStateColors(sf::Color idleColor, sf::Color hoverColor, sf::Color pressedColor)
 	{
 		this->_buttonColor_Idle = idleColor;
 		this->_buttonColor_Hover = hoverColor;
 		this->_buttonColor_Pressed = pressedColor;
 	}
 
-	void Button_SFML::Set_ButtonText(const std::string& newText)
-	{
-		this->_buttonText.setString(newText);
-		this->_buttonTextString = newText;
-	}
-
-	void Button_SFML::Set_ButtonPressedFunction(void(*newButnPressFunc)())
-	{
-		this->ButtonPressedFunction = newButnPressFunc;
-	}
-
 	void Button_SFML::Set_ButtonColor_Idle(sf::Color idleColor) { this->_buttonColor_Idle = idleColor; }
 	void Button_SFML::Set_ButtonColor_Hover(sf::Color hoverColor) { this->_buttonColor_Hover = hoverColor; }
 	void Button_SFML::Set_ButtonColor_Pressed(sf::Color pressedColor) { this->_buttonColor_Pressed = pressedColor; }
-	void Button_SFML::Set_ButtonTexture(sf::Texture* newTexture) { this->_buttonTexture = newTexture; }
 
 	const bool Button_SFML::IsHover()const { return this->_buttonState == BUTTON_HOVER; }
 	const bool Button_SFML::IsPressed()const { return this->_buttonState == BUTTON_PRESSED; }

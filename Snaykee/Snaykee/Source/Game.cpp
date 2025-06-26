@@ -9,22 +9,14 @@ Game::Game(GameContext& gameContext)
 	: _gameContext(gameContext), _scoreText_UI(*_scoreTextFont_UI), _energyText_UI(*_energyTextFont_UI)
 {
 	// Load and set resources
-	this->_gameContext.AssetManager.LoadTexture("greenShip", "Resources/spr_spaceship_green.png");
-	this->_gameContext.AssetManager.LoadTexture("yellowShip", "Resources/spr_spaceship_yellow.png");
-	this->_gameContext.AssetManager.LoadTexture("whiteShip", "Resources/spr_spaceship_white.png");
-	this->_gameContext.AssetManager.LoadTexture("darkShip", "Resources/spr_spaceship_dark.png");
-	this->_gameContext.AssetManager.LoadTexture("purpleBackground", "Resources/bg_space_purple.jpg");
-	this->_gameContext.AssetManager.LoadTexture("asteroid_1_Texture", "Resources/Asteroid1.png");
+	this->_playerTexture_1 = &this->_gameContext.AssetManager.GetLoad_Texture("greenShip", "Resources/spr_spaceship_green.png");
+	this->_playerTexture_2 = &this->_gameContext.AssetManager.GetLoad_Texture("yellowShip", "Resources/spr_spaceship_yellow.png");
+	this->_playerTexture_3 = &this->_gameContext.AssetManager.GetLoad_Texture("whiteShip", "Resources/spr_spaceship_white.png");
+	this->_playerTexture_4 = &this->_gameContext.AssetManager.GetLoad_Texture("darkShip", "Resources/spr_spaceship_dark.png");
+	this->_backgroundTexture = &this->_gameContext.AssetManager.GetLoad_Texture("purpleBackground", "Resources/bg_space_purple.jpg");
+	this->_asteroid_1_Texture = &this->_gameContext.AssetManager.GetLoad_Texture("asteroid_1_Texture", "Resources/Asteroid1.png");
 
-	this->_playerTexture_1 = &this->_gameContext.AssetManager.Get_Texture("greenShip");
-	this->_playerTexture_2 = &this->_gameContext.AssetManager.Get_Texture("yellowShip");
-	this->_playerTexture_3 = &this->_gameContext.AssetManager.Get_Texture("whiteShip");
-	this->_playerTexture_4 = &this->_gameContext.AssetManager.Get_Texture("darkShip");
-	this->_backgroundTexture = &this->_gameContext.AssetManager.Get_Texture("purpleBackground");
-	this->_asteroid_1_Texture = &this->_gameContext.AssetManager.Get_Texture("asteroid_1_Texture");
-
-	//this->_gameContext.AssetManager.LoadFont("mainFont", "Resources/font_playful_time_star.ttf");
-	this->_scoreTextFont_UI = &this->_gameContext.AssetManager.Get_Font("mainFont");
+	this->_scoreTextFont_UI = &this->_gameContext.AssetManager.GetLoad_Font("mainFont", "Resources/font_playful_time_star.ttf");
 	this->_energyTextFont_UI = &this->_gameContext.AssetManager.Get_Font("mainFont");
 
 	// Create game's screen (window) borders
@@ -40,7 +32,7 @@ Game::Game(GameContext& gameContext)
 	this->_player.Set_PlayerPostition({ this->Get_Window_WidthF() / 2.0f,  this->Get_Window_HeightF() / 2.0f });
 
 	// Other Visuals
-	this->_background = sf::RectangleShape({ 1800.0f, this->Get_Window_HeightF() });
+	this->_background = sf::RectangleShape({ 1800.0f /*this->Get_Window_WidthF()*/, this->Get_Window_HeightF() });
 	this->_background.setTexture(this->_backgroundTexture);
 	this->_background.setFillColor(sf::Color{ 255,255,255,100 });
 
@@ -81,6 +73,14 @@ void Game::Tick(float fDeltaTime)
 			this->Execute_StartGame();
 
 		return;
+	}
+
+	// TODO: Testing purposes only!!!
+	if (sf::Keyboard::isKeyPressed(sf::Keyboard::Key::Escape))
+	{
+		this->_gameContext.CurrentGameState = PAUSE_MENU;
+		this->_gameContext.GameStateManager.Get_CurrentActiveState()->StartState();
+		this->_gameContext.GameStateManager.HandleStateChange();
 	}
 
 	this->_deltaTime = fDeltaTime;
@@ -242,7 +242,7 @@ void Game::Execute_GameOver()
 void Game::Execute_StartGame()
 {
 	this->_score = 0; // Reset player score
-	this->_player.Set_PlayerPostition({ static_cast<float>(this->Get_Window_WidthF() / 2.0f),  static_cast<float>(this->Get_Window_HeightF() / 2.0f) }); // Reset player's position
+	this->_player.Set_PlayerPostition({ this->Get_Window_WidthF() / 2.0f,  this->Get_Window_HeightF() / 2.0f }); // Reset player's position
 	this->_player.ResetPlayer(); // Reset player's health, etc.
 
 	// Clean and reset obstacles vector
@@ -254,6 +254,6 @@ void Game::Execute_StartGame()
 	this->_isGameOVer = false;
 }
 
-float Game::Get_Window_WidthF() { return static_cast<float>(this->_gameContext.WINDOW_WIDTH); }
+float Game::Get_Window_WidthF() { return this->_gameContext.Get_Window_WidthF(); }
 
-float Game::Get_Window_HeightF() { return static_cast<float>(this->_gameContext.WINDOW_HEIGHT); }
+float Game::Get_Window_HeightF() { return this->_gameContext.Get_Window_WidthF(); }

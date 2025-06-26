@@ -1,5 +1,6 @@
 #pragma once
 #include <iostream>
+#include <functional>
 #include <SFML/System.hpp>
 #include <SFML/Graphics.hpp>
 #include "AssetManager_SFML.h"
@@ -39,6 +40,12 @@ namespace MR_SFML
 		void MutiplyButtonSize(float multiplier);
 
 		/// <summary>
+		/// Changes the button's 'ButtonPressed' function (callback).
+		/// </summary>
+		/// <param name="newButnPressFunc"></param>
+		void Set_ButtonPressedFunction(std::function<void()> newButnPressFunc);
+
+		/// <summary>
 		/// Changes the button's text.
 		/// </summary>
 		/// <param name="newText">The button's new text.</param>
@@ -57,8 +64,42 @@ namespace MR_SFML
 		/// <param name="posY">Y position of button.</param>
 		void Set_ButtonPosition(float posX, float posY);
 
+		/// <summary>
+		/// Changes the button's size.
+		/// </summary>
+		/// <param name="width">Width of the button.</param>
+		/// <param name="height">Height of the button.</param>
+		void Set_ButtonSize(float width, float height);
 
-		void Set_ButtonPressedFunction(void(*newButnPressFunc)());
+		/// <summary>
+		/// Changes the button's outline thickness. By default, the button's outline thickness is 0.
+		/// </summary>
+		/// <param name="newThicknessVal"></param>
+		void Set_ButtonOulineThickness(float newThicknessVal);
+
+		/// <summary>
+		/// Changes the button's text outline thickness. By default, the button's text outline thickness is 0.
+		/// </summary>
+		/// <param name="newThicknessVal"></param>
+		void Set_ButtonTextOulineThickness(float newThicknessVal);
+
+		/// <summary>
+		/// Set/changes the button's texture.
+		/// </summary>
+		/// <param name="newTexture">The button's new texture.</param>
+		void Set_ButtonTexture(sf::Texture* newTexture);
+
+		/// <summary>
+		/// Set the outline color of the button. By default, the button's outline color is opaque white.
+		/// </summary>
+		/// <param name="newOutlineColor"></param>
+		void Set_ButtonOulineColor(sf::Color newOutlineColor);
+
+		/// <summary>
+		/// Set the outline color of the button's text. By default, the button's text outline color is opaque white.
+		/// </summary>
+		/// <param name="newOutlineColor"></param>
+		void Set_ButtonTextOulineColor(sf::Color newOutlineColor);
 
 		/// <summary>
 		/// Changes the button's colors.
@@ -66,7 +107,7 @@ namespace MR_SFML
 		/// <param name="idleColor">Color for when button is idle.</param>
 		/// <param name="hoverColor">Color for when button is being hovered on by the mouse.</param>
 		/// <param name="pressedColor">Color for when button is pressed (clicked).</param>
-		void Set_ButtonColors(sf::Color idleColor, sf::Color hoverColor, sf::Color pressedColor);
+		void Set_ButtonStateColors(sf::Color idleColor, sf::Color hoverColor, sf::Color pressedColor);
 
 		/// <summary>
 		/// Changes the button's 'idle' color.
@@ -85,12 +126,6 @@ namespace MR_SFML
 		/// </summary>
 		/// <param name="pressedColor">Color for when button is pressed (clicked).</param>
 		void Set_ButtonColor_Pressed(sf::Color pressedColor);
-
-		/// <summary>
-		/// Set/changes the button's texture.
-		/// </summary>
-		/// <param name="newTexture">The button's new texture.</param>
-		void Set_ButtonTexture(sf::Texture* newTexture);
 
 		/// <summary>
 		/// Determines if button is being hovered on.
@@ -122,9 +157,9 @@ namespace MR_SFML
 
 		sf::Text _buttonText;
 		sf::Font* _buttonTextFont;
-		std::string _buttonTextString = "BUTTON";
+		std::string _buttonTextString = "";
 
-		void(*ButtonPressedFunction)() = nullptr;
+		std::function<void()> ButtonPressedFunction;
 
 	private:
 		/// <summary>

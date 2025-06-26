@@ -47,6 +47,7 @@ namespace MR_SFML
 		SPLASH_SCREEN = 0,
 		MAIN_MENU,
 		GAME,
-		GAME_OVER
+		GAME_OVER,
+		PAUSE_MENU
 	};
 }

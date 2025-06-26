@@ -20,7 +20,7 @@ int main()
 	int windowY = sf::VideoMode::getDesktopMode().size.y * 0.80f;
 
 	// Create game context
-	GameContext LeGameContext("Snaykee", windowX, windowY);
+	GameContext LeGameContext("SNAYKEE", windowX, windowY);
 	LeGameContext.window->setFramerateLimit(60.0f);
 
 	LeGameContext.GameStateManager.AddState(std::unique_ptr<GameState_SFML>(new MainMenu_State(LeGameContext)));
@@ -100,26 +100,26 @@ void Handle_FPS(double deltaTime)
 
 
 // TODO: Maybe use object pooling for asteroids. Creacte a vector of 200-300 asteroids and just keep using those, instead of creating and deleting them constantly.
-// TODO: Create Button class for iamge buttons. Buttons that have image.
 
 // TODO: Implement Save/load sytem.
 	// Save player score.
 	// Save player ship.
+	// Load player data during splashscreen or on main menu.
 
 // TODO: Add pregame menu screen.
 	// Menu screen should have play button.
 	// High-score.
-	// Ship selection (3 ships). Use button class. May need to create a new one (that has image instead of text).
+	// Ship selection (4 ships). Use button class. May need to create a new one (that has image instead of text).
+	// Menu background
 
 // TODO: Add space background.
 // TODO: Add asteroid texture(s).
 // TODO: Make obstacles (asteroids) spin.
 // TODO: Add background objects (planets, shiprecks, etc.) that slowly move down giving illusion of player flying by them.
 
-// TODO: Maybe have event for resetting player. Event will be sent from Game and player will listen.
+// TODO: Maybe have callback function for resetting player. Callback function will be called from Game and player will listen.
 // TODO: Create function that determines values based (relative-to) on window or screen) Use this function when setting position and size of objects.
 // TODO: Make asteroid travel faster as time goes by.
-
 
 // DONE: Game over functionality.
 // DONE: Make player energy deplete by 1 every second.

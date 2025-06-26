@@ -30,7 +30,7 @@ namespace MR_SFML
 		/// </summary>
 		/// <param name="name">Name/alias of the texture to retrieve.</param>
 		/// <param name="fileName">Reference to the texture.</param>
-		/// <returns></returns>
+		/// <returns>Reference to the texture.</returns>
 		sf::Texture& GetLoad_Texture(const std::string& name, const std::string& fileName);
 
 		/// <summary>
@@ -53,7 +53,7 @@ namespace MR_SFML
 		/// </summary>
 		/// <param name="name">Name/alias of the font to retrieve.</param>
 		/// <param name="fileName">Reference to the font.</param>
-		/// <returns></returns>
+		/// <returns>Reference to the font.</returns>
 		sf::Font& GetLoad_Font(const std::string& name, const std::string& fileName);
 
 	private:

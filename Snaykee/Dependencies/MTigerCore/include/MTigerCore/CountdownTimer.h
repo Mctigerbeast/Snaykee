@@ -1,5 +1,6 @@
 #pragma once
-#include "Globals.h"
+#include <iostream>
+#include <functional>
 
 namespace MR_Utils
 {
@@ -11,7 +12,7 @@ namespace MR_Utils
 		/// </summary>
 		/// <param name="timerDuration">The duration of the timer (seconds).</param>
 		/// <param name="timerEndFunction">Function to call/execute when the timer is over.</param>
-		CountdownTimer(float timerDuration = 3.0f, VoidFunctionPointer timerEndFunction = nullptr);
+		CountdownTimer(float timerDuration = 3.0f, std::function<void()> timerEndFunction = NULL);
 
 		/// <summary>
 		/// [Destructor] Cleans up the class.
@@ -45,7 +46,7 @@ namespace MR_Utils
 		/// Changes/updates the timer's end function (callback).
 		/// </summary>
 		/// <param name="newFunction">New function to call/execute when the timer is over.</param>
-		void Set_TimerEndFunction(VoidFunctionPointer newFunction);
+		void Set_TimerEndFunction(std::function<void()> newFunction);
 
 		/// <summary>
 		/// </summary>
@@ -78,6 +79,6 @@ namespace MR_Utils
 		float _timerDuration = 3.0f;
 		float _timeRemaining;
 		bool _isCountingDown;
-		VoidFunctionPointer _countdownTimerEndFunction;
+		std::function<void()> _countdownTimerEndFunction;
 	};
 }

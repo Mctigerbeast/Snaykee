@@ -22,7 +22,7 @@ void SplashScreen_State::Initialize()
 	this->_splashScreenLogoBanner.setOutlineColor(sf::Color::Black);
 
 	// Start splashscreen timer
-	this->_splashScreenTimer = CountdownTimer(this->_splashScreenDuration);
+	this->_splashScreenTimer = CountdownTimer(this->_splashScreenDuration, [this]() {this->OnSplashscreenTimerEnd(); });
 	this->_splashScreenTimer.StartCountdown();
 }
 
@@ -39,20 +39,18 @@ void SplashScreen_State::Update(float fDeltaTime)
 {
 	this->HandleInput();
 	this->_splashScreenTimer.UpdateTimer(fDeltaTime);
-
-	if (this->_splashScreenTimer.IsCountingDown() == false && this->_isSplashScreenDone == false)
-	{
-		this->_isSplashScreenDone = true;
-
-		this->_gameContext.CurrentGameState = MAIN_MENU;
-
-		this->_gameContext.GameStateManager.RemoveState();
-		this->_gameContext.GameStateManager.HandleStateChange();
-	}
 }
 
 void SplashScreen_State::Draw(sf::RenderWindow& window)
 {
 	window.clear(sf::Color(255, 116, 88)); // Set splashscreen background color
 	window.draw(this->_splashScreenLogoBanner);
+}
+
+void SplashScreen_State::OnSplashscreenTimerEnd()
+{
+	this->_gameContext.CurrentGameState = MAIN_MENU;
+
+	this->_gameContext.GameStateManager.RemoveState();
+	this->_gameContext.GameStateManager.HandleStateChange();
 }

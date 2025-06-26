@@ -24,7 +24,9 @@ private:
 
 	float _splashScreenDuration = 5.0f;
 	CountdownTimer _splashScreenTimer;
-	bool _isSplashScreenDone = false;
 
 	sf::RectangleShape _splashScreenLogoBanner;
+
+private:
+	void OnSplashscreenTimerEnd();
 };

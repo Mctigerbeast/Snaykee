@@ -125,7 +125,6 @@ private:
 	sf::Texture* _asteroid_3_Texture;
 
 	// UI Visuals
-	// TODO: Maybe move into UI class/manager/handler.
 	sf::Text _scoreText_UI;
 	sf::Font* _scoreTextFont_UI;
 	sf::Text _energyText_UI;

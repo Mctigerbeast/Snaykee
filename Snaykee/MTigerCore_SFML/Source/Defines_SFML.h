@@ -33,6 +33,8 @@ namespace MR_SFML
 		// Game window size (dimensions)
 		const unsigned int WINDOW_WIDTH;
 		const unsigned int WINDOW_HEIGHT;
+		float Get_Window_WidthF() { return static_cast<float>(this->WINDOW_WIDTH); }
+		float Get_Window_HeightF() { return static_cast<float>(this->WINDOW_HEIGHT); }
 
 		// Game's Title
 		const std::string GAME_TITLE;
