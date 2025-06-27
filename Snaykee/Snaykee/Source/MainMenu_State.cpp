@@ -3,8 +3,7 @@
 MainMenu_State::MainMenu_State(GameContext& gameContext)
 	: _gameContext(gameContext), _gameTitleUI(*_menuTextFont), _highScoreUI(*_menuTextFont), _shipSelectUI(*_menuTextFont),
 	_playButton(gameContext.AssetManager), _selectShipButton_1(_gameContext.AssetManager), _selectShipButton_2(_gameContext.AssetManager),
-	_selectShipButton_3(_gameContext.AssetManager), _selectShipButton_4(_gameContext.AssetManager)
-{
+	_selectShipButton_3(_gameContext.AssetManager), _selectShipButton_4(_gameContext.AssetManager) {
 }
 
 MainMenu_State::~MainMenu_State() {}
@@ -59,6 +58,8 @@ void MainMenu_State::Initialize()
 	this->_highScoreUI.setOrigin(this->_highScoreUI.getGlobalBounds().size / 2.0f);
 
 	this->SetupButtons();
+
+	this->NewShipSelected(this->_gameContext.GetPlayerShipID());
 }
 
 void MainMenu_State::HandleInput()
@@ -169,6 +170,7 @@ void MainMenu_State::OnPlayButtonPressed()
 {
 	this->_gameContext.GameStateManager.Get_CurrentActiveState()->PauseState();
 	this->_gameContext.CurrentGameState = GAME;
+	this->_gameContext.GameStateManager.AddState(std::unique_ptr<GameState_SFML>(new Game(this->_gameContext)), false);
 	this->_gameContext.GameStateManager.HandleStateChange();
 }
 
@@ -179,13 +181,15 @@ void MainMenu_State::OnSelectShip4_ButtonPressed() { this->NewShipSelected(4); }
 
 void MainMenu_State::NewShipSelected(int shipID)
 {
+	this->_gameContext.SetPlayerShipID(shipID);
+
 	// Reset all ship button outlines
 	this->_selectShipButton_1.Set_ButtonOulineColor(sf::Color(255, 255, 255, 0));
 	this->_selectShipButton_2.Set_ButtonOulineColor(sf::Color(255, 255, 255, 0));
 	this->_selectShipButton_3.Set_ButtonOulineColor(sf::Color(255, 255, 255, 0));
 	this->_selectShipButton_4.Set_ButtonOulineColor(sf::Color(255, 255, 255, 0));
 
-	// Ouline selected ship
+	// Ouline the selected ship
 	switch (shipID)
 	{
 	case 1:

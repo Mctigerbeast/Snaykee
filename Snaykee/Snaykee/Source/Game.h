@@ -8,7 +8,7 @@
 #include "Border.h"
 #include "StarEnergy.h"
 
-class Game
+class Game : public GameState_SFML
 {
 public:
 	double GAME_STARTING_TIME = 0.0001;
@@ -33,10 +33,13 @@ public:
 	/// </summary>
 	~Game();
 
+	void Initialize();
+	void HandleInput();
+
 	/// <summary>
 	/// To be called every frame.
 	/// </summary>
-	void Tick(float fDeltaTime);
+	void Update(float fDeltaTime = 0.0f);
 
 	/// <summary>
 	/// Perform Draw functionality/logic.
@@ -74,6 +77,12 @@ private:
 	/// Functionality for starting (resetting) the game.
 	/// </summary>
 	void Execute_StartGame();
+
+	/// <summary>
+	/// Determine player's ship texture. Based on the ship ID that is within the Game Context.
+	/// </summary>
+	/// <returns></returns>
+	sf::Texture* DeterminePlayerShipTexture();
 
 	/// <summary>
 	/// Get game window's width, as a float.
@@ -130,4 +139,3 @@ private:
 	sf::Text _energyText_UI;
 	sf::Font* _energyTextFont_UI;
 };
-

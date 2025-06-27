@@ -6,7 +6,18 @@ sf::Vector2f Game::Get_CenterOfScreen()
 }
 
 Game::Game(GameContext& gameContext)
-	: _gameContext(gameContext), _scoreText_UI(*_scoreTextFont_UI), _energyText_UI(*_energyTextFont_UI)
+	: _gameContext(gameContext), _scoreText_UI(*_scoreTextFont_UI), _energyText_UI(*_energyTextFont_UI) {
+}
+
+Game::~Game()
+{
+	delete leftBorder;
+	delete rightBorder;
+	delete topBorder;
+	delete bottomBorder;
+}
+
+void Game::Initialize()
 {
 	// Load and set resources
 	this->_playerTexture_1 = &this->_gameContext.AssetManager.GetLoad_Texture("greenShip", "Resources/spr_spaceship_green.png");
@@ -26,10 +37,11 @@ Game::Game(GameContext& gameContext)
 	this->bottomBorder = new Border({ this->Get_Window_WidthF(), 20.0f }, { Get_CenterOfScreen().x, this->Get_Window_HeightF() - 10.0f }, nullptr, sf::Color::Black);
 
 	// Player
-	this->_player = Player_SpaceShip(this->_playerTexture_2, sf::Vector2u({ 1, 1 }), 0.1f, 500.0f);
-	//this->_player.SetupAnimation(1, 2, 3, 0);
+	this->_player = Player_SpaceShip(this->DeterminePlayerShipTexture(), sf::Vector2u({ 1, 1 }), 0.1f, 500.0f);
 	this->_player.Set_PlayerSize({ 80.0f, 100.0f });
 	this->_player.Set_PlayerPostition({ this->Get_Window_WidthF() / 2.0f,  this->Get_Window_HeightF() / 2.0f });
+
+	this->_player.Start();
 
 	// Other Visuals
 	this->_background = sf::RectangleShape({ 1800.0f /*this->Get_Window_WidthF()*/, this->Get_Window_HeightF() });
@@ -56,16 +68,19 @@ Game::Game(GameContext& gameContext)
 	this->_energyText_UI.setCharacterSize(20.0f);
 }
 
-Game::~Game()
+void Game::HandleInput()
 {
-	delete leftBorder;
-	delete rightBorder;
-	delete topBorder;
-	delete bottomBorder;
+	while (const std::optional event = this->_gameContext.window->pollEvent())
+	{
+		if (event->is<sf::Event::Closed>())
+			this->_gameContext.window->close();
+	}
 }
 
-void Game::Tick(float fDeltaTime)
+void Game::Update(float fDeltaTime)
 {
+	this->HandleInput();
+
 	if (this->_isGameOVer)
 	{
 		// TODO: Testing purposes only!!! Update to be linked to on screen button press (Game over menu).
@@ -252,6 +267,27 @@ void Game::Execute_StartGame()
 	std::vector<StarEnergy>().swap(this->_starEnergies);
 
 	this->_isGameOVer = false;
+}
+
+sf::Texture* Game::DeterminePlayerShipTexture()
+{
+	switch (this->_gameContext.GetPlayerShipID())
+	{
+	case 1:
+		return this->_playerTexture_1;
+		break;
+	case 2:
+		return this->_playerTexture_2;
+		break;
+	case 3:
+		return this->_playerTexture_3;
+		break;
+	case 4:
+		return this->_playerTexture_4;
+		break;
+	default:
+		break;
+	}
 }
 
 float Game::Get_Window_WidthF() { return this->_gameContext.Get_Window_WidthF(); }

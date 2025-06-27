@@ -19,6 +19,11 @@ public:
 	~Player_SpaceShip();
 
 	/// <summary>
+	/// 'Starts' the player ship. To be called after construction.
+	/// </summary>
+	void Start();
+
+	/// <summary>
 	/// Update the player.
 	/// </summary>
 	/// <param name="fDeltaTime"></param>
@@ -77,5 +82,6 @@ private:
 	int _energy = 100;
 	bool _isAlive = true;
 	MR_Utils::CountdownTimer _energyTimer;
-};
 
+	bool _isShipStarted = false;
+};

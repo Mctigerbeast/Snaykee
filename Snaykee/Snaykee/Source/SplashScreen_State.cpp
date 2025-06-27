@@ -1,4 +1,5 @@
 #include "SplashScreen_State.h"
+#include "MainMenu_State.h"
 
 SplashScreen_State::SplashScreen_State(GameContext& gameContext)
 	: _gameContext(gameContext)
@@ -50,7 +51,6 @@ void SplashScreen_State::Draw(sf::RenderWindow& window)
 void SplashScreen_State::OnSplashscreenTimerEnd()
 {
 	this->_gameContext.CurrentGameState = MAIN_MENU;
-
-	this->_gameContext.GameStateManager.RemoveState();
+	this->_gameContext.GameStateManager.AddState(std::unique_ptr<GameState_SFML>(new MainMenu_State(this->_gameContext)), true);
 	this->_gameContext.GameStateManager.HandleStateChange();
 }

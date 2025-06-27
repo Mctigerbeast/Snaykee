@@ -1,6 +1,7 @@
 #pragma once
 #include "Defines_SFML.h"
 #include "Button_SFML.h"
+#include "Game.h"
 
 using namespace MR_SFML;
 

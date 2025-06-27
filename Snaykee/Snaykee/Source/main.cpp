@@ -23,10 +23,7 @@ int main()
 	GameContext LeGameContext("SNAYKEE", windowX, windowY);
 	LeGameContext.window->setFramerateLimit(60.0f);
 
-	LeGameContext.GameStateManager.AddState(std::unique_ptr<GameState_SFML>(new MainMenu_State(LeGameContext)));
-	LeGameContext.GameStateManager.HandleStateChange();
-
-	LeGameContext.GameStateManager.AddState(std::unique_ptr<GameState_SFML>(new SplashScreen_State(LeGameContext)), false);
+	LeGameContext.GameStateManager.AddState(std::unique_ptr<GameState_SFML>(new SplashScreen_State(LeGameContext)));
 	LeGameContext.GameStateManager.HandleStateChange();
 
 	// Create game
@@ -48,24 +45,14 @@ int main()
 		}
 
 		// Update
-		if (LeGameContext.CurrentGameState == GAME)
-			LeGame.Tick(static_cast<float>(LeGame.GAME_DELTA_TIME));
-		else
-		{
-			if (LeGameContext.GameStateManager.Get_CurrentActiveState() != nullptr)
-				LeGameContext.GameStateManager.Get_CurrentActiveState()->Update(static_cast<float>(LeGame.GAME_DELTA_TIME));
-		}
+		if (LeGameContext.GameStateManager.Get_CurrentActiveState() != nullptr)
+			LeGameContext.GameStateManager.Get_CurrentActiveState()->Update(static_cast<float>(LeGame.GAME_DELTA_TIME));
 
 		window->clear(sf::Color::Black);
 
 		// Drawing
-		if (LeGameContext.CurrentGameState == GAME)
-			LeGame.Draw(*window);
-		else
-		{
-			if (LeGameContext.GameStateManager.Get_CurrentActiveState() != nullptr)
-				LeGameContext.GameStateManager.Get_CurrentActiveState()->Draw(*window);
-		}
+		if (LeGameContext.GameStateManager.Get_CurrentActiveState() != nullptr)
+			LeGameContext.GameStateManager.Get_CurrentActiveState()->Draw(*window);
 
 		window->display();
 	}
@@ -106,12 +93,6 @@ void Handle_FPS(double deltaTime)
 	// Save player ship.
 	// Load player data during splashscreen or on main menu.
 
-// TODO: Add pregame menu screen.
-	// Menu screen should have play button.
-	// High-score.
-	// Ship selection (4 ships). Use button class. May need to create a new one (that has image instead of text).
-	// Menu background
-
 // TODO: Add space background.
 // TODO: Add asteroid texture(s).
 // TODO: Make obstacles (asteroids) spin.
@@ -141,3 +122,9 @@ void Handle_FPS(double deltaTime)
 	// Add default button font to resources.
 
 // DONE: Maybe move game window dimensions 'WINDOW_WIDTH' and "WINDOW_HEIGHT' into GameContext struct. Make const/read-only.
+
+// DONE: Add pregame menu screen.
+	// Menu screen should have play button.
+	// High-score.
+	// Ship selection (4 ships). Use button class. May need to create a new one (that has image instead of text).
+	// Menu background

@@ -1,27 +1,29 @@
 #include "Player_SpaceShip.h"
 #include <iostream>
 
-Player_SpaceShip::Player_SpaceShip()
-{
-	this->_energyTimer = MR_Utils::CountdownTimer(1.0f, [this]() {this->Execute_EnergyDepletion(); });
-	this->_energyTimer.StartCountdown();
+Player_SpaceShip::Player_SpaceShip() {
 }
 
 Player_SpaceShip::Player_SpaceShip(sf::Texture* texture, sf::Vector2u imageCount, float switchTime, float speed)
-	: Player_TopDown_SFML(texture, imageCount, switchTime, speed)
-{
-	this->_energyTimer = MR_Utils::CountdownTimer(1.0f, [this]() {this->Execute_EnergyDepletion(); });
-	this->_energyTimer.StartCountdown();
+	: Player_TopDown_SFML(texture, imageCount, switchTime, speed) {
 }
 
 Player_SpaceShip::Player_SpaceShip(sf::Texture* texture, sf::Vector2u imageCount, float switchTime, float speed, sf::Vector2f playerSize, sf::Vector2f playerPos)
-	: Player_TopDown_SFML(texture, imageCount, switchTime, speed, playerSize, playerPos)
-{
-	this->_energyTimer = MR_Utils::CountdownTimer(1.0f, [this]() {this->Execute_EnergyDepletion(); });
-	this->_energyTimer.StartCountdown();
+	: Player_TopDown_SFML(texture, imageCount, switchTime, speed, playerSize, playerPos) {
 }
 
-Player_SpaceShip::~Player_SpaceShip() {}
+Player_SpaceShip::~Player_SpaceShip() {
+}
+
+void Player_SpaceShip::Start()
+{
+	if (!this->_isShipStarted)
+	{
+		this->_isShipStarted = true;
+		this->_energyTimer = MR_Utils::CountdownTimer(1.0f, [this]() {this->Execute_EnergyDepletion(); });
+		this->_energyTimer.StartCountdown();
+	}
+}
 
 void Player_SpaceShip::Update(float fDeltaTime, int row)
 {
@@ -31,16 +33,7 @@ void Player_SpaceShip::Update(float fDeltaTime, int row)
 			Player_TopDown_SFML::Update(fDeltaTime, row);
 
 		this->_energyTimer.UpdateTimer(fDeltaTime);
-		this->Execute_EnergyDepletion();
 	}
-
-	/*if (this->_isAlive)
-	{
-		//if (this->HasEnergy()) // Player ship should not be able to move, if no energy
-		Player_TopDown_SFML::Update(fDeltaTime, row);
-
-		this->_energyTimer.UpdateTimer(fDeltaTime);
-	}*/
 }
 
 void Player_SpaceShip::OnObstacleHit()
@@ -75,14 +68,8 @@ void Player_SpaceShip::CheckEnergyBounds()
 
 void Player_SpaceShip::Execute_EnergyDepletion()
 {
-	if (!this->_energyTimer.IsCountingDown())
-	{
-		this->RemoveEnergy(1);
-		this->_energyTimer.StartCountdown();
-	}
-
-	/*this->RemoveEnergy(1);
-	this->_energyTimer.StartCountdown();*/
+	this->RemoveEnergy(1);
+	this->_energyTimer.StartCountdown();
 }
 
 void Player_SpaceShip::ResetPlayer()
