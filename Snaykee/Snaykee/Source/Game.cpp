@@ -5,8 +5,9 @@ sf::Vector2f Game::Get_CenterOfScreen()
 	return sf::Vector2f{ this->Get_Window_WidthF() / 2.0f, this->Get_Window_HeightF() / 2.0f };
 }
 
-Game::Game(GameContext& gameContext)
-	: _gameContext(gameContext), _scoreText_UI(*_scoreTextFont_UI), _energyText_UI(*_energyTextFont_UI) {
+Game::Game(GameContext& gameContext, unsigned int playerShipID)
+	: _gameContext(gameContext), _playerShipModel(playerShipID), _scoreText_UI(*_scoreTextFont_UI), _energyText_UI(*_energyTextFont_UI) {
+	this->_gameContext.shipID = playerShipID;
 }
 
 Game::~Game()
@@ -37,10 +38,9 @@ void Game::Initialize()
 	this->bottomBorder = new Border({ this->Get_Window_WidthF(), 20.0f }, { Get_CenterOfScreen().x, this->Get_Window_HeightF() - 10.0f }, nullptr, sf::Color::Black);
 
 	// Player
-	this->_player = Player_SpaceShip(this->DeterminePlayerShipTexture(), sf::Vector2u({ 1, 1 }), 0.1f, 500.0f);
+	this->_player = Player_SpaceShip(this->DeterminePlayerShipTexture(this->_playerShipModel), sf::Vector2u({ 1, 1 }), 0.1f, 500.0f);
 	this->_player.Set_PlayerSize({ 80.0f, 100.0f });
 	this->_player.Set_PlayerPostition({ this->Get_Window_WidthF() / 2.0f,  this->Get_Window_HeightF() / 2.0f });
-
 	this->_player.Start();
 
 	// Other Visuals
@@ -75,30 +75,23 @@ void Game::HandleInput()
 		if (event->is<sf::Event::Closed>())
 			this->_gameContext.window->close();
 	}
+
+	// Pausing the game
+	if (sf::Keyboard::isKeyPressed(sf::Keyboard::Key::Escape) && !this->_isGamePaused)
+	{
+		this->_gameContext.CurrentGameState = PAUSE_MENU;
+		this->_gameContext.GameStateManager.AddState(std::unique_ptr<GameState_SFML>(new PauseMenu_State(this->_gameContext)), false);
+	}
 }
 
 void Game::Update(float fDeltaTime)
 {
-	this->HandleInput();
-
-	if (this->_isGameOVer)
-	{
-		// TODO: Testing purposes only!!! Update to be linked to on screen button press (Game over menu).
-		if (sf::Keyboard::isKeyPressed(sf::Keyboard::Key::P))
-			this->Execute_StartGame();
-
+	if (this->_isGamePaused)
 		return;
-	}
-
-	// TODO: Testing purposes only!!!
-	if (sf::Keyboard::isKeyPressed(sf::Keyboard::Key::Escape))
-	{
-		this->_gameContext.CurrentGameState = PAUSE_MENU;
-		this->_gameContext.GameStateManager.Get_CurrentActiveState()->StartState();
-		this->_gameContext.GameStateManager.HandleStateChange();
-	}
 
 	this->_deltaTime = fDeltaTime;
+
+	this->HandleInput();
 
 	this->_score += this->_deltaTime;
 
@@ -154,6 +147,10 @@ void Game::Draw(sf::RenderWindow& window)
 
 	window.draw(this->_energyText_UI);
 }
+
+void Game::PauseState() { this->_isGamePaused = true; }
+
+void Game::StartState() { this->_isGamePaused = false; }
 
 void Game::GenerateObstacles()
 {
@@ -246,12 +243,14 @@ void Game::CheckStarEnergyCollisions()
 
 void Game::Execute_GameOver()
 {
-	this->_isGameOVer = true;
+	this->_isGameOver = true;
 	std::cout << "GAME OVER!!! [Score: " << this->_score << "]\n";
 
 	// TODO: Save player's score
 
 	// TODO: Show game over screen
+	this->_gameContext.CurrentGameState = GAME_OVER;
+	this->_gameContext.GameStateManager.AddState(std::unique_ptr<GameState_SFML>(new GameOver_State(this->_gameContext, this->_score)), true);
 }
 
 void Game::Execute_StartGame()
@@ -266,12 +265,14 @@ void Game::Execute_StartGame()
 	// Clean and reset star energies vector
 	std::vector<StarEnergy>().swap(this->_starEnergies);
 
-	this->_isGameOVer = false;
+	this->_isGameOver = false;
 }
 
-sf::Texture* Game::DeterminePlayerShipTexture()
+sf::Texture* Game::DeterminePlayerShipTexture(unsigned int shipID)
 {
-	switch (this->_gameContext.GetPlayerShipID())
+	shipID = MR_Math::Clamp_Int(1, 4, shipID);
+
+	switch (shipID)
 	{
 	case 1:
 		return this->_playerTexture_1;

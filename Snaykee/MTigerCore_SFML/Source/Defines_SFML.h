@@ -39,18 +39,7 @@ namespace MR_SFML
 		// Game's Title
 		const std::string GAME_TITLE;
 
-		// Player ship
-		void SetPlayerShipID(unsigned int newPlayerShipId)
-		{
-			this->_playerShipId = newPlayerShipId;
-
-			if (newPlayerShipId > 4)
-				this->_playerShipId = 4;
-			else if (newPlayerShipId < 1)
-				this->_playerShipId = 1;
-		}
-		unsigned int GetPlayerShipID() { return this->_playerShipId; }
-	private:
-		unsigned int _playerShipId = 1;
+		// Ship Id
+		unsigned int shipID;
 	};
 }

@@ -3,10 +3,13 @@
 #include "MainMenu_State.h"
 
 #pragma region Forward Declarations (Time/Clock)
-void Handle_FPS(double deltaTime);
-void Handle_GameClock(Game& game);
-#pragma endregion
+double GAME_STARTING_TIME = 0.0001;
+sf::Clock GAME_CLOCK;
+double GAME_DELTA_TIME;
 
+void Handle_FPS(double deltaTime);
+void Handle_GameClock();
+#pragma endregion
 
 int main()
 {
@@ -21,21 +24,18 @@ int main()
 
 	// Create game context
 	GameContext LeGameContext("SNAYKEE", windowX, windowY);
-	LeGameContext.window->setFramerateLimit(60.0f);
+	LeGameContext.window->setFramerateLimit(120.0f); // TODO: Maybe update the way that frame limit is being set.
 
+	// Add the first game state
 	LeGameContext.GameStateManager.AddState(std::unique_ptr<GameState_SFML>(new SplashScreen_State(LeGameContext)));
-	LeGameContext.GameStateManager.HandleStateChange();
-
-	// Create game
-	Game LeGame(LeGameContext);
 
 	sf::RenderWindow* window = LeGameContext.window;
 	while (window->isOpen())
 	{
 		// Handle FPS
-		Handle_GameClock(LeGame);
-		Handle_FPS(LeGame.GAME_DELTA_TIME);
-		std::string fps = std::to_string(static_cast<int>(1 / LeGame.GAME_DELTA_TIME));
+		Handle_GameClock();
+		Handle_FPS(GAME_DELTA_TIME);
+		std::string fps = std::to_string(static_cast<int>(1 / GAME_DELTA_TIME));
 		window->setTitle(LeGameContext.GAME_TITLE + "     FPS: " + fps);
 
 		while (const std::optional event = window->pollEvent())
@@ -44,9 +44,11 @@ int main()
 				window->close();
 		}
 
+		LeGameContext.GameStateManager.HandleStateChange();
+
 		// Update
 		if (LeGameContext.GameStateManager.Get_CurrentActiveState() != nullptr)
-			LeGameContext.GameStateManager.Get_CurrentActiveState()->Update(static_cast<float>(LeGame.GAME_DELTA_TIME));
+			LeGameContext.GameStateManager.Get_CurrentActiveState()->Update(static_cast<float>(GAME_DELTA_TIME));
 
 		window->clear(sf::Color::Black);
 
@@ -65,11 +67,11 @@ int main()
 /// <summary>
 /// Perform game clock/time calculations.
 /// </summary>
-void Handle_GameClock(Game& game)
+void Handle_GameClock()
 {
-	double ending = game.GAME_CLOCK.getElapsedTime().asSeconds();
-	game.GAME_DELTA_TIME = ending - game.GAME_STARTING_TIME;
-	game.GAME_STARTING_TIME = ending;
+	double ending = GAME_CLOCK.getElapsedTime().asSeconds();
+	GAME_DELTA_TIME = ending - GAME_STARTING_TIME;
+	GAME_STARTING_TIME = ending;
 }
 
 /// <summary>
@@ -87,6 +89,7 @@ void Handle_FPS(double deltaTime)
 
 
 // TODO: Maybe use object pooling for asteroids. Creacte a vector of 200-300 asteroids and just keep using those, instead of creating and deleting them constantly.
+// TODO: Add mission debrief (story) to main menu screen towards the bottom.
 
 // TODO: Implement Save/load sytem.
 	// Save player score.
@@ -128,3 +131,6 @@ void Handle_FPS(double deltaTime)
 	// High-score.
 	// Ship selection (4 ships). Use button class. May need to create a new one (that has image instead of text).
 	// Menu background
+
+// DONE: Create 'Pause Menu' State.
+// DONE: Create 'Game Over' State.

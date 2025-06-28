@@ -59,7 +59,7 @@ void MainMenu_State::Initialize()
 
 	this->SetupButtons();
 
-	this->NewShipSelected(this->_gameContext.GetPlayerShipID());
+	this->NewShipSelected(this->_selectedShipID);
 }
 
 void MainMenu_State::HandleInput()
@@ -93,16 +93,6 @@ void MainMenu_State::Draw(sf::RenderWindow& window)
 	this->_selectShipButton_3.Draw(window);
 	this->_selectShipButton_4.Draw(window);
 	window.draw(this->_highScoreUI);
-}
-
-void MainMenu_State::PauseState()
-{
-
-}
-
-void MainMenu_State::StartState()
-{
-
 }
 
 void MainMenu_State::SetupButtons()
@@ -170,8 +160,7 @@ void MainMenu_State::OnPlayButtonPressed()
 {
 	this->_gameContext.GameStateManager.Get_CurrentActiveState()->PauseState();
 	this->_gameContext.CurrentGameState = GAME;
-	this->_gameContext.GameStateManager.AddState(std::unique_ptr<GameState_SFML>(new Game(this->_gameContext)), false);
-	this->_gameContext.GameStateManager.HandleStateChange();
+	this->_gameContext.GameStateManager.AddState(std::unique_ptr<GameState_SFML>(new Game(this->_gameContext, this->_selectedShipID)), true);
 }
 
 void MainMenu_State::OnSelectShip1_ButtonPressed() { this->NewShipSelected(1); }
@@ -179,9 +168,12 @@ void MainMenu_State::OnSelectShip2_ButtonPressed() { this->NewShipSelected(2); }
 void MainMenu_State::OnSelectShip3_ButtonPressed() { this->NewShipSelected(3); }
 void MainMenu_State::OnSelectShip4_ButtonPressed() { this->NewShipSelected(4); }
 
-void MainMenu_State::NewShipSelected(int shipID)
+void MainMenu_State::NewShipSelected(unsigned int shipID)
 {
-	this->_gameContext.SetPlayerShipID(shipID);
+	// Adjust ship ID if needed (too low/high).
+	if (shipID > 4) { shipID = 4; }
+	else if (shipID < 1) { shipID = 1; }
+	this->_selectedShipID = shipID;
 
 	// Reset all ship button outlines
 	this->_selectShipButton_1.Set_ButtonOulineColor(sf::Color(255, 255, 255, 0));
@@ -190,7 +182,7 @@ void MainMenu_State::NewShipSelected(int shipID)
 	this->_selectShipButton_4.Set_ButtonOulineColor(sf::Color(255, 255, 255, 0));
 
 	// Ouline the selected ship
-	switch (shipID)
+	switch (this->_selectedShipID)
 	{
 	case 1:
 		this->_selectShipButton_1.Set_ButtonOulineColor(sf::Color::Yellow);

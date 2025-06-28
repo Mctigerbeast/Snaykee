@@ -52,5 +52,4 @@ void SplashScreen_State::OnSplashscreenTimerEnd()
 {
 	this->_gameContext.CurrentGameState = MAIN_MENU;
 	this->_gameContext.GameStateManager.AddState(std::unique_ptr<GameState_SFML>(new MainMenu_State(this->_gameContext)), true);
-	this->_gameContext.GameStateManager.HandleStateChange();
 }

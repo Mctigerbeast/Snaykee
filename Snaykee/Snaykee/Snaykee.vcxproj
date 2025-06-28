@@ -161,9 +161,11 @@
   <ItemGroup>
     <ClCompile Include="Source\Border.cpp" />
     <ClCompile Include="Source\Game.cpp" />
+    <ClCompile Include="Source\GameOver_State.cpp" />
     <ClCompile Include="Source\main.cpp" />
     <ClCompile Include="Source\MainMenu_State.cpp" />
     <ClCompile Include="Source\Obstacle.cpp" />
+    <ClCompile Include="Source\PauseMenu_State.cpp" />
     <ClCompile Include="Source\Player_SpaceShip.cpp" />
     <ClCompile Include="Source\StarEnergy.cpp" />
     <ClCompile Include="Source\SplashScreen_State.cpp" />
@@ -171,8 +173,10 @@
   <ItemGroup>
     <ClInclude Include="Source\Border.h" />
     <ClInclude Include="Source\Game.h" />
+    <ClInclude Include="Source\GameOver_State.h" />
     <ClInclude Include="Source\MainMenu_State.h" />
     <ClInclude Include="Source\Obstacle.h" />
+    <ClInclude Include="Source\PauseMenu_State.h" />
     <ClInclude Include="Source\Player_SpaceShip.h" />
     <ClInclude Include="Source\StarEnergy.h" />
     <ClInclude Include="Source\SplashScreen_State.h" />
