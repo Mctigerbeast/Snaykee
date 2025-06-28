@@ -1,5 +1,4 @@
 #include "SplashScreen_State.h"
-#include "MainMenu_State.h"
 
 SplashScreen_State::SplashScreen_State(GameContext& gameContext)
 	: _gameContext(gameContext)

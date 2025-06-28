@@ -45,9 +45,6 @@
     <ClInclude Include="Source\GameStateManager_SFML.h">
       <Filter>Header Files</Filter>
     </ClInclude>
-    <ClInclude Include="Source\Defines_SFML.h">
-      <Filter>Header Files</Filter>
-    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="Source\Animation2D_SFML.cpp">

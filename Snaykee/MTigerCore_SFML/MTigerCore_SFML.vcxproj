@@ -151,7 +151,6 @@
     </Link>
   </ItemDefinitionGroup>
   <ItemGroup>
-    <ClInclude Include="Source\Defines_SFML.h" />
     <ClInclude Include="Source\GameStateManager_SFML.h" />
     <ClInclude Include="Source\AssetManager_SFML.h" />
     <ClInclude Include="Source\Animation2D_SFML.h" />

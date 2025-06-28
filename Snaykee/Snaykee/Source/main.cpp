@@ -1,6 +1,4 @@
-#include "Game.h"
 #include "SplashScreen_State.h"
-#include "MainMenu_State.h"
 
 #pragma region Forward Declarations (Time/Clock)
 double GAME_STARTING_TIME = 0.0001;
@@ -24,6 +22,7 @@ int main()
 
 	// Create game context
 	GameContext LeGameContext("SNAYKEE", windowX, windowY);
+	LeGameContext.SaveSystem.LoadPlayerData();
 	LeGameContext.window->setFramerateLimit(120.0f); // TODO: Maybe update the way that frame limit is being set.
 
 	// Add the first game state
@@ -89,12 +88,7 @@ void Handle_FPS(double deltaTime)
 
 
 // TODO: Maybe use object pooling for asteroids. Creacte a vector of 200-300 asteroids and just keep using those, instead of creating and deleting them constantly.
-// TODO: Add mission debrief (story) to main menu screen towards the bottom.
-
-// TODO: Implement Save/load sytem.
-	// Save player score.
-	// Save player ship.
-	// Load player data during splashscreen or on main menu.
+// TODO: Maybe add a HELD state to the button class for when button is pressed and held down on.
 
 // TODO: Add space background.
 // TODO: Add asteroid texture(s).
@@ -104,6 +98,11 @@ void Handle_FPS(double deltaTime)
 // TODO: Maybe have callback function for resetting player. Callback function will be called from Game and player will listen.
 // TODO: Create function that determines values based (relative-to) on window or screen) Use this function when setting position and size of objects.
 // TODO: Make asteroid travel faster as time goes by.
+
+// TODO: Add game audio
+	// Ship flying, ship hitting obstacles, ship out of energy, 
+	// Ship collect star energy, ship low on energy (energy < 20 or 30).
+	// Main menu music, gameplay music, button clicked sound, game over sound.
 
 // DONE: Game over functionality.
 // DONE: Make player energy deplete by 1 every second.
@@ -134,3 +133,9 @@ void Handle_FPS(double deltaTime)
 
 // DONE: Create 'Pause Menu' State.
 // DONE: Create 'Game Over' State.
+// DONE: Add mission debrief (story) to main menu screen towards the bottom.
+
+// DONE: Implement Save/load sytem.
+	// Save player score.
+	// Save player ship.
+	// Load player data during splashscreen or on main menu.

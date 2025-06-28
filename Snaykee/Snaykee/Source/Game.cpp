@@ -5,9 +5,8 @@ sf::Vector2f Game::Get_CenterOfScreen()
 	return sf::Vector2f{ this->Get_Window_WidthF() / 2.0f, this->Get_Window_HeightF() / 2.0f };
 }
 
-Game::Game(GameContext& gameContext, unsigned int playerShipID)
-	: _gameContext(gameContext), _playerShipModel(playerShipID), _scoreText_UI(*_scoreTextFont_UI), _energyText_UI(*_energyTextFont_UI) {
-	this->_gameContext.shipID = playerShipID;
+Game::Game(GameContext& gameContext)
+	: _gameContext(gameContext), _scoreText_UI(*_scoreTextFont_UI), _energyText_UI(*_energyTextFont_UI) {
 }
 
 Game::~Game()
@@ -38,7 +37,7 @@ void Game::Initialize()
 	this->bottomBorder = new Border({ this->Get_Window_WidthF(), 20.0f }, { Get_CenterOfScreen().x, this->Get_Window_HeightF() - 10.0f }, nullptr, sf::Color::Black);
 
 	// Player
-	this->_player = Player_SpaceShip(this->DeterminePlayerShipTexture(this->_playerShipModel), sf::Vector2u({ 1, 1 }), 0.1f, 500.0f);
+	this->_player = Player_SpaceShip(this->DeterminePlayerShipTexture(), sf::Vector2u({ 1, 1 }), 0.1f, 500.0f);
 	this->_player.Set_PlayerSize({ 80.0f, 100.0f });
 	this->_player.Set_PlayerPostition({ this->Get_Window_WidthF() / 2.0f,  this->Get_Window_HeightF() / 2.0f });
 	this->_player.Start();
@@ -244,11 +243,12 @@ void Game::CheckStarEnergyCollisions()
 void Game::Execute_GameOver()
 {
 	this->_isGameOver = true;
-	std::cout << "GAME OVER!!! [Score: " << this->_score << "]\n";
 
-	// TODO: Save player's score
+	// Save player's high score
+	if (this->_score > this->_gameContext.SaveSystem.Get_PlayerData().HighScore)
+		this->_gameContext.SaveSystem.SavePlayer_HighScore(this->_score);
 
-	// TODO: Show game over screen
+	// Show game over screen
 	this->_gameContext.CurrentGameState = GAME_OVER;
 	this->_gameContext.GameStateManager.AddState(std::unique_ptr<GameState_SFML>(new GameOver_State(this->_gameContext, this->_score)), true);
 }
@@ -268,11 +268,9 @@ void Game::Execute_StartGame()
 	this->_isGameOver = false;
 }
 
-sf::Texture* Game::DeterminePlayerShipTexture(unsigned int shipID)
+sf::Texture* Game::DeterminePlayerShipTexture()
 {
-	shipID = MR_Math::Clamp_Int(1, 4, shipID);
-
-	switch (shipID)
+	switch (this->_gameContext.SaveSystem.Get_PlayerData().SelectedShip)
 	{
 	case 1:
 		return this->_playerTexture_1;

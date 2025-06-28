@@ -46,11 +46,14 @@ void GameOver_State::Initialize()
 	this->_playerScoreUI.setOrigin(this->_playerScoreUI.getGlobalBounds().size / 2.0f);
 
 	// Highscore text
+	this->_gameContext.SaveSystem.LoadPlayerData(); // Load player data
+	float playerHighScore = this->_gameContext.SaveSystem.Get_PlayerData().HighScore;
+
 	this->_highscoreUI = sf::Text(this->_gameContext.AssetManager.Get_Font("mainFont"));
 	this->_highscoreUI.setPosition({ midWindowPosX, window_Height * 0.45f });
 	this->_highscoreUI.setCharacterSize(50.0f);
 	this->_highscoreUI.setLetterSpacing(2.0f);
-	this->_highscoreUI.setString("HIGHSCORE: _____");
+	this->_highscoreUI.setString("HIGHSCORE: " + std::to_string(playerHighScore));
 	this->_highscoreUI.setFillColor(sf::Color::Black);
 	this->_highscoreUI.setOutlineThickness(2.0f);
 	this->_highscoreUI.setOutlineColor(sf::Color::White);
@@ -61,7 +64,7 @@ void GameOver_State::Initialize()
 	// Resume Button
 	this->_restartButton.Set_ButtonPosition(midWindowPosX, window_Height * 0.60f);
 	this->_restartButton.MutiplyButtonSize(3.0f);
-	this->_restartButton.Set_ButtonText(" RESTART");
+	this->_restartButton.Set_ButtonText("RESTART");
 	this->_restartButton.Set_ButtonTextFont(this->_gameContext.AssetManager.Get_Font("mainFont"));
 
 	this->_restartButton.Set_ButtonColor_Idle(sf::Color(170, 170, 170));
@@ -115,7 +118,7 @@ void GameOver_State::Draw(sf::RenderWindow& window)
 void GameOver_State::onRestart_ButtonPressed()
 {
 	this->_gameContext.CurrentGameState = GAME;
-	this->_gameContext.GameStateManager.AddState(std::unique_ptr<GameState_SFML>(new Game(this->_gameContext, this->_gameContext.shipID)), true);
+	this->_gameContext.GameStateManager.AddState(std::unique_ptr<GameState_SFML>(new Game(this->_gameContext)), true);
 }
 
 void GameOver_State::onMainMenu_ButtonPressed()

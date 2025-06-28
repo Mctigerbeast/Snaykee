@@ -2,7 +2,6 @@
 #pragma once
 #include <iostream>
 #include "MTigerCore/MR_Math.h"
-#include "Defines_SFML.h"
 
 #include "Player_SpaceShip.h"
 #include "Obstacle.h"
@@ -26,8 +25,7 @@ public:
 	/// [Constructor] Setup the class.
 	/// </summary>
 	/// <param name="gameContext"></param>
-	/// <param name="">playerShipID</param>
-	Game(GameContext& gameContext, unsigned int playerShipID);
+	Game(GameContext& gameContext);
 
 	/// <summary>
 	/// [Destructor] Cleans up the class.
@@ -83,10 +81,10 @@ private:
 	void Execute_StartGame();
 
 	/// <summary>
-	/// Determine player's ship texture. Based on the ship ID (passed in).
+	/// Determine player's ship texture. Based on the ship ID (from Save/Load System).
 	/// </summary>
 	/// <returns></returns>
-	sf::Texture* DeterminePlayerShipTexture(unsigned int shipID);
+	sf::Texture* DeterminePlayerShipTexture();
 
 	/// <summary>
 	/// Get game window's width, as a float.
@@ -117,7 +115,6 @@ private:
 	sf::Texture* _playerTexture_2 = nullptr;
 	sf::Texture* _playerTexture_3 = nullptr;
 	sf::Texture* _playerTexture_4 = nullptr;
-	unsigned int _playerShipModel = 1; // 1 = ship (green), 2 = ship (yellow), 3 = ship (white), 4 = ship (dark)
 
 	// Obstacles
 	std::vector<Obstacle> _obstacles;

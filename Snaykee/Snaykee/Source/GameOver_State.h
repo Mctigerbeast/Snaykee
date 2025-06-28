@@ -1,6 +1,4 @@
 #pragma once
-#include "Defines_SFML.h"
-#include "Button_SFML.h"
 #include "Game.h"
 #include "MainMenu_State.h"
 
