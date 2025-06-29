@@ -87,7 +87,6 @@ void Handle_FPS(double deltaTime)
 
 
 
-// TODO: Maybe use object pooling for asteroids. Creacte a vector of 200-300 asteroids and just keep using those, instead of creating and deleting them constantly.
 // TODO: Maybe add a HELD state to the button class for when button is pressed and held down on.
 
 // TODO: Add space background.
@@ -139,3 +138,5 @@ void Handle_FPS(double deltaTime)
 	// Save player score.
 	// Save player ship.
 	// Load player data during splashscreen or on main menu.
+
+// DONE: Maybe use object pooling for asteroids. Creacte a vector of 200-300 asteroids and just keep using those, instead of creating and deleting them constantly.

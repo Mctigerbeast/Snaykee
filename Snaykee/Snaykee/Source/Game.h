@@ -14,6 +14,9 @@
 class Game : public GameState_SFML
 {
 public:
+	const unsigned int OBSTACLES_POOL_SIZE = 200;
+	const unsigned int STAR_ENERGY_POOL_SIZE = 5;
+
 	/// <summary>
 	/// Returns center/middle of screen.
 	/// </summary>
@@ -32,22 +35,22 @@ public:
 	/// </summary>
 	~Game();
 
-	void Initialize();
-	void HandleInput();
+	void Initialize() override;
+	void HandleInput() override;
 
 	/// <summary>
 	/// To be called every frame.
 	/// </summary>
-	void Update(float fDeltaTime = 0.0f);
+	void Update(float fDeltaTime = 0.0f) override;
 
 	/// <summary>
 	/// Perform Draw functionality/logic.
 	/// </summary>
 	/// <param name="window"></param>
-	void Draw(sf::RenderWindow& window);
+	void Draw(sf::RenderWindow& window) override;
 
-	void PauseState();
-	void StartState();
+	void PauseState() override;
+	void StartState() override;
 
 private:
 	/// <summary>
@@ -117,10 +120,11 @@ private:
 	sf::Texture* _playerTexture_4 = nullptr;
 
 	// Obstacles
-	std::vector<Obstacle> _obstacles;
+	std::vector<Obstacle_PooledObject> _obstaclesPool;
+	int _nextValidPoolObject_Index = 0;
 
-	// Star Energy
-	std::vector<StarEnergy> _starEnergies;
+	// Star Energies
+	std::vector<StarEnergy_PooledObject> _starEnergiesPool;
 
 	// Screen (window) borders
 	Border* leftBorder = nullptr;

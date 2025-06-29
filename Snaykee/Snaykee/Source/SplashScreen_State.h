@@ -11,13 +11,13 @@ public:
 	SplashScreen_State(GameContext& gameContext);
 	~SplashScreen_State();
 
-	void Initialize();
-	void HandleInput();
-	void Update(float fDeltaTime = 0.0f);
-	void Draw(sf::RenderWindow& window);
+	void Initialize() override;
+	void HandleInput() override;
+	void Update(float fDeltaTime = 0.0f) override;
+	void Draw(sf::RenderWindow& window) override;
 
-	void PauseState() {}
-	void StartState() {}
+	void PauseState() override {}
+	void StartState() override {}
 
 private:
 	GameContext& _gameContext;

@@ -11,7 +11,21 @@ public:
 	void Update(float fDeltaTime, int row = 0) override;
 	void Set_MovementSpeed(float newSpeed);
 
+	/// <summary>
+	/// Reset object's properties.
+	/// </summary>
+	/// <param name="size"></param>
+	/// <param name="position"></param>
+	/// <param name="moveSpeed"></param>
+	/// <param name="texture"></param>
+	void Reset(sf::Vector2f size, sf::Vector2f position, float moveSpeed, sf::Texture* texture);
+
 private:
 	float _movementSpeed = 0.0f;
 };
 
+struct Obstacle_PooledObject
+{
+	bool IsInUse = false;
+	Obstacle ObstacleObj;
+};

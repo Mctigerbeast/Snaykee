@@ -44,8 +44,24 @@ public:
 	/// <returns>The star's energy power value/ammount.</returns>
 	unsigned int Get_EnergyPower();
 
+	/// <summary>
+	/// Reset object's properties.
+	/// </summary>
+	void Reset(sf::Vector2f position, sf::Texture* texture = nullptr, sf::Color color = sf::Color::White);
+
 private:
 	sf::RectangleShape _body;
 	unsigned int _energyPower;
+
+private:
+	/// <summary>
+	/// Functionality for star object's enery power initialization.
+	/// </summary>
+	void DetermineEnergyPower();
 };
 
+struct StarEnergy_PooledObject
+{
+	bool IsInUse = false;
+	StarEnergy StarEnergyObj;
+};

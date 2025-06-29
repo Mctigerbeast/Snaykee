@@ -19,6 +19,21 @@ Game::~Game()
 
 void Game::Initialize()
 {
+	// Setup obstacles container (vector) (pooled)
+	for (int i = 0; i < OBSTACLES_POOL_SIZE; ++i)
+	{
+		Obstacle_PooledObject obstacleObj = { false, Obstacle({1.0f, 1.0f}, {0.0f, 0.0f}, 0.0f) };
+		this->_obstaclesPool.push_back(obstacleObj);
+		//this->_obstaclesPool.emplace_back(Obstacle({ 1.0f, 1.0f }, { 0.0f, 0.0f }, 0.0f));
+	}
+
+	// Setup star energies container (vector) (pooled)
+	for (int i = 0; i < STAR_ENERGY_POOL_SIZE; ++i)
+	{
+		StarEnergy_PooledObject starEnergyObj = { false, StarEnergy({1.0f, 1.0f}) };
+		this->_starEnergiesPool.push_back(starEnergyObj);
+	}
+
 	// Load and set resources
 	this->_playerTexture_1 = &this->_gameContext.AssetManager.GetLoad_Texture("greenShip", "Resources/spr_spaceship_green.png");
 	this->_playerTexture_2 = &this->_gameContext.AssetManager.GetLoad_Texture("yellowShip", "Resources/spr_spaceship_yellow.png");
@@ -103,8 +118,11 @@ void Game::Update(float fDeltaTime)
 	// Updating
 	this->_player.Update(fDeltaTime);
 
-	for (Obstacle& ob : this->_obstacles) // Update obstacles
-		ob.Update(fDeltaTime);
+	for (Obstacle_PooledObject& ob : this->_obstaclesPool) // Update obstacles
+	{
+		if (ob.IsInUse)
+			ob.ObstacleObj.Update(fDeltaTime);
+	}
 
 	this->_scoreText_UI.setString("SCORE: " + std::to_string(this->_score));
 	this->_energyText_UI.setString("ENERGY: " + std::to_string(this->_player.Get_Energy()));
@@ -119,12 +137,18 @@ void Game::Draw(sf::RenderWindow& window)
 	this->_player.Draw(window);
 
 	// Draw obstacles
-	for (Obstacle& ob : this->_obstacles)
-		ob.Draw(window);
+	for (Obstacle_PooledObject& ob : this->_obstaclesPool)
+	{
+		if (ob.IsInUse)
+			ob.ObstacleObj.Draw(window);
+	}
 
-	// Draw star energys
-	for (StarEnergy& se : this->_starEnergies)
-		se.Draw(window);
+	// Draw star energies
+	for (StarEnergy_PooledObject& se : this->_starEnergiesPool)
+	{
+		if (se.IsInUse)
+			se.StarEnergyObj.Draw(window);
+	}
 
 	// Draw Screen (window) borders
 	leftBorder->Draw(window);
@@ -169,8 +193,22 @@ void Game::GenerateObstacles()
 	float randPosY = MR_Math::RandomFloat(percentage);
 	float randSpeed = MR_Math::RandomFloat(1.0f);
 
-	Obstacle ob({ randSize, randSize }, { randPosX, randPosY }, randSpeed, this->_asteroid_1_Texture);
-	this->_obstacles.push_back(ob);
+	// Choose a valid object form the obstacles pool
+	for (int i = this->_nextValidPoolObject_Index; i < OBSTACLES_POOL_SIZE; ++i)
+	{
+		if (this->_obstaclesPool[i].IsInUse == false)
+		{
+			this->_obstaclesPool[i].IsInUse = true;
+			this->_obstaclesPool[i].ObstacleObj.Reset({ randSize, randSize }, { randPosX, randPosY }, randSpeed, this->_asteroid_1_Texture);
+			this->_nextValidPoolObject_Index = i + 1;
+
+			// Reset next valid pool object index/pointer, if end of the pool container (vector) is reached.
+			if (this->_nextValidPoolObject_Index >= OBSTACLES_POOL_SIZE)
+				this->_nextValidPoolObject_Index = 0;
+
+			break;
+		}
+	}
 }
 
 void Game::CheckObstacleCollisions()
@@ -178,21 +216,26 @@ void Game::CheckObstacleCollisions()
 	Collider_SFML playerCollider = this->_player.Get_Gollider();
 	Collider_SFML bottomBorderCollider = this->bottomBorder->Get_Collider();
 
-	for (int i = 0; i < this->_obstacles.size(); ++i)
+	for (Obstacle_PooledObject& ob : this->_obstaclesPool)
 	{
-		// Collision(s) with player
-		if (this->_obstacles[i].Get_Collider().CheckCollision(playerCollider, 1.0f))
+		if (ob.IsInUse)
 		{
-			this->_player.OnObstacleHit();
-			this->_obstacles.erase(this->_obstacles.begin() + i); // TODO: May cause some issues
+			// Collision(s) with player
+			if (ob.ObstacleObj.Get_Collider().CheckCollision(playerCollider, 1.0f))
+			{
+				this->_player.OnObstacleHit();
+				ob.IsInUse = false;
 
-			if (!this->_player.IsAlive())
-				this->Execute_GameOver();
+				if (!this->_player.IsAlive())
+					this->Execute_GameOver();
+			}
+
+			// Collision(s) with border(s)
+			if (ob.ObstacleObj.Get_Collider().CheckCollision(bottomBorderCollider, 0.0f))
+			{
+				ob.IsInUse = false;
+			}
 		}
-
-		// Collision(s) with border(s)
-		if (this->_obstacles[i].Get_Collider().CheckCollision(bottomBorderCollider, 0.0f))
-			this->_obstacles.erase(this->_obstacles.begin() + i); // TODO: May cause some issues
 	}
 
 	// Screen (window) borders
@@ -204,8 +247,15 @@ void Game::CheckObstacleCollisions()
 
 void Game::GenerateStarEnergy()
 {
-	if (this->_starEnergies.size() >= 3)
-		return;
+	int activeStars = 0;
+	for (StarEnergy_PooledObject& se : this->_starEnergiesPool)
+	{
+		if (se.IsInUse)
+			activeStars++;
+
+		if (activeStars >= 3)
+			return;
+	}
 
 	int rn = MR_Math::RandomInt(1000);
 
@@ -220,22 +270,33 @@ void Game::GenerateStarEnergy()
 	float randPosX = MR_Math::RandomFloatRange(percentageX, (this->Get_Window_WidthF() - percentageX));
 	float randPosY = MR_Math::RandomFloatRange(percentageY, (this->Get_Window_HeightF() - percentageY));
 
-	StarEnergy se({ randPosX, randPosY });
-	this->_starEnergies.push_back(se);
+	// Choose a valid object form the star energies pool
+	for (int i = 0; i < STAR_ENERGY_POOL_SIZE; ++i)
+	{
+		if (this->_starEnergiesPool[i].IsInUse == false)
+		{
+			this->_starEnergiesPool[i].IsInUse = true;
+			this->_starEnergiesPool[i].StarEnergyObj.Reset({ randPosX, randPosY });
+			break;
+		}
+	}
 }
 
 void Game::CheckStarEnergyCollisions()
 {
 	Collider_SFML playerCollider = this->_player.Get_Gollider();
 
-	// Collision(s) with player
-	for (int i = 0; i < this->_starEnergies.size(); ++i)
+	for (StarEnergy_PooledObject& se : this->_starEnergiesPool)
 	{
-		if (this->_starEnergies[i].Get_Collider().CheckCollision(playerCollider, 1.0f))
+		if (se.IsInUse)
 		{
-			this->_score += 5;
-			this->_player.AddEnergy(this->_starEnergies[i].Get_EnergyPower());
-			this->_starEnergies.erase(this->_starEnergies.begin() + i);
+			// Collision(s) with player
+			if (se.StarEnergyObj.Get_Collider().CheckCollision(playerCollider, 1.0f))
+			{
+				this->_score += 5;
+				this->_player.AddEnergy(se.StarEnergyObj.Get_EnergyPower());
+				se.IsInUse = false;
+			}
 		}
 	}
 }
@@ -259,11 +320,13 @@ void Game::Execute_StartGame()
 	this->_player.Set_PlayerPostition({ this->Get_Window_WidthF() / 2.0f,  this->Get_Window_HeightF() / 2.0f }); // Reset player's position
 	this->_player.ResetPlayer(); // Reset player's health, etc.
 
-	// Clean and reset obstacles vector
-	std::vector<Obstacle>().swap(this->_obstacles);
+	// Reset obstacles pool objects
+	for (Obstacle_PooledObject& ob : this->_obstaclesPool)
+		ob.IsInUse = false;
 
-	// Clean and reset star energies vector
-	std::vector<StarEnergy>().swap(this->_starEnergies);
+	// Reset star energies pool objects
+	for (StarEnergy_PooledObject& se : this->_starEnergiesPool)
+		se.IsInUse = false;
 
 	this->_isGameOver = false;
 }
