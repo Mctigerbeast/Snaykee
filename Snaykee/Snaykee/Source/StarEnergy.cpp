@@ -1,14 +1,15 @@
 #include "StarEnergy.h"
 #include "MTigerCore/MR_Math.h"
 
-StarEnergy::StarEnergy(sf::Vector2f position, sf::Texture* texture, sf::Color color)
+StarEnergy::StarEnergy(sf::Vector2f position, sf::Texture** texture1, sf::Texture** texture2, sf::Texture** texture3, sf::Color color)
+	: _starEnergy_1_Texture(texture1), _starEnergy_2_Texture(texture2), _starEnergy_3_Texture(texture3)
 {
-	this->_body.setSize({ 20.0f, 20.0f });
+	this->_body.setSize({ 35.0f, 35.0f });
 	this->_body.setPosition(position);
 	this->_body.setOrigin(this->_body.getSize() / 2.0f);
 	this->_body.setFillColor(color);
 
-	// Determine enery power
+	// Determine energy power
 	this->DetermineEnergyPower();
 }
 
@@ -22,9 +23,9 @@ void StarEnergy::Update(float fDeltaTime, int row) {}
 
 unsigned int StarEnergy::Get_EnergyPower() { return this->_energyPower; }
 
-void StarEnergy::Reset(sf::Vector2f position, sf::Texture* texture, sf::Color color)
+void StarEnergy::Reset(sf::Vector2f position, sf::Vector2f size, sf::Color color)
 {
-	this->_body.setSize({ 20.0f, 20.0f });
+	this->_body.setSize(size);
 	this->_body.setPosition(position);
 	this->_body.setOrigin(this->_body.getSize() / 2.0f);
 	this->_body.setFillColor(color);
@@ -39,27 +40,18 @@ void StarEnergy::DetermineEnergyPower()
 	switch (choice)
 	{
 	case 1:
-		this->_energyPower = 5;
-		this->_body.setFillColor(sf::Color::Red);
-		this->_body.setOutlineColor(sf::Color::White);
-		this->_body.setOutlineThickness(2.0f);
-		// TODO: Set texture based on energy.
+		this->_energyPower = 3;
+		this->_body.setTexture(*this->_starEnergy_1_Texture);
 		break;
 
 	case 2:
-		this->_energyPower = 10;
-		this->_body.setFillColor(sf::Color::Yellow);
-		this->_body.setOutlineColor(sf::Color::White);
-		this->_body.setOutlineThickness(2.0f);
-		// TODO: Set texture based on energy.
+		this->_energyPower = 6;
+		this->_body.setTexture(*this->_starEnergy_2_Texture);
 		break;
 
 	case 3:
-		this->_energyPower = 15;
-		this->_body.setFillColor(sf::Color::Blue);
-		this->_body.setOutlineColor(sf::Color::White);
-		this->_body.setOutlineThickness(2.0f);
-		// TODO: Set texture based on energy.
+		this->_energyPower = 10;
+		this->_body.setTexture(*this->_starEnergy_3_Texture);
 		break;
 	default:
 		break;

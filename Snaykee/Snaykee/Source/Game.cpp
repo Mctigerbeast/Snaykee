@@ -30,17 +30,26 @@ void Game::Initialize()
 	// Setup star energies container (vector) (pooled)
 	for (int i = 0; i < STAR_ENERGY_POOL_SIZE; ++i)
 	{
-		StarEnergy_PooledObject starEnergyObj = { false, StarEnergy({1.0f, 1.0f}) };
+		StarEnergy_PooledObject starEnergyObj = { false, StarEnergy({1.0f, 1.0f}, &this->_starEnergy_1_Texture, &this->_starEnergy_2_Texture, &this->_starEnergy_3_Texture) };
 		this->_starEnergiesPool.push_back(starEnergyObj);
 	}
 
 	// Load and set resources
+	this->_backgroundTexture = &this->_gameContext.AssetManager.GetLoad_Texture("purpleBackground", "Resources/bg_space_purple.jpg");
+
 	this->_playerTexture_1 = &this->_gameContext.AssetManager.GetLoad_Texture("greenShip", "Resources/spr_spaceship_green.png");
 	this->_playerTexture_2 = &this->_gameContext.AssetManager.GetLoad_Texture("yellowShip", "Resources/spr_spaceship_yellow.png");
 	this->_playerTexture_3 = &this->_gameContext.AssetManager.GetLoad_Texture("whiteShip", "Resources/spr_spaceship_white.png");
 	this->_playerTexture_4 = &this->_gameContext.AssetManager.GetLoad_Texture("darkShip", "Resources/spr_spaceship_dark.png");
-	this->_backgroundTexture = &this->_gameContext.AssetManager.GetLoad_Texture("purpleBackground", "Resources/bg_space_purple.jpg");
-	this->_asteroid_1_Texture = &this->_gameContext.AssetManager.GetLoad_Texture("asteroid_1_Texture", "Resources/Asteroid1.png");
+
+	this->_asteroid_1_Texture = &this->_gameContext.AssetManager.GetLoad_Texture("asteroid_1_Texture", "Resources/spr_asteroid_1.png");
+	this->_asteroid_2_Texture = &this->_gameContext.AssetManager.GetLoad_Texture("asteroid_2_Texture", "Resources/spr_asteroid_2.png");
+	this->_asteroid_3_Texture = &this->_gameContext.AssetManager.GetLoad_Texture("asteroid_3_Texture", "Resources/spr_asteroid_3.png");
+	this->_asteroid_4_Texture = &this->_gameContext.AssetManager.GetLoad_Texture("asteroid_4_Texture", "Resources/spr_asteroid_4.png");
+
+	this->_starEnergy_1_Texture = &this->_gameContext.AssetManager.GetLoad_Texture("starEnergy_1_Texture", "Resources/spr_star_energy_1.png");
+	this->_starEnergy_2_Texture = &this->_gameContext.AssetManager.GetLoad_Texture("starEnergy_2_Texture", "Resources/spr_star_energy_2.png");
+	this->_starEnergy_3_Texture = &this->_gameContext.AssetManager.GetLoad_Texture("starEnergy_3_Texture", "Resources/spr_star_energy_3.png");
 
 	this->_scoreTextFont_UI = &this->_gameContext.AssetManager.GetLoad_Font("mainFont", "Resources/font_playful_time_star.ttf");
 	this->_energyTextFont_UI = &this->_gameContext.AssetManager.Get_Font("mainFont");
@@ -190,7 +199,7 @@ void Game::GenerateObstacles()
 	//float randSize = MR_Math::RandomFloatRange(5.0f, 10.0f);
 	float randSize = MR_Math::RandomFloatRange(20.0f, 50.0f); // TODO: Testing value
 	float randPosX = MR_Math::RandomFloatRange(percentage, (this->Get_Window_WidthF() - percentage));
-	float randPosY = MR_Math::RandomFloat(percentage);
+	float randPosY = MR_Math::RandomFloat(this->Get_Window_HeightF() * 0.05f);
 	float randSpeed = MR_Math::RandomFloat(1.0f);
 
 	// Choose a valid object form the obstacles pool
@@ -199,7 +208,7 @@ void Game::GenerateObstacles()
 		if (this->_obstaclesPool[i].IsInUse == false)
 		{
 			this->_obstaclesPool[i].IsInUse = true;
-			this->_obstaclesPool[i].ObstacleObj.Reset({ randSize, randSize }, { randPosX, randPosY }, randSpeed, this->_asteroid_1_Texture);
+			this->_obstaclesPool[i].ObstacleObj.Reset({ randSize, randSize }, { randPosX, randPosY }, randSpeed, this->DetermineObstacleTexture());
 			this->_nextValidPoolObject_Index = i + 1;
 
 			// Reset next valid pool object index/pointer, if end of the pool container (vector) is reached.
@@ -270,13 +279,17 @@ void Game::GenerateStarEnergy()
 	float randPosX = MR_Math::RandomFloatRange(percentageX, (this->Get_Window_WidthF() - percentageX));
 	float randPosY = MR_Math::RandomFloatRange(percentageY, (this->Get_Window_HeightF() - percentageY));
 
+	// Use percentage (5% of window) for size. Star energy object's size should be relative to window size.
+	float sizeX = this->Get_Window_WidthF() * 0.05f;
+	float sizeY = this->Get_Window_HeightF() * 0.05f;
+
 	// Choose a valid object form the star energies pool
 	for (int i = 0; i < STAR_ENERGY_POOL_SIZE; ++i)
 	{
 		if (this->_starEnergiesPool[i].IsInUse == false)
 		{
 			this->_starEnergiesPool[i].IsInUse = true;
-			this->_starEnergiesPool[i].StarEnergyObj.Reset({ randPosX, randPosY });
+			this->_starEnergiesPool[i].StarEnergyObj.Reset({ randPosX, randPosY }, { sizeX, sizeY });
 			break;
 		}
 	}
@@ -346,6 +359,29 @@ sf::Texture* Game::DeterminePlayerShipTexture()
 		break;
 	case 4:
 		return this->_playerTexture_4;
+		break;
+	default:
+		break;
+	}
+}
+
+sf::Texture* Game::DetermineObstacleTexture()
+{
+	int rn = MR_Math::RandomIntRange(/*1*/2, 4);
+
+	switch (rn)
+	{
+	case 1:
+		return this->_asteroid_1_Texture;
+		break;
+	case 2:
+		return this->_asteroid_2_Texture;
+		break;
+	case 3:
+		return this->_asteroid_3_Texture;
+		break;
+	case 4:
+		return this->_asteroid_4_Texture;
 		break;
 	default:
 		break;

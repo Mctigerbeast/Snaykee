@@ -90,6 +90,12 @@ private:
 	sf::Texture* DeterminePlayerShipTexture();
 
 	/// <summary>
+	/// Determine a random obstacle texture.
+	/// </summary>
+	/// <returns></returns>
+	sf::Texture* DetermineObstacleTexture();
+
+	/// <summary>
 	/// Get game window's width, as a float.
 	/// </summary>
 	/// <returns>Return game window's width.</returns>
@@ -135,9 +141,15 @@ private:
 	// Other Visuals
 	sf::RectangleShape _background;
 	sf::Texture* _backgroundTexture = nullptr;
+
 	sf::Texture* _asteroid_1_Texture = nullptr;
 	sf::Texture* _asteroid_2_Texture = nullptr;
 	sf::Texture* _asteroid_3_Texture = nullptr;
+	sf::Texture* _asteroid_4_Texture = nullptr;
+
+	sf::Texture* _starEnergy_1_Texture = nullptr;
+	sf::Texture* _starEnergy_2_Texture = nullptr;
+	sf::Texture* _starEnergy_3_Texture = nullptr;
 
 	// UI Visuals
 	sf::Text _scoreText_UI;

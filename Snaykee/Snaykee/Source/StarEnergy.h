@@ -12,7 +12,7 @@ public:
 	/// <param name="size"></param>
 	/// <param name="position"></param>
 	/// <param name="texture"></param>
-	StarEnergy(sf::Vector2f position, sf::Texture* texture = nullptr, sf::Color color = sf::Color::White);
+	StarEnergy(sf::Vector2f position, sf::Texture** texture1 = nullptr, sf::Texture** texture2 = nullptr, sf::Texture** texture3 = nullptr, sf::Color color = sf::Color::White);
 
 	/// <summary>
 	/// [Destructor] Cleans up the class.
@@ -47,11 +47,15 @@ public:
 	/// <summary>
 	/// Reset object's properties.
 	/// </summary>
-	void Reset(sf::Vector2f position, sf::Texture* texture = nullptr, sf::Color color = sf::Color::White);
+	void Reset(sf::Vector2f position, sf::Vector2f size, sf::Color color = sf::Color::White);
 
 private:
 	sf::RectangleShape _body;
 	unsigned int _energyPower;
+
+	sf::Texture** _starEnergy_1_Texture = nullptr;
+	sf::Texture** _starEnergy_2_Texture = nullptr;
+	sf::Texture** _starEnergy_3_Texture = nullptr;
 
 private:
 	/// <summary>
