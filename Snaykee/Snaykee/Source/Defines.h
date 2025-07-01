@@ -1,5 +1,6 @@
 #pragma once
 #include "AssetManager_SFML.h"
+#include "AudioManager_SFML.h"
 #include "GameStateManager_SFML.h"
 #include "SaveLoadSystem.h"
 
@@ -18,6 +19,9 @@ struct GameContext
 
 	// Create asset manager
 	AssetManager_SFML AssetManager;
+
+	// Create Audio Manager
+	AudioManager_SFML AudioManager = AudioManager_SFML(this->AssetManager);
 
 	// Create game state manager
 	GameStateManager_SFML GameStateManager;

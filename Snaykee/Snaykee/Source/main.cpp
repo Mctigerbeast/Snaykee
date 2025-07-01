@@ -88,9 +88,9 @@ void Handle_FPS(double deltaTime)
 
 
 // TODO: Maybe add a HELD state to the button class for when button is pressed and held down on.
+// TODO: Create audio manager class for playing audio (sfx and music).
 
 // TODO: Add space background.
-// TODO: Add asteroid texture(s).
 // TODO: Make obstacles (asteroids) spin.
 // TODO: Add background objects (planets, shiprecks, etc.) that slowly move down giving illusion of player flying by them.
 
@@ -140,3 +140,4 @@ void Handle_FPS(double deltaTime)
 	// Load player data during splashscreen or on main menu.
 
 // DONE: Maybe use object pooling for asteroids. Creacte a vector of 200-300 asteroids and just keep using those, instead of creating and deleting them constantly.
+// DONE: Add asteroid texture(s).

@@ -11,16 +11,15 @@ MainMenu_State::~MainMenu_State() {}
 
 void MainMenu_State::Initialize()
 {
-	this->_menuBackgroundTexture = &this->_gameContext.AssetManager.GetLoad_Texture("purpleBackground", "Resources/bg_space_purple.jpg");
-	this->_gameContext.AssetManager.GetLoad_Font("defaultFont", "Resources/font_cera_pro_modern_medium.ttf");
-	this->_gameContext.AssetManager.LoadFont("mainFont", "Resources/font_playful_time_star.ttf");
+	// Load player save data
+	this->_gameContext.SaveSystem.LoadPlayerData();
 
+	this->_menuBackgroundTexture = &this->_gameContext.AssetManager.GetLoad_Texture("purpleBackground", "Resources/bg_space_purple.jpg");
 	this->_menuBackground = sf::RectangleShape({ 1800.0f /*this->Get_Window_WidthF()*/, this->_gameContext.Get_Window_HeightF() });
 	this->_menuBackground.setTexture(this->_menuBackgroundTexture);
 	this->_menuBackground.setFillColor(sf::Color{ 255,255,255,50 });
 
-	// Load player save data
-	this->_gameContext.SaveSystem.LoadPlayerData();
+	this->_gameContext.AssetManager.GetLoad_Audio("buttonClick", "Resources/sfx_button_click.wav");
 
 	this->SetupText();
 	this->SetupButtons();
@@ -70,7 +69,7 @@ void MainMenu_State::SetupText()
 	float window_Height = this->_gameContext.Get_Window_HeightF();
 
 	// Game title text
-	this->_gameTitleUI = sf::Text(this->_gameContext.AssetManager.Get_Font("mainFont"));
+	this->_gameTitleUI = sf::Text(this->_gameContext.AssetManager.GetLoad_Font("mainFont", "Resources/font_playful_time_star.ttf"));
 	this->_gameTitleUI.setPosition({ midWindowPosX, window_Height * 0.15f });
 	this->_gameTitleUI.setCharacterSize(200.0f);
 	this->_gameTitleUI.setLetterSpacing(2.0f);
@@ -81,7 +80,7 @@ void MainMenu_State::SetupText()
 	this->_gameTitleUI.setOrigin(this->_gameTitleUI.getGlobalBounds().size / 2.0f);
 
 	// Ship select text
-	this->_shipSelectUI = sf::Text(this->_gameContext.AssetManager.Get_Font("mainFont"));
+	this->_shipSelectUI = sf::Text(this->_gameContext.AssetManager.GetLoad_Font("mainFont", "Resources/font_playful_time_star.ttf"));
 	this->_shipSelectUI.setPosition({ midWindowPosX, window_Height * 0.50f });
 	this->_shipSelectUI.setCharacterSize(50.0f);
 	this->_shipSelectUI.setLetterSpacing(2.0f);
@@ -94,7 +93,7 @@ void MainMenu_State::SetupText()
 
 	// Highscore text
 	float playerHighScore = this->_gameContext.SaveSystem.Get_PlayerData().HighScore;
-	this->_highScoreUI = sf::Text(this->_gameContext.AssetManager.Get_Font("mainFont"));
+	this->_highScoreUI = sf::Text(this->_gameContext.AssetManager.GetLoad_Font("mainFont", "Resources/font_playful_time_star.ttf"));
 	this->_highScoreUI.setPosition({ midWindowPosX, window_Height * 0.75f });
 	this->_highScoreUI.setCharacterSize(50.0f);
 	this->_highScoreUI.setLetterSpacing(2.0f);
@@ -105,7 +104,7 @@ void MainMenu_State::SetupText()
 	this->_highScoreUI.setOrigin(this->_highScoreUI.getGlobalBounds().size / 2.0f);
 
 	// Debrief text
-	this->_debriefUI = sf::Text(this->_gameContext.AssetManager.Get_Font("defaultFont"));
+	this->_debriefUI = sf::Text(this->_gameContext.AssetManager.GetLoad_Font("defaultFont", "Resources/font_cera_pro_modern_medium.ttf"));
 	this->_debriefUI.setPosition({ midWindowPosX, window_Height * 0.90f });
 	this->_debriefUI.setCharacterSize(25.0f);
 	this->_debriefUI.setLetterSpacing(1.0f);
@@ -127,7 +126,7 @@ void MainMenu_State::SetupButtons()
 	this->_playButton.Set_ButtonPosition(midWindowPosX, window_Height * 0.35f);
 	this->_playButton.MutiplyButtonSize(3.0f);
 	this->_playButton.Set_ButtonText("  PLAY  ");
-	this->_playButton.Set_ButtonTextFont(this->_gameContext.AssetManager.Get_Font("mainFont"));
+	this->_playButton.Set_ButtonTextFont(this->_gameContext.AssetManager.GetLoad_Font("mainFont", "Resources/font_playful_time_star.ttf"));
 	this->_playButton.Set_ButtonPressedFunction([this]() {this->OnPlayButtonPressed(); });
 
 	this->_playButton.Set_ButtonColor_Idle(sf::Color(170, 170, 170));
@@ -182,12 +181,29 @@ void MainMenu_State::OnPlayButtonPressed()
 	this->_gameContext.GameStateManager.Get_CurrentActiveState()->PauseState();
 	this->_gameContext.CurrentGameState = GAME;
 	this->_gameContext.GameStateManager.AddState(std::unique_ptr<GameState_SFML>(new Game(this->_gameContext)), true);
+
+	// Play Audio
 }
 
-void MainMenu_State::OnSelectShip1_ButtonPressed() { this->NewShipSelected(1); }
-void MainMenu_State::OnSelectShip2_ButtonPressed() { this->NewShipSelected(2); }
-void MainMenu_State::OnSelectShip3_ButtonPressed() { this->NewShipSelected(3); }
-void MainMenu_State::OnSelectShip4_ButtonPressed() { this->NewShipSelected(4); }
+void MainMenu_State::OnSelectShip1_ButtonPressed()
+{
+	this->NewShipSelected(1);
+
+	// Play Audio
+	this->_gameContext.AudioManager.PlaySound("buttonClick");
+}
+void MainMenu_State::OnSelectShip2_ButtonPressed()
+{
+	this->NewShipSelected(2);
+}
+void MainMenu_State::OnSelectShip3_ButtonPressed()
+{
+	this->NewShipSelected(3);
+}
+void MainMenu_State::OnSelectShip4_ButtonPressed()
+{
+	this->NewShipSelected(4);
+}
 
 void MainMenu_State::NewShipSelected(unsigned int shipID)
 {

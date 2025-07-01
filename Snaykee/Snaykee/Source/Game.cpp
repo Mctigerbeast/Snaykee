@@ -22,7 +22,7 @@ void Game::Initialize()
 	// Setup obstacles container (vector) (pooled)
 	for (int i = 0; i < OBSTACLES_POOL_SIZE; ++i)
 	{
-		Obstacle_PooledObject obstacleObj = { false, Obstacle({1.0f, 1.0f}, {0.0f, 0.0f}, 0.0f) };
+		Obstacle_PooledObject obstacleObj = { false, Obstacle({1.0f, 1.0f}, {0.0f, 0.0f}, 0.0f, nullptr, sf::Color(150, 150, 150)) };
 		this->_obstaclesPool.push_back(obstacleObj);
 		//this->_obstaclesPool.emplace_back(Obstacle({ 1.0f, 1.0f }, { 0.0f, 0.0f }, 0.0f));
 	}
@@ -145,18 +145,18 @@ void Game::Draw(sf::RenderWindow& window)
 	// Draw player
 	this->_player.Draw(window);
 
-	// Draw obstacles
-	for (Obstacle_PooledObject& ob : this->_obstaclesPool)
-	{
-		if (ob.IsInUse)
-			ob.ObstacleObj.Draw(window);
-	}
-
 	// Draw star energies
 	for (StarEnergy_PooledObject& se : this->_starEnergiesPool)
 	{
 		if (se.IsInUse)
 			se.StarEnergyObj.Draw(window);
+	}
+
+	// Draw obstacles
+	for (Obstacle_PooledObject& ob : this->_obstaclesPool)
+	{
+		if (ob.IsInUse)
+			ob.ObstacleObj.Draw(window);
 	}
 
 	// Draw Screen (window) borders
@@ -208,7 +208,7 @@ void Game::GenerateObstacles()
 		if (this->_obstaclesPool[i].IsInUse == false)
 		{
 			this->_obstaclesPool[i].IsInUse = true;
-			this->_obstaclesPool[i].ObstacleObj.Reset({ randSize, randSize }, { randPosX, randPosY }, randSpeed, this->DetermineObstacleTexture());
+			this->_obstaclesPool[i].ObstacleObj.Reset({ randSize, randSize }, { randPosX, randPosY }, randSpeed, this->DetermineObstacleTexture(), sf::Color(150, 150, 150));
 			this->_nextValidPoolObject_Index = i + 1;
 
 			// Reset next valid pool object index/pointer, if end of the pool container (vector) is reached.
@@ -266,7 +266,7 @@ void Game::GenerateStarEnergy()
 			return;
 	}
 
-	int rn = MR_Math::RandomInt(1000);
+	int rn = MR_Math::RandomInt(10000);
 
 	if (rn > 10)
 		return;

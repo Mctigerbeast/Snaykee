@@ -15,7 +15,7 @@ class Game : public GameState_SFML
 {
 public:
 	const unsigned int OBSTACLES_POOL_SIZE = 200;
-	const unsigned int STAR_ENERGY_POOL_SIZE = 5;
+	const unsigned int STAR_ENERGY_POOL_SIZE = 3;
 
 	/// <summary>
 	/// Returns center/middle of screen.

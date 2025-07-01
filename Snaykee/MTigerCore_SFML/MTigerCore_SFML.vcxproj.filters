@@ -45,6 +45,9 @@
     <ClInclude Include="Source\GameStateManager_SFML.h">
       <Filter>Header Files</Filter>
     </ClInclude>
+    <ClInclude Include="Source\AudioManager_SFML.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="Source\Animation2D_SFML.cpp">
@@ -72,6 +75,9 @@
       <Filter>Source Files</Filter>
     </ClCompile>
     <ClCompile Include="Source\GameStateManager_SFML.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="Source\AudioManager_SFML.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
   </ItemGroup>

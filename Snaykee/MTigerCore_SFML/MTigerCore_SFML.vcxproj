@@ -151,6 +151,7 @@
     </Link>
   </ItemDefinitionGroup>
   <ItemGroup>
+    <ClInclude Include="Source\AudioManager_SFML.h" />
     <ClInclude Include="Source\GameStateManager_SFML.h" />
     <ClInclude Include="Source\AssetManager_SFML.h" />
     <ClInclude Include="Source\Animation2D_SFML.h" />
@@ -163,6 +164,7 @@
     <ClInclude Include="Source\Player_TopDown_SFML.h" />
   </ItemGroup>
   <ItemGroup>
+    <ClCompile Include="Source\AudioManager_SFML.cpp" />
     <ClCompile Include="Source\GameStateManager_SFML.cpp" />
     <ClCompile Include="Source\AssetManager_SFML.cpp" />
     <ClCompile Include="Source\Animation2D_SFML.cpp" />
