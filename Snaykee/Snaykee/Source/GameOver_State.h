@@ -7,7 +7,7 @@ using namespace MR_SFML;
 class GameOver_State : public GameState_SFML
 {
 public:
-	GameOver_State(GameContext& gameContext, float playerScore);
+	GameOver_State(GameContext& gameContext, float playerScore, bool isNewHighscore);
 	~GameOver_State();
 
 	void Initialize() override;
@@ -20,6 +20,7 @@ public:
 
 private:
 	float _playerScore;
+	bool _isNewHighscore;
 
 	GameContext& _gameContext;
 

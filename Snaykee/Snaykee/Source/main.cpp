@@ -87,8 +87,7 @@ void Handle_FPS(double deltaTime)
 
 
 
-// TODO: Maybe add a HELD state to the button class for when button is pressed and held down on.
-// TODO: Create audio manager class for playing audio (sfx and music).
+// TODO: Add a HELD state to the button class for when button is pressed and held down on.
 
 // TODO: Add space background.
 // TODO: Make obstacles (asteroids) spin.
@@ -99,7 +98,7 @@ void Handle_FPS(double deltaTime)
 // TODO: Make asteroid travel faster as time goes by.
 
 // TODO: Add game audio
-	// Ship flying, ship hitting obstacles, ship out of energy, 
+	// Ship flying, ship hitting obstacles, ship out of energy, player (ship) death.
 	// Ship collect star energy, ship low on energy (energy < 20 or 30).
 	// Main menu music, gameplay music, button clicked sound, game over sound.
 
@@ -141,3 +140,4 @@ void Handle_FPS(double deltaTime)
 
 // DONE: Maybe use object pooling for asteroids. Creacte a vector of 200-300 asteroids and just keep using those, instead of creating and deleting them constantly.
 // DONE: Add asteroid texture(s).
+// DONE: Create audio manager class for playing audio (sfx and music).

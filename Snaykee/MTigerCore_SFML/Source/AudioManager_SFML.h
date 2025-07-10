@@ -6,25 +6,44 @@ namespace MR_SFML
 	class AudioManager_SFML
 	{
 	public:
+		const unsigned int SOUND_POOL_SIZE = 20;
+
 		AudioManager_SFML() = default;
-		AudioManager_SFML(AssetManager_SFML& assetManager);
-		~AudioManager_SFML();
+		~AudioManager_SFML() = default;
 
-		void SetAssetManager(AssetManager_SFML& assetManager);
+		/// <summary>
+		/// Perform setup logic.
+		/// </summary>
+		void Initialize();
 
-		const sf::Sound& Get_SoundPlayer_SFX() const;
-		const sf::Sound& Get_SoundPlayer_Music() const;
+		/// <summary>
+		/// [Overloaded] Performs setup logic.
+		/// </summary>
+		/// <param name="tempBuffer">Default sound buffer for initializing the Sounds pool.</param>
+		void Initialize(const sf::SoundBuffer& tempBuffer);
 
-		void PlaySound(const std::string& name);
-		void PlaySound(const sf::SoundBuffer& name);
+		/// <summary>
+		/// Plays a sound.
+		/// </summary>
+		/// <param name="buffer">The sound buffer to play.</param>
+		void PlaySound(const sf::SoundBuffer& buffer);
+
+		/// <summary>
+		/// [Overloaded] Plays a sound.
+		/// </summary>
+		/// <param name="name">Name/alias of the sound to play.</param>
+		/// <param name="assetManager">The asset manager where the sound is located. This assumes the sound has already been loaded and is present in the asset manager.</param>
+		void PlaySound(const std::string& name, AssetManager_SFML& assetManager);
+
+		/// <summary>
+		/// Plays music.
+		/// </summary>
+		/// <param name="filePath">Name (filepath) of the audio (music) file.</param>
+		void PlayMusic(const std::string& fileName);
 
 	private:
-		AssetManager_SFML& _assetManager;
-
-		/*sf::Sound _sfxSoundPlayer_2;
-		sf::Sound _musicSoundPlayer;*/
-
-		/*sf::SoundBuffer* buffer = nullptr;
-		sf::Sound _sfxSoundPlayer_1 = sf::Sound(*buffer);*/
+		std::vector<sf::Sound> _soundsPool;
+		sf::SoundBuffer _dummyBuffer;
+		sf::Music _music;
 	};
 }

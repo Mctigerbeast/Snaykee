@@ -85,12 +85,14 @@ void PauseMenu_State::Draw(sf::RenderWindow& window)
 void PauseMenu_State::onResume_ButtonPressed()
 {
 	this->_gameContext.CurrentGameState = GAME;
+	this->_gameContext.AudioManager.PlaySound("buttonClick", this->_gameContext.AssetManager);
 	this->_gameContext.GameStateManager.RemoveState();
 }
 
 void PauseMenu_State::onMainMenu_ButtonPressed()
 {
 	this->_gameContext.CurrentGameState = MAIN_MENU;
+	this->_gameContext.AudioManager.PlaySound("buttonClick", this->_gameContext.AssetManager);
 
 	// Remove pause state. Now there is only 'Game' state.
 	this->_gameContext.GameStateManager.RemoveState();

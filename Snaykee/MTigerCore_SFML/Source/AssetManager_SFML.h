@@ -58,27 +58,34 @@ namespace MR_SFML
 		sf::Font& GetLoad_Font(const std::string& name, const std::string& fileName);
 
 		/// <summary>
-		/// Loads an audio and adds it to the audio map.
+		/// Loads an audio (sound) and adds it to the sounds map.
 		/// </summary>
-		/// <param name="name">Name/alias to give to the audio.</param>
-		/// <param name="fileName">Name (filepath) of the audio file.</param>
-		void LoadAudio(const std::string& name, const std::string& fileName);
+		/// <param name="name">Name/alias to give to the audio (sound).</param>
+		/// <param name="fileName">Name (filepath) of the audio (sound) file.</param>
+		void LoadSoundBuffer(const std::string& name, const std::string& fileName);
 
 		/// <summary>
-		/// Retrieves an audio, if it has already been loaded and added to the audio map.
+		/// Retrieves an audio (sound), if it has already been loaded and added to the sounds map.
 		/// </summary>
-		/// <param name="name">Name/alias of the audio to retrieve.</param>
-		/// <returns>Reference to the audio.</returns>
-		sf::SoundBuffer& Get_Audio(const std::string& name);
+		/// <param name="name">Name/alias of the audio (sound) to retrieve.</param>
+		/// <returns>Reference to the audio (sound).</returns>
+		sf::SoundBuffer& Get_SoundBuffer(const std::string& name);
 
 		/// <summary>
-		/// Retrieves audio from the audio map.
-		/// If the audio is not already in the map, attemp to load and add the audio to the map.
+		/// Retrieves audio (sound) from the sounds map.
+		/// If the audio (sound) is not already in the map, attemp to load and add the audio (sound) to the map.
 		/// </summary>
-		/// <param name="name">Name/alias of the audio to retrieve.</param>
-		/// <param name="fileName">Name (filepath) of the texture file.</param>
-		/// <returns>Reference to the audio.</returns>
-		sf::SoundBuffer& GetLoad_Audio(const std::string& name, const std::string& fileName);
+		/// <param name="name">Name/alias of the audio (sound) to retrieve.</param>
+		/// <param name="fileName">Name (filepath) of the audio (sound) file.</param>
+		/// <returns>Reference to the audio (sound).</returns>
+		sf::SoundBuffer& GetLoad_SoundBuffer(const std::string& name, const std::string& fileName);
+
+		/// <summary>
+		/// Load and create music stream.
+		/// </summary>
+		/// <param name="fileName">Name (filepath) of the audio (music) file.</param>
+		/// <returns></returns>
+		std::unique_ptr<sf::Music> CreateMusic(const std::string& fileName);
 
 	private:
 		/// <summary>
@@ -94,6 +101,6 @@ namespace MR_SFML
 		/// <summary>
 		/// Contains audio which have been loaded,
 		/// </summary>
-		std::unordered_map<std::string, sf::SoundBuffer> _audioMap;
+		std::unordered_map<std::string, sf::SoundBuffer> _soundsMap;
 	};
 }

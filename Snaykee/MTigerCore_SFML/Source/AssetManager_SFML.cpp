@@ -65,33 +65,45 @@ namespace MR_SFML
 	}
 
 	// Audio
-	void AssetManager_SFML::LoadAudio(const std::string& name, const std::string& fileName)
+	void AssetManager_SFML::LoadSoundBuffer(const std::string& name, const std::string& fileName)
 	{
 		sf::SoundBuffer audioInst;
 
 		if (audioInst.loadFromFile(fileName))
-			this->_audioMap[name] = audioInst;
+			this->_soundsMap[name] = audioInst;
 		else
 		{
 			printf("Audio '%s' was not found/loaded.\n", fileName.c_str());
 		}
 	}
 
-	sf::SoundBuffer& AssetManager_SFML::Get_Audio(const std::string& name)
+	sf::SoundBuffer& AssetManager_SFML::Get_SoundBuffer(const std::string& name)
 	{
-		return this->_audioMap.at(name);
+		return this->_soundsMap.at(name);
 	}
 
-	sf::SoundBuffer& AssetManager_SFML::GetLoad_Audio(const std::string& name, const std::string& fileName)
+	sf::SoundBuffer& AssetManager_SFML::GetLoad_SoundBuffer(const std::string& name, const std::string& fileName)
 	{
 		// Check if value already exists in map. Return it, if so.
-		auto itr = this->_audioMap.find(name);
-		if (itr != this->_audioMap.end())
+		auto itr = this->_soundsMap.find(name);
+		if (itr != this->_soundsMap.end())
 			return itr->second;
 
 		// If value does not exist in map.
 		// Try to load value (based on given file path), add it to the map, and retun it.
-		this->LoadAudio(name, fileName);
-		return this->Get_Audio(name);
+		this->LoadSoundBuffer(name, fileName);
+		return this->Get_SoundBuffer(name);
+	}
+
+	std::unique_ptr<sf::Music> AssetManager_SFML::CreateMusic(const std::string& fileName)
+	{
+		std::unique_ptr<sf::Music> musicInst = std::make_unique<sf::Music>();
+
+		if (musicInst->openFromFile(fileName))
+			return musicInst;
+		else
+		{
+			printf("Music '%s' was not found/loaded.\n", fileName.c_str());
+		}
 	}
 }

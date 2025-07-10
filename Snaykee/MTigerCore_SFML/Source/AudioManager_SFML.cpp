@@ -2,31 +2,50 @@
 
 namespace MR_SFML
 {
-	AudioManager_SFML::AudioManager_SFML(AssetManager_SFML& assetManager)
-	: _assetManager(assetManager){
+	void AudioManager_SFML::Initialize()
+	{
+		this->_dummyBuffer = sf::SoundBuffer("Resources/sfx_button_click.wav");
+
+		for (int i = 0; i < SOUND_POOL_SIZE; ++i)
+			this->_soundsPool.push_back(sf::Sound(_dummyBuffer));
 	}
 
-	AudioManager_SFML::~AudioManager_SFML() {
+	void AudioManager_SFML::Initialize(const sf::SoundBuffer& tempBuffer)
+	{
+		for (int i = 0; i < SOUND_POOL_SIZE; ++i)
+			this->_soundsPool.push_back(sf::Sound(tempBuffer));
 	}
 
-	void AudioManager_SFML::SetAssetManager(AssetManager_SFML& assetManager)
+	void AudioManager_SFML::PlaySound(const std::string& name, AssetManager_SFML& assetManager)
 	{
-		this->_assetManager = assetManager;
+		for (sf::Sound& sound : this->_soundsPool)
+		{
+			if (sound.getStatus() == sf::SoundSource::Status::Stopped)
+			{
+				sound.setBuffer(assetManager.Get_SoundBuffer(name));
+				sound.play();
+				break;
+			}
+		}
 	}
 
-	/*const sf::Sound& AudioManager_SFML::Get_SoundPlayer_SFX() const
+	void AudioManager_SFML::PlaySound(const sf::SoundBuffer& buffer)
 	{
-
+		for (sf::Sound& sound : this->_soundsPool)
+		{
+			if (sound.getStatus() == sf::SoundSource::Status::Stopped)
+			{
+				sound.setBuffer(buffer);
+				sound.play();
+				break;
+			}
+		}
 	}
 
-	const sf::Sound& AudioManager_SFML::Get_SoundPlayer_Music() const
+	void AudioManager_SFML::PlayMusic(const std::string& fileName)
 	{
-
-	}*/
-
-	void AudioManager_SFML::PlaySound(const std::string& name)
-	{
-		/*this->_sfxSoundPlayer_1.setBuffer(this->_assetManager.Get_Audio(name));
-		this->_sfxSoundPlayer_1.play();*/
+		this->_music = sf::Music(fileName);
+		this->_music.setLooping(true);
+		this->_music.play();
 	}
 }

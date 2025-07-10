@@ -19,12 +19,15 @@ void MainMenu_State::Initialize()
 	this->_menuBackground.setTexture(this->_menuBackgroundTexture);
 	this->_menuBackground.setFillColor(sf::Color{ 255,255,255,50 });
 
-	this->_gameContext.AssetManager.GetLoad_Audio("buttonClick", "Resources/sfx_button_click.wav");
+	this->_gameContext.AssetManager.GetLoad_SoundBuffer("buttonClick", "Resources/sfx_button_click.wav"); // Load button click sound if it has not already been loaded.
 
 	this->SetupText();
 	this->SetupButtons();
 	this->_selectedShipID = this->_gameContext.SaveSystem.Get_PlayerData().SelectedShip;
 	this->NewShipSelected(this->_selectedShipID);
+
+	// Play menu music
+	// this->_gameContext.AudioManager.PlayMusic("Resources/____"); // TODO: Uncomment when music is available
 }
 
 void MainMenu_State::HandleInput()
@@ -183,27 +186,33 @@ void MainMenu_State::OnPlayButtonPressed()
 	this->_gameContext.GameStateManager.AddState(std::unique_ptr<GameState_SFML>(new Game(this->_gameContext)), true);
 
 	// Play Audio
+	this->_gameContext.AudioManager.PlaySound(
+		this->_gameContext.AssetManager.GetLoad_SoundBuffer("buttonClick", "Resources/sfx_button_click.wav"));
 }
 
 void MainMenu_State::OnSelectShip1_ButtonPressed()
 {
 	this->NewShipSelected(1);
-
-	// Play Audio
-	this->_gameContext.AudioManager.PlaySound("buttonClick");
+	this->_gameContext.AudioManager.PlaySound("buttonClick", this->_gameContext.AssetManager); // Play audio
 }
 void MainMenu_State::OnSelectShip2_ButtonPressed()
 {
 	this->NewShipSelected(2);
+	this->_gameContext.AudioManager.PlaySound("buttonClick", this->_gameContext.AssetManager); // Play audio
 }
+
 void MainMenu_State::OnSelectShip3_ButtonPressed()
 {
 	this->NewShipSelected(3);
+	this->_gameContext.AudioManager.PlaySound("buttonClick", this->_gameContext.AssetManager); // Play audio
 }
+
 void MainMenu_State::OnSelectShip4_ButtonPressed()
 {
 	this->NewShipSelected(4);
+	this->_gameContext.AudioManager.PlaySound("buttonClick", this->_gameContext.AssetManager); // Play audio
 }
+
 
 void MainMenu_State::NewShipSelected(unsigned int shipID)
 {

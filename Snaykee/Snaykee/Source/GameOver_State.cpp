@@ -1,7 +1,7 @@
 #include "GameOver_State.h"
 
-GameOver_State::GameOver_State(GameContext& gameContext, float playerScore)
-	:_gameContext(gameContext), _playerScore(playerScore), _restartButton(gameContext.AssetManager),
+GameOver_State::GameOver_State(GameContext& gameContext, float playerScore, bool isNewHighscore)
+	:_gameContext(gameContext), _playerScore(playerScore), _isNewHighscore(isNewHighscore), _restartButton(gameContext.AssetManager),
 	_mainMenuButton(gameContext.AssetManager), _gameOverTitle(*_pauseMenuFont),
 	_playerScoreUI(*_pauseMenuFont), _highscoreUI(*_pauseMenuFont) {
 }
@@ -21,6 +21,9 @@ void GameOver_State::Initialize()
 	this->_gameOverBackground.setFillColor(sf::Color{ 255,255,255,50 });
 
 	this->_pauseMenuFont = &this->_gameContext.AssetManager.Get_Font("mainFont");
+
+	this->_gameContext.SaveSystem.LoadPlayerData(); // Load player data
+	float playerHighScore = this->_gameContext.SaveSystem.Get_PlayerData().HighScore;
 
 #pragma region UI Text
 	// Pause menu title text
@@ -46,9 +49,6 @@ void GameOver_State::Initialize()
 	this->_playerScoreUI.setOrigin(this->_playerScoreUI.getGlobalBounds().size / 2.0f);
 
 	// Highscore text
-	this->_gameContext.SaveSystem.LoadPlayerData(); // Load player data
-	float playerHighScore = this->_gameContext.SaveSystem.Get_PlayerData().HighScore;
-
 	this->_highscoreUI = sf::Text(this->_gameContext.AssetManager.Get_Font("mainFont"));
 	this->_highscoreUI.setPosition({ midWindowPosX, window_Height * 0.45f });
 	this->_highscoreUI.setCharacterSize(50.0f);
@@ -56,7 +56,7 @@ void GameOver_State::Initialize()
 	this->_highscoreUI.setString("HIGHSCORE: " + std::to_string(playerHighScore));
 	this->_highscoreUI.setFillColor(sf::Color::Black);
 	this->_highscoreUI.setOutlineThickness(2.0f);
-	this->_highscoreUI.setOutlineColor(sf::Color::White);
+	this->_highscoreUI.setOutlineColor((this->_isNewHighscore) ? sf::Color::Green : sf::Color::White);
 	this->_highscoreUI.setOrigin(this->_highscoreUI.getGlobalBounds().size / 2.0f);
 #pragma endregion
 
@@ -87,6 +87,14 @@ void GameOver_State::Initialize()
 	this->_mainMenuButton.Set_ButtonTextOulineColor(sf::Color::White);
 	this->_mainMenuButton.Set_ButtonPressedFunction([this] {this->onMainMenu_ButtonPressed(); });
 #pragma endregion
+
+	// Play game over audio
+	// TODO: New highscore effects
+	// Play new highscore audio
+	// Maybe visual effects
+
+	// TODO: MAYBE add game over screen music.
+	// this->_gameContext.AudioManager.PlayMusic("Resources/____"); // TODO: Uncomment when music is available
 }
 
 void GameOver_State::HandleInput()
@@ -118,12 +126,15 @@ void GameOver_State::Draw(sf::RenderWindow& window)
 void GameOver_State::onRestart_ButtonPressed()
 {
 	this->_gameContext.CurrentGameState = GAME;
+	this->_gameContext.AudioManager.PlaySound("buttonClick", this->_gameContext.AssetManager);
+
 	this->_gameContext.GameStateManager.AddState(std::unique_ptr<GameState_SFML>(new Game(this->_gameContext)), true);
 }
 
 void GameOver_State::onMainMenu_ButtonPressed()
 {
 	this->_gameContext.CurrentGameState = MAIN_MENU;
+	this->_gameContext.AudioManager.PlaySound("buttonClick", this->_gameContext.AssetManager);
 
 	// Replace 'Game Over' state with 'Main Menu' state.
 	this->_gameContext.GameStateManager.AddState(std::unique_ptr<GameState_SFML>(new MainMenu_State(this->_gameContext)), true);

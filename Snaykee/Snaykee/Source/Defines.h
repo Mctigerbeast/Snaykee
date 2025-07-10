@@ -12,6 +12,8 @@ struct GameContext
 		: GAME_TITLE(gameTitle), WINDOW_WIDTH(windowWidth), WINDOW_HEIGHT(windowHeight)
 	{
 		this->window = new sf::RenderWindow(sf::VideoMode({ this->WINDOW_WIDTH, this->WINDOW_HEIGHT }), gameTitle);
+
+		this->AudioManager.Initialize();
 	}
 
 	// Game save system
@@ -21,7 +23,7 @@ struct GameContext
 	AssetManager_SFML AssetManager;
 
 	// Create Audio Manager
-	AudioManager_SFML AudioManager = AudioManager_SFML(this->AssetManager);
+	AudioManager_SFML AudioManager;
 
 	// Create game state manager
 	GameStateManager_SFML GameStateManager;

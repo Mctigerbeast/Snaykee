@@ -54,6 +54,14 @@ void Game::Initialize()
 	this->_scoreTextFont_UI = &this->_gameContext.AssetManager.GetLoad_Font("mainFont", "Resources/font_playful_time_star.ttf");
 	this->_energyTextFont_UI = &this->_gameContext.AssetManager.Get_Font("mainFont");
 
+	this->_gameContext.AssetManager.GetLoad_SoundBuffer("starCollect", "Resources/sfx_collect_star_energy.wav");
+	this->_gameContext.AssetManager.GetLoad_SoundBuffer("lowFeul", "Resources/sfx_low_fuel.wav");
+	// TODO: Uncomment when sounds available
+	//this->_gameContext.AssetManager.GetLoad_SoundBuffer("shipFlying", "Resources/_____"); // MAYBE
+	//this->_gameContext.AssetManager.GetLoad_SoundBuffer("outOfEnergy", "Resources/_____");
+	//this->_gameContext.AssetManager.GetLoad_SoundBuffer("obstacleHit", "Resources/_____");
+	//this->_gameContext.AssetManager.GetLoad_SoundBuffer("playerDeath", "Resources/_____");
+
 	// Create game's screen (window) borders
 	this->leftBorder = new Border({ 20.0f, this->Get_Window_HeightF() }, { 10.0f, Get_CenterOfScreen().y }, nullptr, sf::Color::Black);
 	this->rightBorder = new Border({ 20.0f, this->Get_Window_HeightF() }, { this->Get_Window_WidthF() - 10.f, Get_CenterOfScreen().y }, nullptr, sf::Color::Black);
@@ -89,6 +97,9 @@ void Game::Initialize()
 	this->_energyText_UI.setOutlineThickness(2.0f);
 	this->_energyText_UI.setOutlineColor(sf::Color::White);
 	this->_energyText_UI.setCharacterSize(20.0f);
+
+	// Play game music
+	// this->_gameContext.AudioManager.PlayMusic("Resources/____"); // TODO: Uncomment when music is available
 }
 
 void Game::HandleInput()
@@ -233,10 +244,14 @@ void Game::CheckObstacleCollisions()
 			if (ob.ObstacleObj.Get_Collider().CheckCollision(playerCollider, 1.0f))
 			{
 				this->_player.OnObstacleHit();
+				// this->_gameContext.AudioManager.PlaySound("obstacleHit", this->_gameContext.AssetManager); // TODO: Ucomment when sound availale
 				ob.IsInUse = false;
 
 				if (!this->_player.IsAlive())
+				{
+					// this->_gameContext.AudioManager.PlaySound("playerDeath", this->_gameContext.AssetManager); // TODO: Ucomment when sound availale
 					this->Execute_GameOver();
+				}
 			}
 
 			// Collision(s) with border(s)
@@ -309,6 +324,7 @@ void Game::CheckStarEnergyCollisions()
 				this->_score += 5;
 				this->_player.AddEnergy(se.StarEnergyObj.Get_EnergyPower());
 				se.IsInUse = false;
+				this->_gameContext.AudioManager.PlaySound("starCollect", this->_gameContext.AssetManager);
 			}
 		}
 	}
@@ -317,14 +333,16 @@ void Game::CheckStarEnergyCollisions()
 void Game::Execute_GameOver()
 {
 	this->_isGameOver = true;
+	bool isNewHighscore = (this->_score > this->_gameContext.SaveSystem.Get_PlayerData().HighScore);
 
 	// Save player's high score
-	if (this->_score > this->_gameContext.SaveSystem.Get_PlayerData().HighScore)
+	if (isNewHighscore)
 		this->_gameContext.SaveSystem.SavePlayer_HighScore(this->_score);
 
 	// Show game over screen
 	this->_gameContext.CurrentGameState = GAME_OVER;
-	this->_gameContext.GameStateManager.AddState(std::unique_ptr<GameState_SFML>(new GameOver_State(this->_gameContext, this->_score)), true);
+	//this->_gameContext.AudioManager.PlaySound("gameOver", this->_gameContext.AssetManager); // TODO: Uncomment when sound available
+	this->_gameContext.GameStateManager.AddState(std::unique_ptr<GameState_SFML>(new GameOver_State(this->_gameContext, this->_score, isNewHighscore)), true);
 }
 
 void Game::Execute_StartGame()
