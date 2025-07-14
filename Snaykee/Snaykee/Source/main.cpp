@@ -1,12 +1,17 @@
 #include "SplashScreen_State.h"
 
-#pragma region Forward Declarations (Time/Clock)
+using namespace Snaykee;
+
+#pragma region Forward Declarations
+// (Time/Clock)
 double GAME_STARTING_TIME = 0.0001;
 sf::Clock GAME_CLOCK;
 double GAME_DELTA_TIME;
-
 void Handle_FPS(double deltaTime);
 void Handle_GameClock();
+
+// Other
+void LoadGameAssets(AssetManager_SFML& assetManager);
 #pragma endregion
 
 int main()
@@ -24,6 +29,9 @@ int main()
 	GameContext LeGameContext("SNAYKEE", windowX, windowY);
 	LeGameContext.SaveSystem.LoadPlayerData();
 	LeGameContext.window->setFramerateLimit(120.0f); // TODO: Maybe update the way that frame limit is being set.
+
+	// Load all game assets
+	LoadGameAssets(LeGameContext.AssetManager);
 
 	// Add the first game state
 	LeGameContext.GameStateManager.AddState(std::unique_ptr<GameState_SFML>(new SplashScreen_State(LeGameContext)));
@@ -83,6 +91,44 @@ void Handle_FPS(double deltaTime)
 	if (deltaTime > 1.0f / 20.0f)
 		deltaTime = 1.0f / 20.0f;
 }
+
+/// <summary>
+/// Loads ALL game assets.
+/// </summary>
+void LoadGameAssets(AssetManager_SFML& assetManager)
+{
+	// Fonts
+	assetManager.LoadFont("mainFont", "Resources/font_playful_time_star.ttf");
+	assetManager.LoadFont("defaultFont", "Resources/font_cera_pro_modern_medium.ttf");
+
+	// Textures
+	assetManager.LoadTexture("splashScreenBanner", "Resources/spr_splashscreen_logo_banner.jpg");
+	assetManager.LoadTexture("purpleBackground", "Resources/bg_space_purple.jpg");
+	assetManager.LoadTexture("confetti", "Resources/spr_confetti_3.png");
+
+	assetManager.LoadTexture("greenShip", "Resources/spr_spaceship_green.png");
+	assetManager.LoadTexture("yellowShip", "Resources/spr_spaceship_yellow.png");
+	assetManager.LoadTexture("whiteShip", "Resources/spr_spaceship_white.png");
+	assetManager.LoadTexture("darkShip", "Resources/spr_spaceship_dark.png");
+
+	assetManager.LoadTexture("asteroid_1_Texture", "Resources/spr_asteroid_1.png");
+	assetManager.LoadTexture("asteroid_2_Texture", "Resources/spr_asteroid_2.png");
+	assetManager.LoadTexture("asteroid_3_Texture", "Resources/spr_asteroid_3.png");
+	assetManager.LoadTexture("asteroid_4_Texture", "Resources/spr_asteroid_4.png");
+
+	assetManager.LoadTexture("starEnergy_1_Texture", "Resources/spr_star_energy_1.png");
+	assetManager.LoadTexture("starEnergy_2_Texture", "Resources/spr_star_energy_2.png");
+	assetManager.LoadTexture("starEnergy_3_Texture", "Resources/spr_star_energy_3.png");
+
+	// Sounds
+	assetManager.LoadSoundBuffer("buttonClick", "Resources/sfx_button_click.wav");
+	assetManager.LoadSoundBuffer("starCollect", "Resources/sfx_collect_star_energy.wav");
+	assetManager.LoadSoundBuffer("lowFeul", "Resources/sfx_low_fuel.wav");
+	assetManager.LoadSoundBuffer("obstacleHit", "Resources/sfx_collision.flac");
+	assetManager.LoadSoundBuffer("playerDeathGameOver", "Resources/sfx_game_over.wav");
+	assetManager.LoadSoundBuffer("audienceCheer", "Resources/sfx_audience_cheering.wav");
+	assetManager.LoadSoundBuffer("partyHorn", "Resources/sfx_party_horn.wav");
+}
 #pragma endregion
 
 
@@ -94,6 +140,7 @@ void Handle_FPS(double deltaTime)
 // TODO: Maybe have callback function for resetting player. Callback function will be called from Game and player will listen.
 // TODO: Create function that determines values based (relative-to) on window or screen) Use this function when setting position and size of objects.
 // TODO: Change ship color to red (briefly) after hitting obstacle.
+// TODO: Add game namespace.
 
 // DONE: Game over functionality.
 // DONE: Make player energy deplete by 1 every second.

@@ -5,28 +5,31 @@
 using namespace MR_SFML;
 using namespace MR_Utils;
 
-class SplashScreen_State : public GameState_SFML
+namespace Snaykee
 {
-public:
-	SplashScreen_State(GameContext& gameContext);
-	~SplashScreen_State();
+	class SplashScreen_State : public GameState_SFML
+	{
+	public:
+		SplashScreen_State(GameContext& gameContext);
+		~SplashScreen_State();
 
-	void Initialize() override;
-	void HandleInput() override;
-	void Update(float fDeltaTime = 0.0f) override;
-	void Draw(sf::RenderWindow& window) override;
+		void Initialize() override;
+		void HandleInput() override;
+		void Update(float fDeltaTime = 0.0f) override;
+		void Draw(sf::RenderWindow& window) override;
 
-	void PauseState() override {}
-	void StartState() override {}
+		void PauseState() override {}
+		void StartState() override {}
 
-private:
-	GameContext& _gameContext;
+	private:
+		GameContext& _gameContext;
 
-	float _splashScreenDuration = 5.0f;
-	CountdownTimer _splashScreenTimer;
+		float _splashScreenDuration = 5.0f;
+		CountdownTimer _splashScreenTimer;
 
-	sf::RectangleShape _splashScreenLogoBanner;
+		sf::RectangleShape _splashScreenLogoBanner;
 
-private:
-	void OnSplashscreenTimerEnd();
-};
+	private:
+		void OnSplashscreenTimerEnd();
+	};
+}
