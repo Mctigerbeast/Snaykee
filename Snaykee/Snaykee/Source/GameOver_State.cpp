@@ -88,13 +88,15 @@ void GameOver_State::Initialize()
 	this->_mainMenuButton.Set_ButtonPressedFunction([this] {this->onMainMenu_ButtonPressed(); });
 #pragma endregion
 
-	// Play game over audio
-	// TODO: New highscore effects
-	// Play new highscore audio
-	// Maybe visual effects
+	if (this->_isNewHighscore)
+	{
+		this->_gameContext.AssetManager.GetLoad_SoundBuffer("audienceCheer", "Resources/sfx_audience_cheering.wav");
+		this->_gameContext.AssetManager.GetLoad_SoundBuffer("partyHorn", "Resources/sfx_party_horn.wav");
 
-	// TODO: MAYBE add game over screen music.
-	// this->_gameContext.AudioManager.PlayMusic("Resources/____"); // TODO: Uncomment when music is available
+		// Play 'New Highscore' effects
+		this->_playNewHighscoreEffectsTimer = CountdownTimer(3.0f, [this]() {this->onNewHighscore(); });
+		this->_playNewHighscoreEffectsTimer.StartCountdown();
+	}
 }
 
 void GameOver_State::HandleInput()
@@ -109,6 +111,7 @@ void GameOver_State::HandleInput()
 void GameOver_State::Update(float fDeltaTime)
 {
 	this->HandleInput();
+	this->_playNewHighscoreEffectsTimer.UpdateTimer(fDeltaTime);
 	this->_restartButton.Update(this->_gameContext.CurrentMousePositionView());
 	this->_mainMenuButton.Update(this->_gameContext.CurrentMousePositionView());
 }
@@ -138,4 +141,11 @@ void GameOver_State::onMainMenu_ButtonPressed()
 
 	// Replace 'Game Over' state with 'Main Menu' state.
 	this->_gameContext.GameStateManager.AddState(std::unique_ptr<GameState_SFML>(new MainMenu_State(this->_gameContext)), true);
+}
+
+void GameOver_State::onNewHighscore()
+{
+	// Play new highscore audio
+	this->_gameContext.AudioManager.PlaySound("audienceCheer", this->_gameContext.AssetManager);
+	this->_gameContext.AudioManager.PlaySound("partyHorn", this->_gameContext.AssetManager);
 }

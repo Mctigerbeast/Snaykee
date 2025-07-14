@@ -35,7 +35,6 @@ void StarEnergy::Reset(sf::Vector2f position, sf::Vector2f size, sf::Color color
 
 void StarEnergy::DetermineEnergyPower()
 {
-	// TODO: May need to tweak star power values.(maybe 3, 7, and 10)
 	int choice = MR_Math::RandomIntRange(1, 3);
 	switch (choice)
 	{

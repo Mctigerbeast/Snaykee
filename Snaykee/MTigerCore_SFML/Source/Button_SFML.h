@@ -11,7 +11,8 @@ namespace MR_SFML
 	{
 		BUTTON_IDLE = 0,
 		BUTTON_HOVER = 1,
-		BUTTON_PRESSED = 2
+		BUTTON_PRESSED = 2,
+		BUTTON_HELD = 3
 	};
 
 	class Button_SFML
@@ -140,6 +141,12 @@ namespace MR_SFML
 		const bool IsPressed() const;
 
 		/// <summary>
+		/// Determines if button is pressed (clicked) AND held down.
+		/// </summary>
+		/// <returns>True, if button is pressed (clicked) AND held down.</returns>
+		const bool IsHeld() const;
+
+		/// <summary>
 		/// </summary>
 		/// <returns>The button's text.</returns>
 		const std::string& Get_ButtonText() const;
@@ -153,13 +160,14 @@ namespace MR_SFML
 		sf::Color _buttonColor_Pressed = sf::Color::Green;
 		sf::Texture* _buttonTexture = nullptr;
 
-		uint32_t _buttonState = BUTTON_IDLE; // 0 = idle, 1 = hover, 2 = pressed
+		uint32_t _buttonState = BUTTON_IDLE; // 0 = idle, 1 = hover, 2 = pressed, 3 = held
 
 		sf::Text _buttonText;
 		sf::Font* _buttonTextFont;
 		std::string _buttonTextString = "";
 
 		std::function<void()> ButtonPressedFunction;
+		bool isButtonPressed = false;
 
 	private:
 		/// <summary>

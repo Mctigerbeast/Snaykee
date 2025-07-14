@@ -27,7 +27,7 @@ void MainMenu_State::Initialize()
 	this->NewShipSelected(this->_selectedShipID);
 
 	// Play menu music
-	// this->_gameContext.AudioManager.PlayMusic("Resources/____"); // TODO: Uncomment when music is available
+	this->_gameContext.AudioManager.PlayMusic("Resources/mus_menu_ambience.wav");
 }
 
 void MainMenu_State::HandleInput()

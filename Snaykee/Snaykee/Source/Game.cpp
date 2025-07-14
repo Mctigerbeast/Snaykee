@@ -56,11 +56,8 @@ void Game::Initialize()
 
 	this->_gameContext.AssetManager.GetLoad_SoundBuffer("starCollect", "Resources/sfx_collect_star_energy.wav");
 	this->_gameContext.AssetManager.GetLoad_SoundBuffer("lowFeul", "Resources/sfx_low_fuel.wav");
-	// TODO: Uncomment when sounds available
-	//this->_gameContext.AssetManager.GetLoad_SoundBuffer("shipFlying", "Resources/_____"); // MAYBE
-	//this->_gameContext.AssetManager.GetLoad_SoundBuffer("outOfEnergy", "Resources/_____");
-	//this->_gameContext.AssetManager.GetLoad_SoundBuffer("obstacleHit", "Resources/_____");
-	//this->_gameContext.AssetManager.GetLoad_SoundBuffer("playerDeath", "Resources/_____");
+	this->_gameContext.AssetManager.GetLoad_SoundBuffer("obstacleHit", "Resources/sfx_collision.flac");
+	this->_gameContext.AssetManager.GetLoad_SoundBuffer("playerDeathGameOver", "Resources/sfx_game_over.wav");
 
 	// Create game's screen (window) borders
 	this->leftBorder = new Border({ 20.0f, this->Get_Window_HeightF() }, { 10.0f, Get_CenterOfScreen().y }, nullptr, sf::Color::Black);
@@ -99,7 +96,7 @@ void Game::Initialize()
 	this->_energyText_UI.setCharacterSize(20.0f);
 
 	// Play game music
-	// this->_gameContext.AudioManager.PlayMusic("Resources/____"); // TODO: Uncomment when music is available
+	this->_gameContext.AudioManager.PlayMusic("Resources/mus_gameplay.wav");
 }
 
 void Game::HandleInput()
@@ -114,6 +111,7 @@ void Game::HandleInput()
 	if (sf::Keyboard::isKeyPressed(sf::Keyboard::Key::Escape) && !this->_isGamePaused)
 	{
 		this->_gameContext.CurrentGameState = PAUSE_MENU;
+		this->_gameContext.AudioManager.PauseMusic();
 		this->_gameContext.GameStateManager.AddState(std::unique_ptr<GameState_SFML>(new PauseMenu_State(this->_gameContext)), false);
 	}
 }
@@ -146,6 +144,15 @@ void Game::Update(float fDeltaTime)
 
 	this->_scoreText_UI.setString("SCORE: " + std::to_string(this->_score));
 	this->_energyText_UI.setString("ENERGY: " + std::to_string(this->_player.Get_Energy()));
+
+	// Low energy/fuel
+	if (!this->_isLowEnergy && this->_player.Get_Energy() < 25)
+	{
+		this->_isLowEnergy = true;
+		this->_gameContext.AudioManager.PlaySound("lowFeul", this->_gameContext.AssetManager, 200.0f, 2.0f);
+	}
+	else if (this->_isLowEnergy && this->_player.Get_Energy() > 24)
+		this->_isLowEnergy = false;
 }
 
 void Game::Draw(sf::RenderWindow& window)
@@ -207,8 +214,7 @@ void Game::GenerateObstacles()
 	// In this case, obstcles won't spawn within the outer 5% of the window.
 	float percentage = this->Get_Window_WidthF() * 0.05f; // (5%)
 
-	//float randSize = MR_Math::RandomFloatRange(5.0f, 10.0f);
-	float randSize = MR_Math::RandomFloatRange(20.0f, 50.0f); // TODO: Testing value
+	float randSize = MR_Math::RandomFloatRange(20.0f, 50.0f); // TODO: May need to tweak
 	float randPosX = MR_Math::RandomFloatRange(percentage, (this->Get_Window_WidthF() - percentage));
 	float randPosY = MR_Math::RandomFloat(this->Get_Window_HeightF() * 0.05f);
 	float randSpeed = MR_Math::RandomFloat(1.0f);
@@ -244,14 +250,12 @@ void Game::CheckObstacleCollisions()
 			if (ob.ObstacleObj.Get_Collider().CheckCollision(playerCollider, 1.0f))
 			{
 				this->_player.OnObstacleHit();
-				// this->_gameContext.AudioManager.PlaySound("obstacleHit", this->_gameContext.AssetManager); // TODO: Ucomment when sound availale
 				ob.IsInUse = false;
 
 				if (!this->_player.IsAlive())
-				{
-					// this->_gameContext.AudioManager.PlaySound("playerDeath", this->_gameContext.AssetManager); // TODO: Ucomment when sound availale
 					this->Execute_GameOver();
-				}
+				else
+					this->_gameContext.AudioManager.PlaySound("obstacleHit", this->_gameContext.AssetManager, 15.0f);
 			}
 
 			// Collision(s) with border(s)
@@ -341,7 +345,8 @@ void Game::Execute_GameOver()
 
 	// Show game over screen
 	this->_gameContext.CurrentGameState = GAME_OVER;
-	//this->_gameContext.AudioManager.PlaySound("gameOver", this->_gameContext.AssetManager); // TODO: Uncomment when sound available
+	this->_gameContext.AudioManager.StopMusic();
+	this->_gameContext.AudioManager.PlaySound("playerDeathGameOver", this->_gameContext.AssetManager, 70.0f);
 	this->_gameContext.GameStateManager.AddState(std::unique_ptr<GameState_SFML>(new GameOver_State(this->_gameContext, this->_score, isNewHighscore)), true);
 }
 
@@ -385,7 +390,7 @@ sf::Texture* Game::DeterminePlayerShipTexture()
 
 sf::Texture* Game::DetermineObstacleTexture()
 {
-	int rn = MR_Math::RandomIntRange(/*1*/2, 4);
+	int rn = MR_Math::RandomIntRange(2, 4);
 
 	switch (rn)
 	{

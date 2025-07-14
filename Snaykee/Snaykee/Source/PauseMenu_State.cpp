@@ -86,6 +86,7 @@ void PauseMenu_State::onResume_ButtonPressed()
 {
 	this->_gameContext.CurrentGameState = GAME;
 	this->_gameContext.AudioManager.PlaySound("buttonClick", this->_gameContext.AssetManager);
+	this->_gameContext.AudioManager.ResumeMusic();
 	this->_gameContext.GameStateManager.RemoveState();
 }
 

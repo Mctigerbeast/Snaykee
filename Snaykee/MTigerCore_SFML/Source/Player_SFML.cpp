@@ -17,8 +17,8 @@ namespace MR_SFML
 		this->SetDefaultValues();
 
 		// TODO: Testing purposes only!!! Shows collider (outline) of object.
-		this->_playerBody.setOutlineColor(sf::Color::Yellow);
-		this->_playerBody.setOutlineThickness(3.0f);
+		//this->_playerBody.setOutlineColor(sf::Color::Yellow);
+		//this->_playerBody.setOutlineThickness(3.0f);
 	}
 
 	Player_SFML::Player_SFML(sf::Texture* texture, sf::Vector2u imageCount, float switchTime, float speed, sf::Vector2f playerSize, sf::Vector2f playerPos)

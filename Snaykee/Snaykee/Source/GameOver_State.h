@@ -3,6 +3,7 @@
 #include "MainMenu_State.h"
 
 using namespace MR_SFML;
+using namespace MR_Utils;
 
 class GameOver_State : public GameState_SFML
 {
@@ -33,6 +34,8 @@ private:
 	sf::Text _highscoreUI;
 	sf::Font* _pauseMenuFont = nullptr;
 
+	CountdownTimer _playNewHighscoreEffectsTimer;
+
 private:
 	/// <summary>
 	/// Functionality/logic for restarting (playing again).
@@ -43,4 +46,9 @@ private:
 	/// Functionality/logic for going to main menu.
 	/// </summary>
 	void onMainMenu_ButtonPressed();
+
+	/// <summary>
+	/// Functionality/logic for when player achieves new high score.
+	/// </summary>
+	void onNewHighscore();
 };

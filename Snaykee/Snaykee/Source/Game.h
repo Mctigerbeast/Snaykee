@@ -111,6 +111,7 @@ private:
 	float _score = 0.0f;
 	bool _isGameOver = false;
 	bool _isGamePaused = false;
+	bool _isLowEnergy = false;
 
 	GameContext& _gameContext;
 

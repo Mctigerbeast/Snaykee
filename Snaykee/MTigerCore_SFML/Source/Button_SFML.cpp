@@ -55,17 +55,27 @@ namespace MR_SFML
 			// Mouse is pressed while hovering over button
 			if (sf::Mouse::isButtonPressed(sf::Mouse::Button::Left))
 			{
-				this->_buttonState = BUTTON_PRESSED;
 				this->_buttonBody.setFillColor(this->_buttonColor_Pressed);
 
-				if (this->ButtonPressedFunction)
-					this->ButtonPressedFunction();
+				if (!this->isButtonPressed)
+				{
+					this->isButtonPressed = true;
+					this->_buttonState = BUTTON_PRESSED;
+
+					if (this->ButtonPressedFunction)
+						this->ButtonPressedFunction();
+				}
+				else
+					this->_buttonState = BUTTON_HELD;
 			}
 		}
 		else
 		{
 			if (this->_buttonState != BUTTON_IDLE)
+			{
+				this->isButtonPressed = false;
 				this->_buttonState = BUTTON_IDLE;
+			}
 
 			if (this->_buttonBody.getFillColor() != this->_buttonColor_Idle)
 				this->_buttonBody.setFillColor(this->_buttonColor_Idle);
@@ -119,7 +129,7 @@ namespace MR_SFML
 	{
 		this->_buttonBody.setOutlineThickness(newThicknessVal);
 	}
-	
+
 	void Button_SFML::Set_ButtonTextOulineThickness(float newThicknessVal)
 	{
 		this->_buttonText.setOutlineThickness(newThicknessVal);
@@ -135,7 +145,7 @@ namespace MR_SFML
 	{
 		this->_buttonBody.setOutlineColor(newOutlineColor);
 	}
-	
+
 	void Button_SFML::Set_ButtonTextOulineColor(sf::Color newOutlineColor)
 	{
 		this->_buttonText.setOutlineColor(newOutlineColor);
@@ -153,7 +163,8 @@ namespace MR_SFML
 	void Button_SFML::Set_ButtonColor_Pressed(sf::Color pressedColor) { this->_buttonColor_Pressed = pressedColor; }
 
 	const bool Button_SFML::IsHover()const { return this->_buttonState == BUTTON_HOVER; }
-	const bool Button_SFML::IsPressed()const { return this->_buttonState == BUTTON_PRESSED; }
+	const bool Button_SFML::IsPressed()const { return this->_buttonState == BUTTON_PRESSED || this->_buttonState == BUTTON_HELD; }
+	const bool Button_SFML::IsHeld()const { return this->_buttonState == BUTTON_HELD; }
 	const std::string& Button_SFML::Get_ButtonText() const { return this->_buttonTextString; }
 
 	void Button_SFML::UpdateButtonOrigin()
