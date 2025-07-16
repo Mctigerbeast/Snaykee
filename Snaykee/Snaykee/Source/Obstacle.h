@@ -2,12 +2,9 @@
 #include "GameObject_Rectangle_SFML.h"
 #include "MTigerCore/MR_Math.h"
 
-using namespace MR_SFML;
-using namespace MR_Math;
-
 namespace Snaykee
 {
-	class Obstacle : public GameObject_Rectangle_SFML
+	class Obstacle : public MR_SFML::GameObject_Rectangle_SFML
 	{
 	public:
 		Obstacle(sf::Vector2f size, sf::Vector2f position, float moveSpeed, sf::Texture* texture = nullptr, sf::Color color = sf::Color::White);

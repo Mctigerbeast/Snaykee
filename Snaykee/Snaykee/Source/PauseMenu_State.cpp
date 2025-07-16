@@ -86,7 +86,7 @@ namespace Snaykee
 
 	void PauseMenu_State::onResume_ButtonPressed()
 	{
-		this->_gameContext.CurrentGameState = GAME;
+		this->_gameContext.CurrentGameState = MR_SFML::GAME;
 		this->_gameContext.AudioManager.PlaySound("buttonClick", this->_gameContext.AssetManager);
 		this->_gameContext.AudioManager.ResumeMusic();
 		this->_gameContext.GameStateManager.RemoveState();
@@ -94,7 +94,7 @@ namespace Snaykee
 
 	void PauseMenu_State::onMainMenu_ButtonPressed()
 	{
-		this->_gameContext.CurrentGameState = MAIN_MENU;
+		this->_gameContext.CurrentGameState = MR_SFML::MAIN_MENU;
 		this->_gameContext.AudioManager.PlaySound("buttonClick", this->_gameContext.AssetManager);
 
 		// Remove pause state. Now there is only 'Game' state.

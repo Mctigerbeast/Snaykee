@@ -2,11 +2,9 @@
 #include "Button_SFML.h"
 #include "MainMenu_State.h"
 
-using namespace MR_SFML;
-
 namespace Snaykee
 {
-	class PauseMenu_State : public GameState_SFML
+	class PauseMenu_State : public MR_SFML::GameState_SFML
 	{
 	public:
 		PauseMenu_State(GameContext& gameContext);
@@ -24,8 +22,8 @@ namespace Snaykee
 		GameContext& _gameContext;
 
 		sf::RectangleShape _pauseMenuBackground;
-		Button_SFML _resumeButton;
-		Button_SFML _mainMenuButton;
+		MR_SFML::Button_SFML _resumeButton;
+		MR_SFML::Button_SFML _mainMenuButton;
 
 		sf::Text _pauseMenuTitle;
 		sf::Font* _pauseMenuFont = nullptr;

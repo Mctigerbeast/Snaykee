@@ -184,7 +184,7 @@ namespace Snaykee
 	void MainMenu_State::OnPlayButtonPressed()
 	{
 		this->_gameContext.GameStateManager.Get_CurrentActiveState()->PauseState();
-		this->_gameContext.CurrentGameState = GAME;
+		this->_gameContext.CurrentGameState = MR_SFML::GAME;
 		this->_gameContext.GameStateManager.AddState(std::unique_ptr<GameState_SFML>(new Game(this->_gameContext)), true);
 
 		// Play Audio

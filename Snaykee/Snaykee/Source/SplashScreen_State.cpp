@@ -22,7 +22,7 @@ namespace Snaykee
 		this->_splashScreenLogoBanner.setOutlineColor(sf::Color::Black);
 
 		// Start splashscreen timer
-		this->_splashScreenTimer = CountdownTimer(this->_splashScreenDuration, [this]() {this->OnSplashscreenTimerEnd(); });
+		this->_splashScreenTimer = MR_Utils::CountdownTimer(this->_splashScreenDuration, [this]() {this->OnSplashscreenTimerEnd(); });
 		this->_splashScreenTimer.StartCountdown();
 	}
 
@@ -49,7 +49,7 @@ namespace Snaykee
 
 	void SplashScreen_State::OnSplashscreenTimerEnd()
 	{
-		this->_gameContext.CurrentGameState = MAIN_MENU;
+		this->_gameContext.CurrentGameState = MR_SFML::MAIN_MENU;
 		this->_gameContext.GameStateManager.AddState(std::unique_ptr<GameState_SFML>(new MainMenu_State(this->_gameContext)), true);
 	}
 }

@@ -2,11 +2,9 @@
 #include "Defines.h"
 #include "Game.h"
 
-using namespace MR_SFML;
-
 namespace Snaykee
 {
-	class MainMenu_State : public GameState_SFML
+	class MainMenu_State : public MR_SFML::GameState_SFML
 	{
 	public:
 		MainMenu_State(GameContext& gameContext);
@@ -32,11 +30,11 @@ namespace Snaykee
 		sf::Text _debriefUI;
 		sf::Font* _menuTextFont = nullptr;
 
-		Button_SFML _playButton;
-		Button_SFML _selectShipButton_1;
-		Button_SFML _selectShipButton_2;
-		Button_SFML _selectShipButton_3;
-		Button_SFML _selectShipButton_4;
+		MR_SFML::Button_SFML _playButton;
+		MR_SFML::Button_SFML _selectShipButton_1;
+		MR_SFML::Button_SFML _selectShipButton_2;
+		MR_SFML::Button_SFML _selectShipButton_3;
+		MR_SFML::Button_SFML _selectShipButton_4;
 		unsigned int _selectedShipID = 1; // 1 = ship (green), 2 = ship (yellow), 3 = ship (white), 4 = ship (dark)
 
 		std::string _debriefString = "DEBRIEF: \nAs the captain of a lone spacecraft hurtling through the cosmos, your mission is simple: \nSTAY ALIVE. Dodge deadly obstacles, navigate treacherous celestial terrain, \nand collect vital star energy to keep your ship fueled and functional.";

@@ -100,7 +100,7 @@ namespace Snaykee
 			this->_gameContext.AssetManager.Get_SoundBuffer("partyHorn");
 
 			// Play 'New Highscore' effects
-			this->_playNewHighscoreEffectsTimer = CountdownTimer(2.5f, [this]() {this->onNewHighscore(); });
+			this->_playNewHighscoreEffectsTimer = MR_Utils::CountdownTimer(2.5f, [this]() {this->onNewHighscore(); });
 			this->_playNewHighscoreEffectsTimer.StartCountdown();
 		}
 	}
@@ -138,7 +138,7 @@ namespace Snaykee
 
 	void GameOver_State::onRestart_ButtonPressed()
 	{
-		this->_gameContext.CurrentGameState = GAME;
+		this->_gameContext.CurrentGameState = MR_SFML::GAME;
 		this->_gameContext.AudioManager.PlaySound("buttonClick", this->_gameContext.AssetManager);
 
 		this->_gameContext.GameStateManager.AddState(std::unique_ptr<GameState_SFML>(new Game(this->_gameContext)), true);
@@ -146,7 +146,7 @@ namespace Snaykee
 
 	void GameOver_State::onMainMenu_ButtonPressed()
 	{
-		this->_gameContext.CurrentGameState = MAIN_MENU;
+		this->_gameContext.CurrentGameState = MR_SFML::MAIN_MENU;
 		this->_gameContext.AudioManager.PlaySound("buttonClick", this->_gameContext.AssetManager);
 
 		// Replace 'Game Over' state with 'Main Menu' state.

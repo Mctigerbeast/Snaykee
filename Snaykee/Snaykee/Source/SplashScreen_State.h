@@ -2,12 +2,9 @@
 #include "MTigerCore/CountdownTimer.h"
 #include "MainMenu_State.h"
 
-using namespace MR_SFML;
-using namespace MR_Utils;
-
 namespace Snaykee
 {
-	class SplashScreen_State : public GameState_SFML
+	class SplashScreen_State : public MR_SFML::GameState_SFML
 	{
 	public:
 		SplashScreen_State(GameContext& gameContext);
@@ -25,7 +22,7 @@ namespace Snaykee
 		GameContext& _gameContext;
 
 		float _splashScreenDuration = 5.0f;
-		CountdownTimer _splashScreenTimer;
+		MR_Utils::CountdownTimer _splashScreenTimer;
 
 		sf::RectangleShape _splashScreenLogoBanner;
 

@@ -112,7 +112,7 @@ namespace Snaykee
 		// Pausing the game
 		if (sf::Keyboard::isKeyPressed(sf::Keyboard::Key::Escape) && !this->_isGamePaused)
 		{
-			this->_gameContext.CurrentGameState = PAUSE_MENU;
+			this->_gameContext.CurrentGameState = MR_SFML::PAUSE_MENU;
 			this->_gameContext.AudioManager.PauseMusic();
 			this->_gameContext.GameStateManager.AddState(std::unique_ptr<GameState_SFML>(new PauseMenu_State(this->_gameContext)), false);
 		}
@@ -241,8 +241,8 @@ namespace Snaykee
 
 	void Game::CheckObstacleCollisions()
 	{
-		Collider_SFML playerCollider = this->_player.Get_Gollider();
-		Collider_SFML bottomBorderCollider = this->bottomBorder->Get_Collider();
+		MR_SFML::Collider_SFML playerCollider = this->_player.Get_Gollider();
+		MR_SFML::Collider_SFML bottomBorderCollider = this->bottomBorder->Get_Collider();
 
 		for (Obstacle_PooledObject& ob : this->_obstaclesPool)
 		{
@@ -318,7 +318,7 @@ namespace Snaykee
 
 	void Game::CheckStarEnergyCollisions()
 	{
-		Collider_SFML playerCollider = this->_player.Get_Gollider();
+		MR_SFML::Collider_SFML playerCollider = this->_player.Get_Gollider();
 
 		for (StarEnergy_PooledObject& se : this->_starEnergiesPool)
 		{
@@ -346,7 +346,7 @@ namespace Snaykee
 			this->_gameContext.SaveSystem.SavePlayer_HighScore(this->_score);
 
 		// Show game over screen
-		this->_gameContext.CurrentGameState = GAME_OVER;
+		this->_gameContext.CurrentGameState = MR_SFML::GAME_OVER;
 		this->_gameContext.AudioManager.StopMusic();
 		this->_gameContext.AudioManager.PlaySound("playerDeathGameOver", this->_gameContext.AssetManager, 70.0f);
 		this->_gameContext.GameStateManager.AddState(std::unique_ptr<GameState_SFML>(new GameOver_State(this->_gameContext, this->_score, isNewHighscore)), true);

@@ -4,8 +4,6 @@
 #include "GameStateManager_SFML.h"
 #include "SaveLoadSystem.h"
 
-using namespace MR_SFML;
-
 struct GameContext
 {
 	GameContext(const std::string& gameTitle, int windowWidth, int windowHeight)
@@ -20,16 +18,16 @@ struct GameContext
 	SaveLoadSystem SaveSystem;
 
 	// Create asset manager
-	AssetManager_SFML AssetManager;
+	MR_SFML::AssetManager_SFML AssetManager;
 
 	// Create Audio Manager
-	AudioManager_SFML AudioManager;
+	MR_SFML::AudioManager_SFML AudioManager;
 
 	// Create game state manager
-	GameStateManager_SFML GameStateManager;
+	MR_SFML::GameStateManager_SFML GameStateManager;
 
 	// Tracks game's current state
-	CurrentGameState CurrentGameState = SPLASH_SCREEN;
+	MR_SFML::CurrentGameState CurrentGameState = MR_SFML::SPLASH_SCREEN;
 
 	// Creat game window
 	sf::RenderWindow* window;

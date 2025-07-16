@@ -1,7 +1,5 @@
 #include "SplashScreen_State.h"
 
-using namespace Snaykee;
-
 #pragma region Forward Declarations
 // (Time/Clock)
 double GAME_STARTING_TIME = 0.0001;
@@ -11,7 +9,7 @@ void Handle_FPS(double deltaTime);
 void Handle_GameClock();
 
 // Other
-void LoadGameAssets(AssetManager_SFML& assetManager);
+void LoadGameAssets(MR_SFML::AssetManager_SFML& assetManager);
 #pragma endregion
 
 int main()
@@ -34,7 +32,7 @@ int main()
 	LoadGameAssets(LeGameContext.AssetManager);
 
 	// Add the first game state
-	LeGameContext.GameStateManager.AddState(std::unique_ptr<GameState_SFML>(new SplashScreen_State(LeGameContext)));
+	LeGameContext.GameStateManager.AddState(std::unique_ptr<MR_SFML::GameState_SFML>(new Snaykee::SplashScreen_State(LeGameContext)));
 
 	sf::RenderWindow* window = LeGameContext.window;
 	while (window->isOpen())
@@ -95,7 +93,7 @@ void Handle_FPS(double deltaTime)
 /// <summary>
 /// Loads ALL game assets.
 /// </summary>
-void LoadGameAssets(AssetManager_SFML& assetManager)
+void LoadGameAssets(MR_SFML::AssetManager_SFML& assetManager)
 {
 	// Fonts
 	assetManager.LoadFont("mainFont", "Resources/font_playful_time_star.ttf");
@@ -140,7 +138,6 @@ void LoadGameAssets(AssetManager_SFML& assetManager)
 // TODO: Maybe have callback function for resetting player. Callback function will be called from Game and player will listen.
 // TODO: Create function that determines values based (relative-to) on window or screen) Use this function when setting position and size of objects.
 // TODO: Change ship color to red (briefly) after hitting obstacle.
-// TODO: Add game namespace.
 
 // DONE: Game over functionality.
 // DONE: Make player energy deplete by 1 every second.
@@ -187,3 +184,5 @@ void LoadGameAssets(AssetManager_SFML& assetManager)
 	// Ship hitting obstacles, Player (ship) death/game over sound.
 	// Ship collect star energy, Ship low on energy (energy < 20).
 	// Main menu music, Gameplay music, Button clicked sound.
+
+// DONE: Add game namespace.

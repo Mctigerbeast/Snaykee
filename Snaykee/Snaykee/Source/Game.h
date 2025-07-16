@@ -13,7 +13,7 @@
 
 namespace Snaykee
 {
-	class Game : public GameState_SFML
+	class Game : public MR_SFML::GameState_SFML
 	{
 	public:
 		const unsigned int OBSTACLES_POOL_SIZE = 200;

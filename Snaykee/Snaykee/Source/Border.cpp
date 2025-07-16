@@ -17,7 +17,7 @@ namespace Snaykee
 
 	void Border::Draw(sf::RenderWindow& window) { window.draw(this->_body); }
 
-	Collider_SFML Border::Get_Collider() { return Collider_SFML(this->_body); }
+	MR_SFML::Collider_SFML Border::Get_Collider() { return MR_SFML::Collider_SFML(this->_body); }
 
 	void Border::SetColor(sf::Color newColor) { this->_body.setFillColor(newColor); }
 }

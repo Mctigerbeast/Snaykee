@@ -1,8 +1,6 @@
 #pragma once
 #include "GameObject_Rectangle_SFML.h"
 
-using namespace MR_SFML;
-
 namespace Snaykee
 {
 	class StarEnergy
@@ -31,7 +29,7 @@ namespace Snaykee
 		/// Get the border's collider.
 		/// </summary>
 		/// <returns></returns>
-		Collider_SFML Get_Collider();
+		MR_SFML::Collider_SFML Get_Collider();
 
 		/// <summary>
 		/// To be called every frame.

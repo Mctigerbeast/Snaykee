@@ -2,12 +2,9 @@
 #include "Game.h"
 #include "MainMenu_State.h"
 
-using namespace MR_SFML;
-using namespace MR_Utils;
-
 namespace Snaykee
 {
-	class GameOver_State : public GameState_SFML
+	class GameOver_State : public MR_SFML::GameState_SFML
 	{
 	public:
 		GameOver_State(GameContext& gameContext, float playerScore, bool isNewHighscore);
@@ -29,15 +26,15 @@ namespace Snaykee
 
 		sf::RectangleShape _gameOverBackground;
 		sf::RectangleShape _newHighscoreVisuals;
-		Button_SFML _restartButton;
-		Button_SFML _mainMenuButton;
+		MR_SFML::Button_SFML _restartButton;
+		MR_SFML::Button_SFML _mainMenuButton;
 
 		sf::Text _gameOverTitle;
 		sf::Text _playerScoreUI;
 		sf::Text _highscoreUI;
 		sf::Font* _pauseMenuFont = nullptr;
 
-		CountdownTimer _playNewHighscoreEffectsTimer;
+		MR_Utils::CountdownTimer _playNewHighscoreEffectsTimer;
 
 	private:
 		/// <summary>
