@@ -22,8 +22,12 @@ namespace Snaykee
 		if (!this->_isShipStarted)
 		{
 			this->_isShipStarted = true;
+
 			this->_energyTimer = MR_Utils::CountdownTimer(1.0f, [this]() {this->Execute_EnergyDepletion(); });
 			this->_energyTimer.StartCountdown();
+
+			this->_playerDamageEffectTimer = MR_Utils::CountdownTimer(0.5f, [this]() {this->_playerBody.setFillColor(sf::Color::White); });
+			this->_playerBody.setOutlineColor(sf::Color(255, 255, 255, 100));
 		}
 	}
 
@@ -35,6 +39,7 @@ namespace Snaykee
 				Player_TopDown_SFML::Update(fDeltaTime, row);
 
 			this->_energyTimer.UpdateTimer(fDeltaTime);
+			this->_playerDamageEffectTimer.UpdateTimer(fDeltaTime);
 		}
 	}
 
@@ -46,6 +51,10 @@ namespace Snaykee
 		// Player is hit and no more energy = DEAD
 		if (this->_energy <= 0)
 			this->_isAlive = false;
+
+		// Visual effects
+		this->_playerBody.setFillColor(sf::Color::Red);
+		this->_playerDamageEffectTimer.StartCountdown();
 	}
 
 	void Player_SpaceShip::AddEnergy(int energyToAdd)
@@ -86,4 +95,12 @@ namespace Snaykee
 	int Player_SpaceShip::Get_Energy() { return this->_energy; }
 	bool Player_SpaceShip::HasEnergy() { return this->_energy > 0; }
 	bool Player_SpaceShip::IsAlive() { return this->_isAlive; }
+
+	void Player_SpaceShip::ShowHitbox(bool shb)
+	{
+		if (shb)
+			this->_playerBody.setOutlineThickness(3.0f);
+		else
+			this->_playerBody.setOutlineThickness(0.0f);
+	}
 }

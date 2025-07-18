@@ -4,7 +4,7 @@ namespace Snaykee
 {
 	PauseMenu_State::PauseMenu_State(GameContext& gameContext)
 		: _gameContext(gameContext), _pauseMenuTitle(*_pauseMenuFont), _resumeButton(gameContext.AssetManager),
-		_mainMenuButton(gameContext.AssetManager) {
+		_mainMenuButton(gameContext.AssetManager), _showPlayerHitboxBtn(_gameContext.AssetManager) {
 	}
 
 	PauseMenu_State::~PauseMenu_State() {
@@ -58,6 +58,23 @@ namespace Snaykee
 		this->_mainMenuButton.Set_ButtonTextOulineThickness(2.0f);
 		this->_mainMenuButton.Set_ButtonTextOulineColor(sf::Color::White);
 		this->_mainMenuButton.Set_ButtonPressedFunction([this] {this->onMainMenu_ButtonPressed(); });
+
+		// Show player hitbox button
+		this->_showPlayerHitboxBtn.Set_ButtonPosition(midWindowPosX, window_Height * 0.70f);
+		this->_showPlayerHitboxBtn.MutiplyButtonSize(2.5f);
+		this->_showPlayerHitboxBtn.Set_ButtonText(" Hitbox");
+		this->_showPlayerHitboxBtn.Set_ButtonTextFont(this->_gameContext.AssetManager.Get_Font("mainFont"));
+
+		this->_showPlayerHitboxBtn.Set_ButtonOulineThickness(2.0f);
+		this->_showPlayerHitboxBtn.Set_ButtonTextOulineThickness(2.0f);
+		this->_showPlayerHitboxBtn.Set_ButtonTextOulineColor(sf::Color::White);
+		this->_showPlayerHitboxBtn.Set_ButtonPressedFunction([this]() {this->OnToggle_ShowPlayerHitBox(); });
+
+		this->_showPlayerHitboxBtn.Set_ButtonOulineThickness(2.0f);
+		if (this->_gameContext.PlayerHitbox_Enabled())
+			this->_showPlayerHitboxBtn.Set_ButtonStateColors(sf::Color::Green, sf::Color::Green, sf::Color::Green);
+		else
+			this->_showPlayerHitboxBtn.Set_ButtonStateColors(sf::Color::Red, sf::Color::Red, sf::Color::Red);
 	}
 
 	void PauseMenu_State::HandleInput()
@@ -74,6 +91,7 @@ namespace Snaykee
 		this->HandleInput();
 		this->_resumeButton.Update(this->_gameContext.CurrentMousePositionView());
 		this->_mainMenuButton.Update(this->_gameContext.CurrentMousePositionView());
+		this->_showPlayerHitboxBtn.Update(this->_gameContext.CurrentMousePositionView());
 	}
 
 	void PauseMenu_State::Draw(sf::RenderWindow& window)
@@ -82,6 +100,7 @@ namespace Snaykee
 		window.draw(this->_pauseMenuTitle);
 		this->_resumeButton.Draw(window);
 		this->_mainMenuButton.Draw(window);
+		this->_showPlayerHitboxBtn.Draw(window);
 	}
 
 	void PauseMenu_State::onResume_ButtonPressed()
@@ -102,5 +121,15 @@ namespace Snaykee
 
 		// Replace 'Game' state with 'Main Menu' state.
 		this->_gameContext.GameStateManager.AddState(std::unique_ptr<GameState_SFML>(new MainMenu_State(this->_gameContext)), true);
+	}
+
+	void  PauseMenu_State::OnToggle_ShowPlayerHitBox()
+	{
+		this->_gameContext.Toggle_PlayerHitbox();
+
+		if (this->_gameContext.PlayerHitbox_Enabled())
+			this->_showPlayerHitboxBtn.Set_ButtonStateColors(sf::Color::Green, sf::Color::Green, sf::Color::Green);
+		else
+			this->_showPlayerHitboxBtn.Set_ButtonStateColors(sf::Color::Red, sf::Color::Red, sf::Color::Red);
 	}
 }

@@ -71,6 +71,8 @@ namespace Snaykee
 		/// <returns>(True) if player is alive.</returns>
 		bool IsAlive();
 
+		void ShowHitbox(bool shb = false);
+
 	private:
 		/// <summary>
 		/// Logic for player ship's energy depletion.
@@ -82,6 +84,7 @@ namespace Snaykee
 		int _energy = 100;
 		bool _isAlive = true;
 		MR_Utils::CountdownTimer _energyTimer;
+		MR_Utils::CountdownTimer _playerDamageEffectTimer;
 
 		bool _isShipStarted = false;
 	};

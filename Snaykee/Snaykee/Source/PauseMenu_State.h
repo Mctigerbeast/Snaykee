@@ -28,6 +28,8 @@ namespace Snaykee
 		sf::Text _pauseMenuTitle;
 		sf::Font* _pauseMenuFont = nullptr;
 
+		MR_SFML::Button_SFML _showPlayerHitboxBtn;
+
 	private:
 		/// <summary>
 		/// Functionality/logic for resuming the game from pause state.
@@ -38,5 +40,10 @@ namespace Snaykee
 		/// Functionality/logic for going to main menu.
 		/// </summary>
 		void onMainMenu_ButtonPressed();
+
+		/// <summary>
+		/// Functionality to show/hide player (ship) hitbox.
+		/// </summary>
+		void OnToggle_ShowPlayerHitBox();
 	};
 }

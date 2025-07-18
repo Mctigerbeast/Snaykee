@@ -46,4 +46,10 @@ struct GameContext
 
 	// Game's Title
 	const std::string GAME_TITLE;
+
+	void Toggle_PlayerHitbox() { this->_shwHtbx = (this->_shwHtbx) ? false : true; }
+	bool PlayerHitbox_Enabled() { return this->_shwHtbx; }
+
+private:
+	bool _shwHtbx = false;
 };

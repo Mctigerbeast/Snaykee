@@ -68,6 +68,8 @@ namespace MR_SFML
 				else
 					this->_buttonState = BUTTON_HELD;
 			}
+			else
+				this->isButtonPressed = false;
 		}
 		else
 		{
