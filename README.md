@@ -1,2 +1,2 @@
 # Snaykee
-Snake game using C++ and SFML
+Space exploration game using C++ and SFML.

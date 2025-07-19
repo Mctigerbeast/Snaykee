@@ -160,6 +160,7 @@
   </ItemDefinitionGroup>
   <ItemGroup>
     <ClCompile Include="Source\Border.cpp" />
+    <ClCompile Include="Source\CreditsScreen_State.cpp" />
     <ClCompile Include="Source\Game.cpp" />
     <ClCompile Include="Source\GameOver_State.cpp" />
     <ClCompile Include="Source\main.cpp" />
@@ -173,6 +174,7 @@
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="Source\Border.h" />
+    <ClInclude Include="Source\CreditsScreen_State.h" />
     <ClInclude Include="Source\Defines.h" />
     <ClInclude Include="Source\Game.h" />
     <ClInclude Include="Source\GameOver_State.h" />

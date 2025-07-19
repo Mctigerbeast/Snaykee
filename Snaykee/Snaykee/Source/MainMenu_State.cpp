@@ -6,7 +6,7 @@ namespace Snaykee
 		: _gameContext(gameContext), _gameTitleUI(*_menuTextFont), _highScoreUI(*_menuTextFont), _shipSelectUI(*_menuTextFont),
 		_debriefUI(*_menuTextFont), _playButton(gameContext.AssetManager), _selectShipButton_1(_gameContext.AssetManager),
 		_selectShipButton_2(_gameContext.AssetManager), _selectShipButton_3(_gameContext.AssetManager),
-		_selectShipButton_4(_gameContext.AssetManager) {
+		_selectShipButton_4(_gameContext.AssetManager), _creditsButton(_gameContext.AssetManager) {
 	}
 
 	MainMenu_State::~MainMenu_State() {}
@@ -49,6 +49,7 @@ namespace Snaykee
 		this->_selectShipButton_2.Update(this->_gameContext.CurrentMousePositionView());
 		this->_selectShipButton_3.Update(this->_gameContext.CurrentMousePositionView());
 		this->_selectShipButton_4.Update(this->_gameContext.CurrentMousePositionView());
+		this->_creditsButton.Update(this->_gameContext.CurrentMousePositionView());
 	}
 
 	void MainMenu_State::Draw(sf::RenderWindow& window)
@@ -63,6 +64,7 @@ namespace Snaykee
 		this->_selectShipButton_3.Draw(window);
 		this->_selectShipButton_4.Draw(window);
 		window.draw(this->_highScoreUI);
+		this->_creditsButton.Draw(window);
 		window.draw(this->_debriefUI);
 	}
 
@@ -75,7 +77,7 @@ namespace Snaykee
 
 		// Game title text
 		this->_gameTitleUI = sf::Text(this->_gameContext.AssetManager.Get_Font("mainFont"));
-		this->_gameTitleUI.setPosition({ midWindowPosX, window_Height * 0.15f });
+		this->_gameTitleUI.setPosition({ midWindowPosX, window_Height * 0.10f });
 		this->_gameTitleUI.setCharacterSize(200.0f);
 		this->_gameTitleUI.setLetterSpacing(2.0f);
 		this->_gameTitleUI.setString(this->_gameContext.GAME_TITLE);
@@ -86,7 +88,7 @@ namespace Snaykee
 
 		// Ship select text
 		this->_shipSelectUI = sf::Text(this->_gameContext.AssetManager.Get_Font("mainFont"));
-		this->_shipSelectUI.setPosition({ midWindowPosX, window_Height * 0.50f });
+		this->_shipSelectUI.setPosition({ midWindowPosX, window_Height * 0.45f });
 		this->_shipSelectUI.setCharacterSize(50.0f);
 		this->_shipSelectUI.setLetterSpacing(2.0f);
 		this->_shipSelectUI.setString("SHIP SELECT");
@@ -99,7 +101,7 @@ namespace Snaykee
 		// Highscore text
 		float playerHighScore = this->_gameContext.SaveSystem.Get_PlayerData().HighScore;
 		this->_highScoreUI = sf::Text(this->_gameContext.AssetManager.Get_Font("mainFont"));
-		this->_highScoreUI.setPosition({ midWindowPosX, window_Height * 0.75f });
+		this->_highScoreUI.setPosition({ midWindowPosX, window_Height * 0.70f });
 		this->_highScoreUI.setCharacterSize(50.0f);
 		this->_highScoreUI.setLetterSpacing(2.0f);
 		this->_highScoreUI.setString("HIGHSCORE: " + std::to_string(playerHighScore));
@@ -128,7 +130,7 @@ namespace Snaykee
 		float window_Height = this->_gameContext.Get_Window_HeightF();
 
 		// Play Button
-		this->_playButton.Set_ButtonPosition(midWindowPosX, window_Height * 0.35f);
+		this->_playButton.Set_ButtonPosition(midWindowPosX, window_Height * 0.30f);
 		this->_playButton.MutiplyButtonSize(3.0f);
 		this->_playButton.Set_ButtonText("  PLAY  ");
 		this->_playButton.Set_ButtonTextFont(this->_gameContext.AssetManager.Get_Font("mainFont"));
@@ -142,7 +144,7 @@ namespace Snaykee
 
 		// Ship 1 select button
 		this->_selectShipButton_1.Set_ButtonSize(window_Width * 0.10f, window_Width * 0.10f);
-		this->_selectShipButton_1.Set_ButtonPosition(window_Width * 0.30f, window_Height * 0.60f);
+		this->_selectShipButton_1.Set_ButtonPosition(window_Width * 0.30f, window_Height * 0.55f);
 		this->_selectShipButton_1.Set_ButtonTexture(&this->_gameContext.AssetManager.Get_Texture("greenShip"));
 		this->_selectShipButton_1.Set_ButtonColor_Hover(sf::Color(170, 170, 170));
 		this->_selectShipButton_1.Set_ButtonPressedFunction([this]() {this->OnSelectShip1_ButtonPressed(); });
@@ -152,7 +154,7 @@ namespace Snaykee
 
 		// Ship 2 select button
 		this->_selectShipButton_2.Set_ButtonSize(window_Width * 0.10f, window_Width * 0.10f);
-		this->_selectShipButton_2.Set_ButtonPosition(window_Width * 0.43f, window_Height * 0.60f);
+		this->_selectShipButton_2.Set_ButtonPosition(window_Width * 0.43f, window_Height * 0.55f);
 		this->_selectShipButton_2.Set_ButtonTexture(&this->_gameContext.AssetManager.Get_Texture("yellowShip"));
 		this->_selectShipButton_2.Set_ButtonColor_Hover(sf::Color(170, 170, 170));
 		this->_selectShipButton_2.Set_ButtonPressedFunction([this]() {this->OnSelectShip2_ButtonPressed(); });
@@ -162,7 +164,7 @@ namespace Snaykee
 
 		// Ship 3 select button
 		this->_selectShipButton_3.Set_ButtonSize(window_Width * 0.10f, window_Width * 0.10f);
-		this->_selectShipButton_3.Set_ButtonPosition(window_Width * 0.56f, window_Height * 0.60f);
+		this->_selectShipButton_3.Set_ButtonPosition(window_Width * 0.56f, window_Height * 0.55f);
 		this->_selectShipButton_3.Set_ButtonTexture(&this->_gameContext.AssetManager.Get_Texture("whiteShip"));
 		this->_selectShipButton_3.Set_ButtonColor_Hover(sf::Color(170, 170, 170));
 		this->_selectShipButton_3.Set_ButtonPressedFunction([this]() {this->OnSelectShip3_ButtonPressed(); });
@@ -172,13 +174,26 @@ namespace Snaykee
 
 		// Ship 4 select button
 		this->_selectShipButton_4.Set_ButtonSize(window_Width * 0.10f, window_Width * 0.10f);
-		this->_selectShipButton_4.Set_ButtonPosition(window_Width * 0.69f, window_Height * 0.60f);
+		this->_selectShipButton_4.Set_ButtonPosition(window_Width * 0.69f, window_Height * 0.55f);
 		this->_selectShipButton_4.Set_ButtonTexture(&this->_gameContext.AssetManager.Get_Texture("darkShip"));
 		this->_selectShipButton_4.Set_ButtonColor_Hover(sf::Color(170, 170, 170));
 		this->_selectShipButton_4.Set_ButtonPressedFunction([this]() {this->OnSelectShip4_ButtonPressed(); });
 
 		this->_selectShipButton_4.Set_ButtonOulineThickness(2.0f);
 		this->_selectShipButton_4.Set_ButtonOulineColor(sf::Color(255, 255, 255, 0));
+
+		// Play Button
+		this->_creditsButton.Set_ButtonPosition(midWindowPosX, window_Height * 0.80f);
+		this->_creditsButton.MutiplyButtonSize(2.5f);
+		this->_creditsButton.Set_ButtonText(" CREDITS ");
+		this->_creditsButton.Set_ButtonTextFont(this->_gameContext.AssetManager.Get_Font("mainFont"));
+		this->_creditsButton.Set_ButtonPressedFunction([this]() {this->OnCreditsButtonPressed(); });
+
+		this->_creditsButton.Set_ButtonColor_Idle(sf::Color(170, 170, 170));
+		this->_creditsButton.Set_ButtonColor_Hover(sf::Color(85, 85, 85));
+		this->_creditsButton.Set_ButtonOulineThickness(2.0f);
+		this->_creditsButton.Set_ButtonTextOulineThickness(2.0f);
+		this->_creditsButton.Set_ButtonTextOulineColor(sf::Color::White);
 	}
 
 	void MainMenu_State::OnPlayButtonPressed()
@@ -213,6 +228,17 @@ namespace Snaykee
 	{
 		this->NewShipSelected(4);
 		this->_gameContext.AudioManager.PlaySound("buttonClick", this->_gameContext.AssetManager); // Play audio
+	}
+
+	void MainMenu_State::OnCreditsButtonPressed()
+	{
+		this->_gameContext.GameStateManager.Get_CurrentActiveState()->PauseState();
+		this->_gameContext.CurrentGameState = MR_SFML::CREDITS;
+		this->_gameContext.GameStateManager.AddState(std::unique_ptr<GameState_SFML>(new CreditsScreen_State(this->_gameContext)), true);
+
+		// Play Audio
+		this->_gameContext.AudioManager.PlaySound(
+			this->_gameContext.AssetManager.Get_SoundBuffer("buttonClick"));
 	}
 
 

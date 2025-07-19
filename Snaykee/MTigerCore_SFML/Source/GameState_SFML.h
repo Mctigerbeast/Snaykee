@@ -48,6 +48,7 @@ namespace MR_SFML
 		MAIN_MENU,
 		GAME,
 		GAME_OVER,
-		PAUSE_MENU
+		PAUSE_MENU,
+		CREDITS
 	};
 }

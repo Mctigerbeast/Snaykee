@@ -1,6 +1,7 @@
 #pragma once
 #include "Defines.h"
 #include "Game.h"
+#include "CreditsScreen_State.h"
 
 namespace Snaykee
 {
@@ -35,6 +36,7 @@ namespace Snaykee
 		MR_SFML::Button_SFML _selectShipButton_2;
 		MR_SFML::Button_SFML _selectShipButton_3;
 		MR_SFML::Button_SFML _selectShipButton_4;
+		MR_SFML::Button_SFML _creditsButton;
 		unsigned int _selectedShipID = 1; // 1 = ship (green), 2 = ship (yellow), 3 = ship (white), 4 = ship (dark)
 
 		std::string _debriefString = "DEBRIEF: \nAs the captain of a lone spacecraft hurtling through the cosmos, your mission is simple: \nSTAY ALIVE. Dodge deadly obstacles, navigate treacherous celestial terrain, \nand collect vital star energy to keep your ship fueled and functional.";
@@ -47,6 +49,7 @@ namespace Snaykee
 		void OnSelectShip2_ButtonPressed();
 		void OnSelectShip3_ButtonPressed();
 		void OnSelectShip4_ButtonPressed();
+		void OnCreditsButtonPressed();
 		void NewShipSelected(unsigned int shipID);
 	};
 }
