@@ -36,6 +36,14 @@ namespace Snaykee
 			this->_starEnergiesPool.push_back(starEnergyObj);
 		}
 
+		// Setup ship projectiles container (vector) (pooled)
+		for (int i = 0; i < SHIP_PROJECTILE_POOL_SIZE; ++i)
+		{
+			ShipProjectile_PooledObject shipProjectileObj = { false, ShipProjectile({1.0f, 1.0f}, {0.0f, 0.0f}, nullptr) };
+			this->_shipProjectilesPool.push_back(shipProjectileObj);
+		}
+		this->_fireRateTimer = MR_Utils::CountdownTimer(this->_fireRate, [this]() {this->OnResetFire(); });
+
 		// Set resources
 		this->_backgroundTexture = &this->_gameContext.AssetManager.Get_Texture("purpleBackground");
 
@@ -111,11 +119,29 @@ namespace Snaykee
 		}
 
 		// Pausing the game
-		if (sf::Keyboard::isKeyPressed(sf::Keyboard::Key::Escape) && !this->_isGamePaused)
+		if (!this->_isGamePaused && sf::Keyboard::isKeyPressed(sf::Keyboard::Key::Escape))
 		{
 			this->_gameContext.CurrentGameState = MR_SFML::PAUSE_MENU;
 			this->_gameContext.AudioManager.PauseMusic();
 			this->_gameContext.GameStateManager.AddState(std::unique_ptr<GameState_SFML>(new PauseMenu_State(this->_gameContext)), false);
+		}
+
+		// Firing Projectiles
+		if (this->_canFire && sf::Keyboard::isKeyPressed(sf::Keyboard::Key::Space))
+		{
+			this->_canFire = false;
+			this->_player.RemoveEnergy(2.0f);
+
+			for (ShipProjectile_PooledObject& sp : this->_shipProjectilesPool)
+			{
+				if (!sp.IsInUse)
+				{
+					sp.IsInUse = true;
+					sp.ShipProjectileObj.Reset({ 20.0f, 40.0f }, this->_player.Get_PlayerPosition(), nullptr);
+					this->_fireRateTimer.StartCountdown();
+					break;
+				}
+			}
 		}
 	}
 
@@ -124,27 +150,35 @@ namespace Snaykee
 		if (this->_isGamePaused)
 			return;
 
-		this->_deltaTime = fDeltaTime;
-
 		this->HandleInput();
+		this->_fireRateTimer.UpdateTimer(fDeltaTime);
 
-		this->_score += this->_deltaTime;
-
-		// Calculations
+		// Calculations (generation and collision)
 		this->GenerateObstacles();
 		this->CheckObstacleCollisions();
 		this->GenerateStarEnergy();
 		this->CheckStarEnergyCollisions();
+		this->CheckShipProjectileCollisions();
 
-		// Updating
+		// Update player
 		this->_player.Update(fDeltaTime);
 
-		for (Obstacle_PooledObject& ob : this->_obstaclesPool) // Update obstacles
+		// Update obstacles
+		for (Obstacle_PooledObject& ob : this->_obstaclesPool)
 		{
 			if (ob.IsInUse)
 				ob.ObstacleObj.Update(fDeltaTime);
 		}
 
+		// Update ship projectiles
+		for (ShipProjectile_PooledObject& sp : this->_shipProjectilesPool)
+		{
+			if (sp.IsInUse)
+				sp.ShipProjectileObj.Update(fDeltaTime);
+		}
+
+		// Update score
+		this->_score += fDeltaTime;
 		this->_scoreText_UI.setString("SCORE: " + std::to_string(this->_score));
 		this->_energyText_UI.setString("ENERGY: " + std::to_string(this->_player.Get_Energy()));
 
@@ -171,6 +205,13 @@ namespace Snaykee
 		{
 			if (se.IsInUse)
 				se.StarEnergyObj.Draw(window);
+		}
+
+		// Draw ship projectiles
+		for (ShipProjectile_PooledObject& sp : this->_shipProjectilesPool)
+		{
+			if (sp.IsInUse)
+				sp.ShipProjectileObj.Draw(window);
 		}
 
 		// Draw obstacles
@@ -201,13 +242,51 @@ namespace Snaykee
 		window.draw(this->_energyText_UI);
 	}
 
-	void Game::PauseState() { this->_isGamePaused = true; }
+#pragma region Game State
+	void Game::PauseState()
+	{
+		this->_isGamePaused = true;
+	}
 
 	void Game::StartState()
 	{
 		this->_isGamePaused = false;
 		this->_player.ShowHitbox(this->_gameContext.PlayerHitbox_Enabled());
 	}
+
+	void Game::Execute_GameOver()
+	{
+		this->_isGameOver = true;
+		bool isNewHighscore = (this->_score > this->_gameContext.SaveSystem.Get_PlayerData().HighScore);
+
+		// Save player's high score
+		if (isNewHighscore)
+			this->_gameContext.SaveSystem.SavePlayer_HighScore(this->_score);
+
+		// Show game over screen
+		this->_gameContext.CurrentGameState = MR_SFML::GAME_OVER;
+		this->_gameContext.AudioManager.StopMusic();
+		this->_gameContext.AudioManager.PlaySound("playerDeathGameOver", this->_gameContext.AssetManager, 70.0f);
+		this->_gameContext.GameStateManager.AddState(std::unique_ptr<GameState_SFML>(new GameOver_State(this->_gameContext, this->_score, isNewHighscore)), true);
+	}
+
+	void Game::Execute_StartGame()
+	{
+		this->_score = 0; // Reset player score
+		this->_player.Set_PlayerPostition({ this->Get_Window_WidthF() / 2.0f,  this->Get_Window_HeightF() / 2.0f }); // Reset player's position
+		this->_player.ResetPlayer(); // Reset player's health, etc.
+
+		// Reset obstacles pool objects
+		for (Obstacle_PooledObject& ob : this->_obstaclesPool)
+			ob.IsInUse = false;
+
+		// Reset star energies pool objects
+		for (StarEnergy_PooledObject& se : this->_starEnergiesPool)
+			se.IsInUse = false;
+
+		this->_isGameOver = false;
+	}
+#pragma endregion
 
 	void Game::GenerateObstacles()
 	{
@@ -341,37 +420,31 @@ namespace Snaykee
 		}
 	}
 
-	void Game::Execute_GameOver()
+	void Game::CheckShipProjectileCollisions()
 	{
-		this->_isGameOver = true;
-		bool isNewHighscore = (this->_score > this->_gameContext.SaveSystem.Get_PlayerData().HighScore);
+		MR_SFML::Collider_SFML topBorderCollider = this->topBorder->Get_Collider();
 
-		// Save player's high score
-		if (isNewHighscore)
-			this->_gameContext.SaveSystem.SavePlayer_HighScore(this->_score);
+		for (ShipProjectile_PooledObject& sp : this->_shipProjectilesPool)
+		{
+			if (sp.IsInUse)
+			{
+				// Collision(s) with border(s)
+				if (sp.ShipProjectileObj.Get_Collider().CheckCollision(topBorderCollider, 0.0f))
+					sp.IsInUse = false;
 
-		// Show game over screen
-		this->_gameContext.CurrentGameState = MR_SFML::GAME_OVER;
-		this->_gameContext.AudioManager.StopMusic();
-		this->_gameContext.AudioManager.PlaySound("playerDeathGameOver", this->_gameContext.AssetManager, 70.0f);
-		this->_gameContext.GameStateManager.AddState(std::unique_ptr<GameState_SFML>(new GameOver_State(this->_gameContext, this->_score, isNewHighscore)), true);
-	}
+				// Collision(s) with obstacle(s)
+				for (Obstacle_PooledObject& ob : this->_obstaclesPool)
+				{
+					MR_SFML::Collider_SFML obstacleCollider = ob.ObstacleObj.Get_Collider();
 
-	void Game::Execute_StartGame()
-	{
-		this->_score = 0; // Reset player score
-		this->_player.Set_PlayerPostition({ this->Get_Window_WidthF() / 2.0f,  this->Get_Window_HeightF() / 2.0f }); // Reset player's position
-		this->_player.ResetPlayer(); // Reset player's health, etc.
-
-		// Reset obstacles pool objects
-		for (Obstacle_PooledObject& ob : this->_obstaclesPool)
-			ob.IsInUse = false;
-
-		// Reset star energies pool objects
-		for (StarEnergy_PooledObject& se : this->_starEnergiesPool)
-			se.IsInUse = false;
-
-		this->_isGameOver = false;
+					if (ob.IsInUse && sp.ShipProjectileObj.Get_Collider().CheckCollision(obstacleCollider, 1.0f))
+					{
+						ob.IsInUse = false;
+						sp.IsInUse = false;
+					}
+				}
+			}
+		}
 	}
 
 	sf::Texture* Game::DeterminePlayerShipTexture()
@@ -417,6 +490,8 @@ namespace Snaykee
 			break;
 		}
 	}
+
+	void Game::OnResetFire() { this->_canFire = true; }
 
 	float Game::Get_Window_WidthF() { return this->_gameContext.Get_Window_WidthF(); }
 

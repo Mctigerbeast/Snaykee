@@ -2,11 +2,13 @@
 #pragma once
 #include <iostream>
 #include "MTigerCore/MR_Math.h"
+#include "MTigerCore/CountdownTimer.h"
 
 #include "Player_SpaceShip.h"
 #include "Obstacle.h"
 #include "Border.h"
 #include "StarEnergy.h"
+#include "ShipProjectile.h"
 
 #include "PauseMenu_State.h"
 #include "GameOver_State.h"
@@ -18,6 +20,7 @@ namespace Snaykee
 	public:
 		const unsigned int OBSTACLES_POOL_SIZE = 200;
 		const unsigned int STAR_ENERGY_POOL_SIZE = 3;
+		const unsigned int SHIP_PROJECTILE_POOL_SIZE = 20;
 
 		/// <summary>
 		/// Returns center/middle of screen.
@@ -76,6 +79,11 @@ namespace Snaykee
 		void CheckStarEnergyCollisions();
 
 		/// <summary>
+		/// Functionality/logic for checking ship projectile collisions with obstacles and border(s).
+		/// </summary>
+		void CheckShipProjectileCollisions();
+
+		/// <summary>
 		/// Functionality/logic for game over.
 		/// </summary>
 		void Execute_GameOver();
@@ -98,6 +106,11 @@ namespace Snaykee
 		sf::Texture* DetermineObstacleTexture();
 
 		/// <summary>
+		/// Resets the firing state after ship projectile has been fired and firing cooldown is over.
+		/// </summary>
+		void OnResetFire();
+
+		/// <summary>
 		/// Get game window's width, as a float.
 		/// </summary>
 		/// <returns>Return game window's width.</returns>
@@ -117,9 +130,6 @@ namespace Snaykee
 
 		GameContext& _gameContext;
 
-		// Time (clock)
-		double _deltaTime = 0.0;
-
 		// Player
 		int _direction;
 		Player_SpaceShip _player;
@@ -134,6 +144,12 @@ namespace Snaykee
 
 		// Star Energies
 		std::vector<StarEnergy_PooledObject> _starEnergiesPool;
+
+		// Ship projectiles (shooting/firing)
+		std::vector<ShipProjectile_PooledObject> _shipProjectilesPool;
+		MR_Utils::CountdownTimer _fireRateTimer;
+		float _fireRate = 0.5f;
+		bool _canFire = true;
 
 		// Screen (window) borders
 		Border* leftBorder = nullptr;

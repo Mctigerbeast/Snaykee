@@ -234,7 +234,7 @@ namespace Snaykee
 	{
 		this->_gameContext.GameStateManager.Get_CurrentActiveState()->PauseState();
 		this->_gameContext.CurrentGameState = MR_SFML::CREDITS;
-		this->_gameContext.GameStateManager.AddState(std::unique_ptr<GameState_SFML>(new CreditsScreen_State(this->_gameContext)), true);
+		this->_gameContext.GameStateManager.AddState(std::unique_ptr<GameState_SFML>(new CreditsScreen_State(this->_gameContext)), false);
 
 		// Play Audio
 		this->_gameContext.AudioManager.PlaySound(

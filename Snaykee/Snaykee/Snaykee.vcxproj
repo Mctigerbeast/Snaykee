@@ -169,6 +169,7 @@
     <ClCompile Include="Source\PauseMenu_State.cpp" />
     <ClCompile Include="Source\Player_SpaceShip.cpp" />
     <ClCompile Include="Source\SaveLoadSystem.cpp" />
+    <ClCompile Include="Source\ShipProjectile.cpp" />
     <ClCompile Include="Source\StarEnergy.cpp" />
     <ClCompile Include="Source\SplashScreen_State.cpp" />
   </ItemGroup>
@@ -183,6 +184,7 @@
     <ClInclude Include="Source\PauseMenu_State.h" />
     <ClInclude Include="Source\Player_SpaceShip.h" />
     <ClInclude Include="Source\SaveLoadSystem.h" />
+    <ClInclude Include="Source\ShipProjectile.h" />
     <ClInclude Include="Source\StarEnergy.h" />
     <ClInclude Include="Source\SplashScreen_State.h" />
   </ItemGroup>

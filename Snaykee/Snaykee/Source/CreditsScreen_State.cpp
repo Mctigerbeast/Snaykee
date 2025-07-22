@@ -145,9 +145,9 @@ namespace Snaykee
 	{
 		this->_gameContext.CurrentGameState = MR_SFML::MAIN_MENU;
 		this->_gameContext.AudioManager.PlaySound("buttonClick", this->_gameContext.AssetManager);
+		this->_gameContext.GameStateManager.RemoveState();
 
 		// Replace 'Credits Screens' state with 'Main Menu' state.
-		this->_gameContext.GameStateManager.AddState(std::unique_ptr<GameState_SFML>(new MainMenu_State(this->_gameContext)), true);
-
+		//this->_gameContext.GameStateManager.AddState(std::unique_ptr<GameState_SFML>(new MainMenu_State(this->_gameContext)), true);
 	}
 }
