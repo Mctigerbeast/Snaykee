@@ -87,6 +87,9 @@ namespace Snaykee
 		this->_background.setTexture(this->_backgroundTexture);
 		this->_background.setFillColor(sf::Color{ 255,255,255,100 });
 
+		if (!this->_playerProjectileShader.loadFromFile("Resources/sh_outer_glow_attn.frag", sf::Shader::Type::Fragment))
+			printf("shader 'sh_outer_glow_attn.frag' was not found/loaded.");
+
 		// UI (score text)
 		this->_scoreText_UI = sf::Text(*this->_scoreTextFont_UI);
 		this->_scoreText_UI.setPosition({ this->Get_Window_WidthF() * 0.05f, this->Get_Window_HeightF() * 0.95f });
@@ -137,7 +140,9 @@ namespace Snaykee
 				if (!sp.IsInUse)
 				{
 					sp.IsInUse = true;
-					sp.ShipProjectileObj.Reset({ 20.0f, 40.0f }, this->_player.Get_PlayerPosition(), nullptr);
+					//sp.ShipProjectileObj.Reset({ 20.0f, 40.0f }, this->_player.Get_PlayerPosition(), &this->_gameContext.AssetManager.Get_Texture("shipProjectile"));
+					sp.ShipProjectileObj.Reset({ 40.0f, 40.0f }, this->_player.Get_PlayerPosition(), &this->_gameContext.AssetManager.Get_Texture("shipProjectile")); // Testing
+					sp.ShipProjectileObj.SetupShader(this->_playerProjectileShader, this->_playerProjectileColor);
 					this->_fireRateTimer.StartCountdown();
 					break;
 				}
@@ -452,15 +457,19 @@ namespace Snaykee
 		switch (this->_gameContext.SaveSystem.Get_PlayerData().SelectedShip)
 		{
 		case 1:
+			this->_playerProjectileColor = sf::Color(0.0f, 255.0f, 0.0f, 255.0f);
 			return this->_playerTexture_1;
 			break;
 		case 2:
+			this->_playerProjectileColor = sf::Color(230.0f, 100.0f, 0.0f, 255.0f);
 			return this->_playerTexture_2;
 			break;
 		case 3:
+			this->_playerProjectileColor = sf::Color(0.0f, 0.0f, 255.0f, 255.0f);
 			return this->_playerTexture_3;
 			break;
 		case 4:
+			this->_playerProjectileColor = sf::Color(255.0f, 0.0f, 0.0f, 255.0f);
 			return this->_playerTexture_4;
 			break;
 		default:

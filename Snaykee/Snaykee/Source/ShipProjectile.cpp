@@ -33,7 +33,36 @@ namespace Snaykee
 		this->_body.setOrigin(this->_body.getSize() / 2.0f);
 		this->_body.setTexture(texture);
 		this->_body.setFillColor(color);
-
 		this->_velocity = { 0.0f, 0.0f };
+
+		// Shader setup
+		/*this->shader->setUniform("glowColor", sf::Glsl::Vec4(0.0f, 1.0f, 0.8f, 1.0f));
+		this->shader->setUniform("innerTintColor", sf::Glsl::Vec4(0.0f, 0.6f, 1.0f, 1.0f));
+		this->shader->setUniform("glowStrength", 8.0f);
+		this->shader->setUniform("glowRadius", 20.0f);
+		//this->shader->setUniform("texelSize", sf::Vector2f(1.0f / this->_body.getTexture()->getSize().x, 1.0f / this->_body.getTexture()->getSize().y));
+		this->shader->setUniform("texelSize", sf::Vector2f(1.0f / this->_body.getSize().x, 1.0f / this->_body.getSize().y));*/
+	}
+
+	void ShipProjectile::Draw(sf::RenderWindow& window)
+	{
+		window.draw(this->_body, this->shader);
+	}
+
+	void ShipProjectile::SetupShader(sf::Shader& newShader, sf::Color color)
+	{
+		this->shader = &newShader;
+		float x = color.r;
+		float y = color.g;
+		float z = color.b;
+		float w = color.a;
+
+		// Shader setup
+		this->shader->setUniform("glowColor", sf::Glsl::Vec4(x, y, z, 1.0f));
+		this->shader->setUniform("innerTintColor", sf::Glsl::Vec4(x, y, z, 1.0f));
+		this->shader->setUniform("glowStrength", 0.05f);
+		this->shader->setUniform("glowRadius", 10.0f);
+		//this->shader->setUniform("texelSize", sf::Vector2f(1.0f / this->_body.getTexture()->getSize().x, 1.0f / this->_body.getTexture()->getSize().y));
+		this->shader->setUniform("texelSize", sf::Vector2f(1.0f / this->_body.getSize().x, 1.0f / this->_body.getSize().y));
 	}
 }

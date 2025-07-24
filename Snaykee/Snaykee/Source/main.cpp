@@ -117,6 +117,8 @@ void LoadGameAssets(MR_SFML::AssetManager_SFML& assetManager)
 	assetManager.LoadTexture("starEnergy_1_Texture", "Resources/spr_star_energy_1.png");
 	assetManager.LoadTexture("starEnergy_2_Texture", "Resources/spr_star_energy_2.png");
 	assetManager.LoadTexture("starEnergy_3_Texture", "Resources/spr_star_energy_3.png");
+	
+	assetManager.LoadTexture("shipProjectile", "Resources/spr_circle_plain.png");
 
 	// Sounds
 	assetManager.LoadSoundBuffer("buttonClick", "Resources/sfx_button_click.wav");

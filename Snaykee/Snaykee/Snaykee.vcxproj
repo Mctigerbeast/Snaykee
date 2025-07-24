@@ -193,6 +193,9 @@
       <Project>{5f9ef5b6-a726-4271-9d05-5bf217f96433}</Project>
     </ProjectReference>
   </ItemGroup>
+  <ItemGroup>
+    <None Include="Resources\sh_outer_glow.frag" />
+  </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
   <ImportGroup Label="ExtensionTargets">
   </ImportGroup>

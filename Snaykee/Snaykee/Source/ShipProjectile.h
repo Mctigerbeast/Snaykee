@@ -21,8 +21,23 @@ namespace Snaykee
 		/// <param name="texture"></param>
 		void Reset(sf::Vector2f size, sf::Vector2f position, sf::Texture* texture, sf::Color color = sf::Color::White);
 
+		/// <summary>
+		/// Override function in parent class.
+		/// </summary>
+		/// <param name="window"></param>
+		void Draw(sf::RenderWindow& window) override;
+
+		/// <summary>
+		/// Sets up projectile object's shader.
+		/// </summary>
+		/// <param name="newShader">new Shader object</param>
+		/// <param name="color">Color for glowing effect.</param>
+		void SetupShader(sf::Shader& newShader, sf::Color color);
+
 	private:
-		float _movementSpeed = 700.0f;
+		//float _movementSpeed = 700.0f;
+		float _movementSpeed = 70.0f; // Testing
+		sf::Shader* shader = nullptr;
 	};
 
 	struct ShipProjectile_PooledObject

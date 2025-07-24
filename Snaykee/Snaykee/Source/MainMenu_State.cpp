@@ -241,7 +241,6 @@ namespace Snaykee
 			this->_gameContext.AssetManager.Get_SoundBuffer("buttonClick"));
 	}
 
-
 	void MainMenu_State::NewShipSelected(unsigned int shipID)
 	{
 		// Adjust ship ID if needed (too low/high).

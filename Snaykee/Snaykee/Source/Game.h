@@ -137,6 +137,7 @@ namespace Snaykee
 		sf::Texture* _playerTexture_2 = nullptr;
 		sf::Texture* _playerTexture_3 = nullptr;
 		sf::Texture* _playerTexture_4 = nullptr;
+		sf::Color _playerProjectileColor;
 
 		// Obstacles
 		std::vector<Obstacle_PooledObject> _obstaclesPool;
@@ -169,6 +170,8 @@ namespace Snaykee
 		sf::Texture* _starEnergy_1_Texture = nullptr;
 		sf::Texture* _starEnergy_2_Texture = nullptr;
 		sf::Texture* _starEnergy_3_Texture = nullptr;
+
+		sf::Shader _playerProjectileShader = sf::Shader();
 
 		// UI Visuals
 		sf::Text _scoreText_UI;

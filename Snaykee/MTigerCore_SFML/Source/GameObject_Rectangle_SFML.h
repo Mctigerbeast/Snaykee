@@ -17,13 +17,13 @@ namespace MR_SFML
 		/// <summary>
 		/// [Destructor] Cleans up the class.
 		/// </summary>
-		~GameObject_Rectangle_SFML();
+		virtual ~GameObject_Rectangle_SFML();
 
 		/// <summary>
 		/// Draw this border (object) to a window.
 		/// </summary>
 		/// <param name="window"></param>
-		void Draw(sf::RenderWindow& window);
+		virtual void Draw(sf::RenderWindow& window);
 
 		/// <summary>
 		/// To be called every frame.
