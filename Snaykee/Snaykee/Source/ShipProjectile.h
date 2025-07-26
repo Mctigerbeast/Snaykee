@@ -35,8 +35,7 @@ namespace Snaykee
 		void SetupShader(sf::Shader& newShader, sf::Color color);
 
 	private:
-		//float _movementSpeed = 700.0f;
-		float _movementSpeed = 70.0f; // Testing
+		float _movementSpeed = 700.0f;
 		sf::Shader* shader = nullptr;
 	};
 

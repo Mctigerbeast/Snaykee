@@ -52,16 +52,21 @@ namespace Snaykee
 	void ShipProjectile::SetupShader(sf::Shader& newShader, sf::Color color)
 	{
 		this->shader = &newShader;
-		float x = color.r;
-		float y = color.g;
-		float z = color.b;
-		float w = color.a;
+		float x = (color.r * 1.0f);
+		float y = (color.g * 1.0f);
+		float z = (color.b * 1.0f);
+		float w = (color.a * 1.0f);
+
+		x /= 255.0f;
+		y /= 255.0f;
+		z /= 255.0f;
+		w /= 255.0f;
 
 		// Shader setup
 		this->shader->setUniform("glowColor", sf::Glsl::Vec4(x, y, z, 1.0f));
 		this->shader->setUniform("innerTintColor", sf::Glsl::Vec4(x, y, z, 1.0f));
-		this->shader->setUniform("glowStrength", 0.05f);
-		this->shader->setUniform("glowRadius", 10.0f);
+		this->shader->setUniform("glowStrength", 10.0f);
+		this->shader->setUniform("glowRadius", 5.0f);
 		//this->shader->setUniform("texelSize", sf::Vector2f(1.0f / this->_body.getTexture()->getSize().x, 1.0f / this->_body.getTexture()->getSize().y));
 		this->shader->setUniform("texelSize", sf::Vector2f(1.0f / this->_body.getSize().x, 1.0f / this->_body.getSize().y));
 	}
