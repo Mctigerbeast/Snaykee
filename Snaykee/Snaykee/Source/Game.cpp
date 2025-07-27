@@ -42,7 +42,7 @@ namespace Snaykee
 			ShipProjectile_PooledObject shipProjectileObj = { false, ShipProjectile({1.0f, 1.0f}, {0.0f, 0.0f}, nullptr) };
 			this->_shipProjectilesPool.push_back(shipProjectileObj);
 		}
-		this->_fireRateTimer = MR_Utils::CountdownTimer(this->_fireRate, [this]() {this->OnResetFire(); });
+
 
 		// Set resources
 		this->_backgroundTexture = &this->_gameContext.AssetManager.Get_Texture("purpleBackground");
@@ -130,10 +130,9 @@ namespace Snaykee
 		}
 
 		// Firing Projectiles
-		if (this->_canFire && sf::Keyboard::isKeyPressed(sf::Keyboard::Key::Space))
+		if (this->_player.CanFireProjectile() && sf::Keyboard::isKeyPressed(sf::Keyboard::Key::Space))
 		{
-			this->_canFire = false;
-			this->_player.RemoveEnergy(2.0f);
+			this->_player.FireProjectile();
 
 			for (ShipProjectile_PooledObject& sp : this->_shipProjectilesPool)
 			{
@@ -141,8 +140,8 @@ namespace Snaykee
 				{
 					sp.IsInUse = true;
 					sp.ShipProjectileObj.Reset({ 20.0f, 40.0f }, this->_player.Get_PlayerPosition(), &this->_gameContext.AssetManager.Get_Texture("shipProjectile"));
-					sp.ShipProjectileObj.SetupShader(this->_playerProjectileShader, this->_playerProjectileColor);
-					this->_fireRateTimer.StartCountdown();
+					sp.ShipProjectileObj.SetupShader(this->_playerProjectileShader, this->_playerProjectileColor_Inner, this->_playerProjectileColor_Outer);
+					this->_gameContext.AudioManager.PlaySound("laserShot", this->_gameContext.AssetManager, 50.0f);
 					break;
 				}
 			}
@@ -155,7 +154,6 @@ namespace Snaykee
 			return;
 
 		this->HandleInput();
-		this->_fireRateTimer.UpdateTimer(fDeltaTime);
 
 		// Calculations (generation and collision)
 		this->GenerateObstacles();
@@ -201,9 +199,6 @@ namespace Snaykee
 		// Draw background
 		window.draw(this->_background);
 
-		// Draw player
-		this->_player.Draw(window);
-
 		// Draw star energies
 		for (StarEnergy_PooledObject& se : this->_starEnergiesPool)
 		{
@@ -217,6 +212,9 @@ namespace Snaykee
 			if (sp.IsInUse)
 				sp.ShipProjectileObj.Draw(window);
 		}
+
+		// Draw player
+		this->_player.Draw(window);
 
 		// Draw obstacles
 		for (Obstacle_PooledObject& ob : this->_obstaclesPool)
@@ -418,7 +416,7 @@ namespace Snaykee
 					this->_score += 5;
 					this->_player.AddEnergy(se.StarEnergyObj.Get_EnergyPower());
 					se.IsInUse = false;
-					this->_gameContext.AudioManager.PlaySound("starCollect", this->_gameContext.AssetManager);
+					this->_gameContext.AudioManager.PlaySound("starCollect", this->_gameContext.AssetManager, 60.0f);
 				}
 			}
 		}
@@ -445,6 +443,7 @@ namespace Snaykee
 					{
 						ob.IsInUse = false;
 						sp.IsInUse = false;
+						this->_gameContext.AudioManager.PlaySound("explosion", this->_gameContext.AssetManager, 200.0f);
 					}
 				}
 			}
@@ -456,19 +455,24 @@ namespace Snaykee
 		switch (this->_gameContext.SaveSystem.Get_PlayerData().SelectedShip)
 		{
 		case 1:
-			this->_playerProjectileColor = sf::Color(0, 255, 0, 255);
+			//this->_playerProjectileColor = sf::Color(0, 255, 0, 255);
+			this->_playerProjectileColor_Inner = sf::Color(3, 130, 60, 255);
+			this->_playerProjectileColor_Outer = sf::Color::Green;
 			return this->_playerTexture_1;
 			break;
 		case 2:
-			this->_playerProjectileColor = sf::Color(230, 100, 0, 255);
+			this->_playerProjectileColor_Inner = sf::Color(240, 200, 40, 255);
+			this->_playerProjectileColor_Outer = sf::Color::Yellow;
 			return this->_playerTexture_2;
 			break;
 		case 3:
-			this->_playerProjectileColor = sf::Color(0, 0, 255, 255);
+			this->_playerProjectileColor_Inner = sf::Color(50, 200, 200, 255);
+			this->_playerProjectileColor_Outer = sf::Color(60, 100, 250);
 			return this->_playerTexture_3;
 			break;
 		case 4:
-			this->_playerProjectileColor = sf::Color(255, 0, 0, 255);
+			this->_playerProjectileColor_Inner = sf::Color(225, 70, 20, 255);
+			this->_playerProjectileColor_Outer = sf::Color::Red;
 			return this->_playerTexture_4;
 			break;
 		default:
@@ -498,8 +502,6 @@ namespace Snaykee
 			break;
 		}
 	}
-
-	void Game::OnResetFire() { this->_canFire = true; }
 
 	float Game::Get_Window_WidthF() { return this->_gameContext.Get_Window_WidthF(); }
 

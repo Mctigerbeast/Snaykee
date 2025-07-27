@@ -106,11 +106,6 @@ namespace Snaykee
 		sf::Texture* DetermineObstacleTexture();
 
 		/// <summary>
-		/// Resets the firing state after ship projectile has been fired and firing cooldown is over.
-		/// </summary>
-		void OnResetFire();
-
-		/// <summary>
 		/// Get game window's width, as a float.
 		/// </summary>
 		/// <returns>Return game window's width.</returns>
@@ -137,7 +132,10 @@ namespace Snaykee
 		sf::Texture* _playerTexture_2 = nullptr;
 		sf::Texture* _playerTexture_3 = nullptr;
 		sf::Texture* _playerTexture_4 = nullptr;
-		sf::Color _playerProjectileColor;
+
+		sf::Shader _playerProjectileShader = sf::Shader();
+		sf::Color _playerProjectileColor_Inner;
+		sf::Color _playerProjectileColor_Outer;
 
 		// Obstacles
 		std::vector<Obstacle_PooledObject> _obstaclesPool;
@@ -147,10 +145,7 @@ namespace Snaykee
 		std::vector<StarEnergy_PooledObject> _starEnergiesPool;
 
 		// Ship projectiles (shooting/firing)
-		std::vector<ShipProjectile_PooledObject> _shipProjectilesPool;
-		MR_Utils::CountdownTimer _fireRateTimer;
-		float _fireRate = 0.5f;
-		bool _canFire = true;
+		std::vector<ShipProjectile_PooledObject> _shipProjectilesPool;		
 
 		// Screen (window) borders
 		Border* leftBorder = nullptr;
@@ -170,8 +165,6 @@ namespace Snaykee
 		sf::Texture* _starEnergy_1_Texture = nullptr;
 		sf::Texture* _starEnergy_2_Texture = nullptr;
 		sf::Texture* _starEnergy_3_Texture = nullptr;
-
-		sf::Shader _playerProjectileShader = sf::Shader();
 
 		// UI Visuals
 		sf::Text _scoreText_UI;

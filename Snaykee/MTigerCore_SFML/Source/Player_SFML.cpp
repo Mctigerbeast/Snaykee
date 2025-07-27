@@ -106,6 +106,7 @@ namespace MR_SFML
 	void Player_SFML::Set_PlayerSize(sf::Vector2f playerSize)
 	{
 		this->_playerBody.setSize(playerSize);
+		this->_playerBody.setOrigin(this->_playerBody.getSize() / 2.0f);
 	}
 
 	void Player_SFML::Set_PlayerPostition(sf::Vector2f playerPosition)

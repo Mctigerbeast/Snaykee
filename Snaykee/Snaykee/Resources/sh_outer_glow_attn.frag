@@ -3,8 +3,8 @@
 // Outer Glow using attenuation
 
 uniform sampler2D texture;
+uniform vec4 innerColor;
 uniform vec4 glowColor;
-uniform vec4 innerTintColor;
 uniform float glowStrength;
 uniform float glowRadius; // How far glow extends (in texels)
 uniform vec2 texelSize; // vec2(1.0 / texWidth, 1.0 / texHeight)
@@ -14,13 +14,14 @@ void main()
     vec2 uv = gl_TexCoord[0].xy;
     vec4 center = texture2D(texture, uv);
     
-// IF INNER PIXEL IS OPAQUE, APPLY TINT (INNER)
+// IF INNER PIXEL IS OPAQUE, APPLY INNER COLOR
     if (center.a > 0.0)
     {
-        vec3 tinted = mix(center.rgb, innerTintColor.rbg, innerTintColor.a);
-        gl_FragColor = vec4(tinted, center.a);
+        // APPLY TINT
+        //vec3 tinted = mix(center.rgb, innerColor.rbg, innerColor.a);
+        //gl_FragColor = vec4(tinted, center.a);
 
-        //gl_FragColor = center;
+        gl_FragColor = innerColor;
         return;
     }
 
@@ -47,6 +48,6 @@ void main()
     glow /= totalSamples;
 
     // Final glow color
-    vec4 result = vec4(glowColor.rgb, glow * glowStrength * glowColor.a);
-    gl_FragColor = result;
+    vec4 finalColor = vec4(glowColor.rgb, glow * glowStrength * glowColor.a);
+    gl_FragColor = finalColor;
 }

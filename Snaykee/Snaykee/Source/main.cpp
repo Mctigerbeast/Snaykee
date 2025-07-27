@@ -117,8 +117,9 @@ void LoadGameAssets(MR_SFML::AssetManager_SFML& assetManager)
 	assetManager.LoadTexture("starEnergy_1_Texture", "Resources/spr_star_energy_1.png");
 	assetManager.LoadTexture("starEnergy_2_Texture", "Resources/spr_star_energy_2.png");
 	assetManager.LoadTexture("starEnergy_3_Texture", "Resources/spr_star_energy_3.png");
-	
+
 	assetManager.LoadTexture("shipProjectile", "Resources/spr_circle_plain.png");
+	assetManager.LoadTexture("explosion", "Resources/spr_circle_plain.png");
 
 	// Sounds
 	assetManager.LoadSoundBuffer("buttonClick", "Resources/sfx_button_click.wav");
@@ -128,6 +129,8 @@ void LoadGameAssets(MR_SFML::AssetManager_SFML& assetManager)
 	assetManager.LoadSoundBuffer("playerDeathGameOver", "Resources/sfx_game_over.wav");
 	assetManager.LoadSoundBuffer("audienceCheer", "Resources/sfx_audience_cheering.wav");
 	assetManager.LoadSoundBuffer("partyHorn", "Resources/sfx_party_horn.wav");
+	assetManager.LoadSoundBuffer("laserShot", "Resources/sfx_laser_shot.wav");
+	assetManager.LoadSoundBuffer("explosion", "Resources/sfx_small_explosion.wav");
 }
 #pragma endregion
 
@@ -138,7 +141,6 @@ void LoadGameAssets(MR_SFML::AssetManager_SFML& assetManager)
 // TODO: Add background objects (planets, shiprecks, etc.) that slowly move down giving illusion of player flying by them.
 // TODO: Maybe have callback function for resetting player. Callback function will be called from Game and player will listen.
 // TODO: Create function that determines values based (relative-to) on window or screen) Use this function when setting position and size of objects.
-// TODO: [MAYBE] Add projectiles. Cost 2 energy, destroys projectile that it collides with. 0.5 - 1 second cooldown.
 
 // DONE: Game over functionality.
 // DONE: Make player energy deplete by 1 every second.
@@ -190,3 +192,4 @@ void LoadGameAssets(MR_SFML::AssetManager_SFML& assetManager)
 // DONE: Change ship color to red (briefly) after hitting obstacle.
 // DONE: Make obstacles (asteroids) spin.
 // DONE: Create credits state (page).
+// DONE: [MAYBE] Add projectiles. Cost 2 energy, destroys projectile that it collides with. 0.5 - 1 second cooldown.

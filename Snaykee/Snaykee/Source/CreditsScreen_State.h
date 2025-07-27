@@ -48,18 +48,21 @@ namespace Snaykee
 			"- Powerup 05.wav by LilMati -- https ://freesound.org/s/523651/ -- License: Creative Commons 0\n"
 			"- Button_Click2 by BaggoNotes -- https ://freesound.org/s/721503/ -- License: Creative Commons 0\n"
 			"- Audience applause with cheering.wav by Riancodgamer -- https ://freesound.org/s/414985/ -- License: Creative Commons 0\n"
-			"- Party horn.wav by audiosmedia -- https ://freesound.org/s/170583/ -- License: Creative Commons 0";
+			"- Party horn.wav by audiosmedia -- https ://freesound.org/s/170583/ -- License: Creative Commons 0\n"
+			"- Flutter Laser by adh.dreaming -- https://freesound.org/s/634317/ -- License: Creative Commons 0\n"
+			"- Space Explosion with  reverb.wav by morganpurkis -- https://freesound.org/s/394127/ -- License: Creative Commons 0";
 
 		std::string _musicString = "MUSIC\n"
 			"- Surrealism(Ambient Mix) by Andrewkn -- https://freesound.org/s/417884/ -- License: Creative Commons 0\n"
 			"- Upbeat Japanese Gaming Music by Tomentum + --https ://freesound.org/s/721634/ -- License: Attribution 4.0\n"
 			"- ISS conversation with the Earth.mp3 by oae888 -- https ://freesound.org/s/541586/ -- License: Creative Commons 0\n"
-			"- S001_Countdown_Signal.wav by Pól -- https ://freesound.org/s/385928/ -- License: Creative Commons 0";
+			"- S001_Countdown_Signal.wav by Pól -- https ://freesound.org/s/385928/ -- License: Creative Commons 0\n";
 
 		std::string _imagesTexturesString = "IMAGES/TEXTURES\n"
 			"- freepik.com\n"
-			"- cleanpng.com\n";
-		
+			"- cleanpng.com\n"
+			/*"- Explosion created by Luis Zuno (@ansimuz)"*/;
+
 		std::string _madeWithString = "Made With\n"
 			"- C++ | SFML | Photoshop\n";
 

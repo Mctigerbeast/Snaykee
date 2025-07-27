@@ -23,6 +23,8 @@ namespace Snaykee
 		{
 			this->_isShipStarted = true;
 
+			this->_fireRateTimer = MR_Utils::CountdownTimer(this->_fireRate, [this]() {this->OnResetFire(); });
+
 			this->_energyTimer = MR_Utils::CountdownTimer(1.0f, [this]() {this->Execute_EnergyDepletion(); });
 			this->_energyTimer.StartCountdown();
 
@@ -39,6 +41,7 @@ namespace Snaykee
 				Player_TopDown_SFML::Update(fDeltaTime, row);
 
 			this->_energyTimer.UpdateTimer(fDeltaTime);
+			this->_fireRateTimer.UpdateTimer(fDeltaTime);
 			this->_playerDamageEffectTimer.UpdateTimer(fDeltaTime);
 		}
 	}
@@ -92,15 +95,31 @@ namespace Snaykee
 		}
 	}
 
-	int Player_SpaceShip::Get_Energy() { return this->_energy; }
-	bool Player_SpaceShip::HasEnergy() { return this->_energy > 0; }
-	bool Player_SpaceShip::IsAlive() { return this->_isAlive; }
-
-	void Player_SpaceShip::ShowHitbox(bool shb)
+	void Player_SpaceShip::FireProjectile()
 	{
-		if (shb)
+		if (!this->_canFire || this->_energy < 2)
+			return;
+
+		this->_canFire = false;
+		this->_energy -= 2;
+		this->_fireRateTimer.StartCountdown();
+	}
+
+	void Player_SpaceShip::OnResetFire()
+	{
+		this->_canFire = true;
+	}
+
+	void Player_SpaceShip::ShowHitbox(bool enableHitbox)
+	{
+		if (enableHitbox)
 			this->_playerBody.setOutlineThickness(3.0f);
 		else
 			this->_playerBody.setOutlineThickness(0.0f);
 	}
+
+	int Player_SpaceShip::Get_Energy() { return this->_energy; }
+	bool Player_SpaceShip::HasEnergy() { return this->_energy > 0; }
+	bool Player_SpaceShip::IsAlive() { return this->_isAlive; }
+	bool Player_SpaceShip::CanFireProjectile() { return this->_canFire && (this->_energy > 1); }
 }

@@ -32,7 +32,7 @@ namespace Snaykee
 		/// </summary>
 		/// <param name="newShader">new Shader object</param>
 		/// <param name="color">Color for glowing effect.</param>
-		void SetupShader(sf::Shader& newShader, sf::Color color);
+		void SetupShader(sf::Shader& newShader, sf::Color innerColor, sf::Color outerColor);
 
 	private:
 		float _movementSpeed = 700.0f;

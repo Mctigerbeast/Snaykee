@@ -57,6 +57,22 @@ namespace Snaykee
 		void ResetPlayer();
 
 		/// <summary>
+		/// Fires player ship projectile;
+		/// </summary>
+		void FireProjectile();
+
+		/// <summary>
+		/// Resets the firing state after ship projectile has been fired and firing cooldown is over.
+		/// </summary>
+		void OnResetFire();
+
+		/// <summary>
+		/// Show/hides player ship's hitbox.
+		/// </summary>
+		/// <param name="enableHitbox"></param>
+		void ShowHitbox(bool enableHitbox = false);
+
+		/// <summary>
 		/// </summary>
 		/// <returns>The player ship's current energy.</returns>
 		int Get_Energy();
@@ -71,7 +87,10 @@ namespace Snaykee
 		/// <returns>(True) if player is alive.</returns>
 		bool IsAlive();
 
-		void ShowHitbox(bool shb = false);
+		/// <summary>
+		/// </summary>
+		/// <returns>(True) if player can fire a projectile.</returns>
+		bool CanFireProjectile();
 
 	private:
 		/// <summary>
@@ -85,6 +104,10 @@ namespace Snaykee
 		bool _isAlive = true;
 		MR_Utils::CountdownTimer _energyTimer;
 		MR_Utils::CountdownTimer _playerDamageEffectTimer;
+
+		MR_Utils::CountdownTimer _fireRateTimer;
+		float _fireRate = 0.5f;
+		bool _canFire = true;
 
 		bool _isShipStarted = false;
 	};

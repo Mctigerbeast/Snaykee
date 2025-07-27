@@ -90,7 +90,7 @@ namespace Snaykee
 
 		// Music text
 		this->_musicUI = sf::Text(this->_gameContext.AssetManager.Get_Font("defaultFont"));
-		this->_musicUI.setPosition({ window_Width * 0.02f, window_Height * 0.52f });
+		this->_musicUI.setPosition({ window_Width * 0.02f, window_Height * 0.55f });
 		this->_musicUI.setCharacterSize(20.0f);
 		this->_musicUI.setLetterSpacing(1.0f);
 		this->_musicUI.setString(this->_musicString);
@@ -101,7 +101,7 @@ namespace Snaykee
 
 		// Images/textures text
 		this->_imagesTexturesUI = sf::Text(this->_gameContext.AssetManager.Get_Font("defaultFont"));
-		this->_imagesTexturesUI.setPosition({ window_Width * 0.02f, window_Height * 0.67f });
+		this->_imagesTexturesUI.setPosition({ window_Width * 0.02f, window_Height * 0.70f });
 		this->_imagesTexturesUI.setCharacterSize(20.0f);
 		this->_imagesTexturesUI.setLetterSpacing(1.0f);
 		this->_imagesTexturesUI.setString(this->_imagesTexturesString);
@@ -111,7 +111,7 @@ namespace Snaykee
 		//this->_imagesTexturesUI.setOrigin(this->_imagesTexturesUI.getGlobalBounds().size / 2.0f);
 
 		this->_madeWithUI = sf::Text(this->_gameContext.AssetManager.Get_Font("defaultFont"));
-		this->_madeWithUI.setPosition({ window_Width * 0.02f, window_Height * 0.77f });
+		this->_madeWithUI.setPosition({ window_Width * 0.02f, window_Height * 0.80f });
 		this->_madeWithUI.setCharacterSize(20.0f);
 		this->_madeWithUI.setLetterSpacing(1.0f);
 		this->_madeWithUI.setString(this->_madeWithString);
