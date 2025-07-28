@@ -14,9 +14,6 @@ namespace Snaykee
 	void GameOver_State::Initialize()
 	{
 		float midWindowPosX = this->_gameContext.Get_Window_WidthF() / 2.0f;
-		float midWindowPosY = this->_gameContext.Get_Window_HeightF() / 2.0f;
-		float window_Width = this->_gameContext.Get_Window_WidthF();
-		float window_Height = this->_gameContext.Get_Window_HeightF();
 
 		this->_gameOverBackground = sf::RectangleShape({ 1800.0f /*this->Get_Window_WidthF()*/, this->_gameContext.Get_Window_HeightF() });
 		this->_gameOverBackground.setTexture(&this->_gameContext.AssetManager.Get_Texture("purpleBackground"));
@@ -34,7 +31,7 @@ namespace Snaykee
 #pragma region UI Text
 		// Pause menu title text
 		this->_gameOverTitle = sf::Text(*this->_pauseMenuFont);
-		this->_gameOverTitle.setPosition({ midWindowPosX, window_Height * 0.15f });
+		this->_gameOverTitle.setPosition({ midWindowPosX, this->_gameContext.PercentOfWindow_Y(15.0f) });
 		this->_gameOverTitle.setCharacterSize(100.0f);
 		this->_gameOverTitle.setLetterSpacing(2.0f);
 		this->_gameOverTitle.setString("GAME OVER");
@@ -45,7 +42,7 @@ namespace Snaykee
 
 		// Player score text
 		this->_playerScoreUI = sf::Text(this->_gameContext.AssetManager.Get_Font("mainFont"));
-		this->_playerScoreUI.setPosition({ midWindowPosX, window_Height * 0.35f });
+		this->_playerScoreUI.setPosition({ midWindowPosX, this->_gameContext.PercentOfWindow_Y(35.0f) });
 		this->_playerScoreUI.setCharacterSize(50.0f);
 		this->_playerScoreUI.setLetterSpacing(2.0f);
 		this->_playerScoreUI.setString("SCORE: " + std::to_string(this->_playerScore));
@@ -56,7 +53,7 @@ namespace Snaykee
 
 		// Highscore text
 		this->_highscoreUI = sf::Text(this->_gameContext.AssetManager.Get_Font("mainFont"));
-		this->_highscoreUI.setPosition({ midWindowPosX, window_Height * 0.45f });
+		this->_highscoreUI.setPosition({ midWindowPosX, this->_gameContext.PercentOfWindow_Y(45.0f) });
 		this->_highscoreUI.setCharacterSize(50.0f);
 		this->_highscoreUI.setLetterSpacing(2.0f);
 		this->_highscoreUI.setString("HIGHSCORE: " + std::to_string(playerHighScore));
@@ -68,7 +65,7 @@ namespace Snaykee
 
 #pragma region UI Buttons
 		// Resume Button
-		this->_restartButton.Set_ButtonPosition(midWindowPosX, window_Height * 0.60f);
+		this->_restartButton.Set_ButtonPosition(midWindowPosX, this->_gameContext.PercentOfWindow_Y(60.0f));
 		this->_restartButton.MutiplyButtonSize(3.0f);
 		this->_restartButton.Set_ButtonText("RESTART");
 		this->_restartButton.Set_ButtonTextFont(this->_gameContext.AssetManager.Get_Font("mainFont"));
@@ -81,7 +78,7 @@ namespace Snaykee
 		this->_restartButton.Set_ButtonPressedFunction([this] {this->onRestart_ButtonPressed(); });
 
 		// Main Menu Button
-		this->_mainMenuButton.Set_ButtonPosition(midWindowPosX, window_Height * 0.75f);
+		this->_mainMenuButton.Set_ButtonPosition(midWindowPosX, this->_gameContext.PercentOfWindow_Y(75.0f));
 		this->_mainMenuButton.MutiplyButtonSize(3.0f);
 		this->_mainMenuButton.Set_ButtonText(" MENU ");
 		this->_mainMenuButton.Set_ButtonTextFont(this->_gameContext.AssetManager.Get_Font("mainFont"));

@@ -71,14 +71,11 @@ namespace Snaykee
 	void MainMenu_State::SetupText()
 	{
 		float midWindowPosX = this->_gameContext.Get_Window_WidthF() / 2.0f;
-		float midWindowPosY = this->_gameContext.Get_Window_HeightF() / 2.0f;
-		float window_Width = this->_gameContext.Get_Window_WidthF();
-		float window_Height = this->_gameContext.Get_Window_HeightF();
 
 		// Game title text
 		this->_gameTitleUI = sf::Text(this->_gameContext.AssetManager.Get_Font("mainFont"));
-		this->_gameTitleUI.setPosition({ midWindowPosX, window_Height * 0.10f });
-		this->_gameTitleUI.setCharacterSize(200.0f);
+		this->_gameTitleUI.setPosition({ midWindowPosX, this->_gameContext.PercentOfWindow_Y(10.0f) });
+		this->_gameTitleUI.setCharacterSize(this->_gameContext.PercentOfWindow_X(20.0f));
 		this->_gameTitleUI.setLetterSpacing(2.0f);
 		this->_gameTitleUI.setString(this->_gameContext.GAME_TITLE);
 		this->_gameTitleUI.setFillColor(sf::Color::Black);
@@ -88,8 +85,8 @@ namespace Snaykee
 
 		// Ship select text
 		this->_shipSelectUI = sf::Text(this->_gameContext.AssetManager.Get_Font("mainFont"));
-		this->_shipSelectUI.setPosition({ midWindowPosX, window_Height * 0.45f });
-		this->_shipSelectUI.setCharacterSize(50.0f);
+		this->_shipSelectUI.setPosition({ midWindowPosX, this->_gameContext.PercentOfWindow_Y(45.0f) });
+		this->_shipSelectUI.setCharacterSize(this->_gameContext.PercentOfWindow_X(5.0f));
 		this->_shipSelectUI.setLetterSpacing(2.0f);
 		this->_shipSelectUI.setString("SHIP SELECT");
 		this->_shipSelectUI.setFillColor(sf::Color::Black);
@@ -97,12 +94,11 @@ namespace Snaykee
 		this->_shipSelectUI.setOutlineColor(sf::Color::White);
 		this->_shipSelectUI.setOrigin(this->_shipSelectUI.getGlobalBounds().size / 2.0f);
 
-
 		// Highscore text
 		float playerHighScore = this->_gameContext.SaveSystem.Get_PlayerData().HighScore;
 		this->_highScoreUI = sf::Text(this->_gameContext.AssetManager.Get_Font("mainFont"));
-		this->_highScoreUI.setPosition({ midWindowPosX, window_Height * 0.70f });
-		this->_highScoreUI.setCharacterSize(50.0f);
+		this->_highScoreUI.setPosition({ midWindowPosX, this->_gameContext.PercentOfWindow_Y(70.0f) });
+		this->_highScoreUI.setCharacterSize(this->_gameContext.PercentOfWindow_X(5.0f));
 		this->_highScoreUI.setLetterSpacing(2.0f);
 		this->_highScoreUI.setString("HIGHSCORE: " + std::to_string(playerHighScore));
 		this->_highScoreUI.setFillColor(sf::Color::Black);
@@ -112,12 +108,12 @@ namespace Snaykee
 
 		// Debrief text
 		this->_debriefUI = sf::Text(this->_gameContext.AssetManager.Get_Font("defaultFont"));
-		this->_debriefUI.setPosition({ midWindowPosX, window_Height * 0.90f });
-		this->_debriefUI.setCharacterSize(25.0f);
+		this->_debriefUI.setPosition({ midWindowPosX, this->_gameContext.PercentOfWindow_Y(90.0f) });
+		this->_debriefUI.setCharacterSize(this->_gameContext.PercentOfWindow_X(2.25f));
 		this->_debriefUI.setLetterSpacing(1.0f);
 		this->_debriefUI.setString(this->_debriefString);
 		this->_debriefUI.setFillColor(sf::Color::Black);
-		this->_debriefUI.setOutlineThickness(1.25f);
+		this->_debriefUI.setOutlineThickness(2.0f);
 		this->_debriefUI.setOutlineColor(sf::Color::White);
 		this->_debriefUI.setOrigin(this->_debriefUI.getGlobalBounds().size / 2.0f);
 	}
@@ -125,12 +121,9 @@ namespace Snaykee
 	void MainMenu_State::SetupButtons()
 	{
 		float midWindowPosX = this->_gameContext.Get_Window_WidthF() / 2.0f;
-		float midWindowPosY = this->_gameContext.Get_Window_HeightF() / 2.0f;
-		float window_Width = this->_gameContext.Get_Window_WidthF();
-		float window_Height = this->_gameContext.Get_Window_HeightF();
 
 		// Play Button
-		this->_playButton.Set_ButtonPosition(midWindowPosX, window_Height * 0.30f);
+		this->_playButton.Set_ButtonPosition(midWindowPosX, this->_gameContext.PercentOfWindow_Y(30.0f));
 		this->_playButton.MutiplyButtonSize(3.0f);
 		this->_playButton.Set_ButtonText("  PLAY  ");
 		this->_playButton.Set_ButtonTextFont(this->_gameContext.AssetManager.Get_Font("mainFont"));
@@ -142,9 +135,11 @@ namespace Snaykee
 		this->_playButton.Set_ButtonTextOulineThickness(2.0f);
 		this->_playButton.Set_ButtonTextOulineColor(sf::Color::White);
 
+		float shipSelBtnSize = this->_gameContext.PercentOfWindow_X(10.0f);
+
 		// Ship 1 select button
-		this->_selectShipButton_1.Set_ButtonSize(window_Width * 0.10f, window_Width * 0.10f);
-		this->_selectShipButton_1.Set_ButtonPosition(window_Width * 0.30f, window_Height * 0.55f);
+		this->_selectShipButton_1.Set_ButtonSize(shipSelBtnSize, shipSelBtnSize);
+		this->_selectShipButton_1.Set_ButtonPosition(this->_gameContext.PercentOfWindow_X(30.0f), this->_gameContext.PercentOfWindow_Y(55.0f));
 		this->_selectShipButton_1.Set_ButtonTexture(&this->_gameContext.AssetManager.Get_Texture("greenShip"));
 		this->_selectShipButton_1.Set_ButtonColor_Hover(sf::Color(170, 170, 170));
 		this->_selectShipButton_1.Set_ButtonPressedFunction([this]() {this->OnSelectShip1_ButtonPressed(); });
@@ -153,8 +148,8 @@ namespace Snaykee
 		this->_selectShipButton_1.Set_ButtonOulineColor(sf::Color(255, 255, 255, 0));
 
 		// Ship 2 select button
-		this->_selectShipButton_2.Set_ButtonSize(window_Width * 0.10f, window_Width * 0.10f);
-		this->_selectShipButton_2.Set_ButtonPosition(window_Width * 0.43f, window_Height * 0.55f);
+		this->_selectShipButton_2.Set_ButtonSize(shipSelBtnSize, shipSelBtnSize);
+		this->_selectShipButton_2.Set_ButtonPosition(this->_gameContext.PercentOfWindow_X(43.0f), this->_gameContext.PercentOfWindow_Y(55.0f));
 		this->_selectShipButton_2.Set_ButtonTexture(&this->_gameContext.AssetManager.Get_Texture("yellowShip"));
 		this->_selectShipButton_2.Set_ButtonColor_Hover(sf::Color(170, 170, 170));
 		this->_selectShipButton_2.Set_ButtonPressedFunction([this]() {this->OnSelectShip2_ButtonPressed(); });
@@ -163,8 +158,8 @@ namespace Snaykee
 		this->_selectShipButton_2.Set_ButtonOulineColor(sf::Color(255, 255, 255, 0));
 
 		// Ship 3 select button
-		this->_selectShipButton_3.Set_ButtonSize(window_Width * 0.10f, window_Width * 0.10f);
-		this->_selectShipButton_3.Set_ButtonPosition(window_Width * 0.56f, window_Height * 0.55f);
+		this->_selectShipButton_3.Set_ButtonSize(shipSelBtnSize, shipSelBtnSize);
+		this->_selectShipButton_3.Set_ButtonPosition(this->_gameContext.PercentOfWindow_X(56.0f), this->_gameContext.PercentOfWindow_Y(55.0f));
 		this->_selectShipButton_3.Set_ButtonTexture(&this->_gameContext.AssetManager.Get_Texture("whiteShip"));
 		this->_selectShipButton_3.Set_ButtonColor_Hover(sf::Color(170, 170, 170));
 		this->_selectShipButton_3.Set_ButtonPressedFunction([this]() {this->OnSelectShip3_ButtonPressed(); });
@@ -173,8 +168,8 @@ namespace Snaykee
 		this->_selectShipButton_3.Set_ButtonOulineColor(sf::Color(255, 255, 255, 0));
 
 		// Ship 4 select button
-		this->_selectShipButton_4.Set_ButtonSize(window_Width * 0.10f, window_Width * 0.10f);
-		this->_selectShipButton_4.Set_ButtonPosition(window_Width * 0.69f, window_Height * 0.55f);
+		this->_selectShipButton_4.Set_ButtonSize(shipSelBtnSize, shipSelBtnSize);
+		this->_selectShipButton_4.Set_ButtonPosition(this->_gameContext.PercentOfWindow_X(69.0f), this->_gameContext.PercentOfWindow_Y(55.0f));
 		this->_selectShipButton_4.Set_ButtonTexture(&this->_gameContext.AssetManager.Get_Texture("darkShip"));
 		this->_selectShipButton_4.Set_ButtonColor_Hover(sf::Color(170, 170, 170));
 		this->_selectShipButton_4.Set_ButtonPressedFunction([this]() {this->OnSelectShip4_ButtonPressed(); });
@@ -183,7 +178,7 @@ namespace Snaykee
 		this->_selectShipButton_4.Set_ButtonOulineColor(sf::Color(255, 255, 255, 0));
 
 		// Play Button
-		this->_creditsButton.Set_ButtonPosition(midWindowPosX, window_Height * 0.80f);
+		this->_creditsButton.Set_ButtonPosition(midWindowPosX, this->_gameContext.PercentOfWindow_Y(80.0f));
 		this->_creditsButton.MutiplyButtonSize(2.5f);
 		this->_creditsButton.Set_ButtonText(" CREDITS ");
 		this->_creditsButton.Set_ButtonTextFont(this->_gameContext.AssetManager.Get_Font("mainFont"));

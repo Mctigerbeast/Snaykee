@@ -63,7 +63,7 @@ namespace Snaykee
 			"- cleanpng.com\n"
 			"- Explosion created by Luis Zuno (@ansimuz)";
 
-		std::string _madeWithString = "Made With\n"
+		std::string _madeWithString = "MADE WITH\n"
 			"- C++ | SFML | Photoshop\n";
 
 	private:

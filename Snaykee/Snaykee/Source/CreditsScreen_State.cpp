@@ -50,69 +50,64 @@ namespace Snaykee
 
 	void CreditsScreen_State::SetupText()
 	{
-		float midWindowPosX = this->_gameContext.Get_Window_WidthF() / 2.0f;
-		float midWindowPosY = this->_gameContext.Get_Window_HeightF() / 2.0f;
-		float window_Width = this->_gameContext.Get_Window_WidthF();
-		float window_Height = this->_gameContext.Get_Window_HeightF();
+		float titleCharSize = this->_gameContext.PercentOfWindow_X(4.5f);
+		float characterSize = this->_gameContext.PercentOfWindow_X(1.6f);
+
+		float charPosX = this->_gameContext.PercentOfWindow_X(5.0f);
 
 		// Credits title text
 		this->_creditsTitleUI = sf::Text(this->_gameContext.AssetManager.Get_Font("defaultFont"));
-		this->_creditsTitleUI.setPosition({ window_Width * 0.02f, window_Height * 0.05f });
-		this->_creditsTitleUI.setCharacterSize(45.0f);
+		this->_creditsTitleUI.setPosition({ charPosX, this->_gameContext.PercentOfWindow_Y(05.0f) });
+		this->_creditsTitleUI.setCharacterSize(titleCharSize);
 		this->_creditsTitleUI.setLetterSpacing(1.0f);
 		this->_creditsTitleUI.setString("CREDITS");
 		this->_creditsTitleUI.setFillColor(sf::Color::Black);
 		this->_creditsTitleUI.setOutlineThickness(3.0f);
 		this->_creditsTitleUI.setOutlineColor(sf::Color::White);
-		//this->_creditsTitleUI.setOrigin(this->_creditsTitleUI.getGlobalBounds().size / 2.0f);
 
 		// Developers text
 		this->_devsUI = sf::Text(this->_gameContext.AssetManager.Get_Font("defaultFont"));
-		this->_devsUI.setPosition({ window_Width * 0.02f, window_Height * 0.15f });
-		this->_devsUI.setCharacterSize(20.0f);
+		this->_devsUI.setPosition({ charPosX, this->_gameContext.PercentOfWindow_Y(15.0f) });
+		this->_devsUI.setCharacterSize(characterSize);
 		this->_devsUI.setLetterSpacing(1.0f);
 		this->_devsUI.setString(this->_devsString);
 		this->_devsUI.setFillColor(sf::Color::Black);
 		this->_devsUI.setOutlineThickness(2.0f);
 		this->_devsUI.setOutlineColor(sf::Color::White);
-		//this->_devsUI.setOrigin(this->_devsUI.getGlobalBounds().size / 2.0f);
 
 		// Sounds text
 		this->_soundsUI = sf::Text(this->_gameContext.AssetManager.Get_Font("defaultFont"));
-		this->_soundsUI.setPosition({ window_Width * 0.02f, window_Height * 0.27f });
-		this->_soundsUI.setCharacterSize(19.0f);
+		this->_soundsUI.setPosition({ charPosX, this->_gameContext.PercentOfWindow_Y(27.0f) });
+		this->_soundsUI.setCharacterSize(characterSize);
 		this->_soundsUI.setLetterSpacing(1.0f);
 		this->_soundsUI.setString(this->_soundsString);
 		this->_soundsUI.setFillColor(sf::Color::Black);
 		this->_soundsUI.setOutlineThickness(2.0f);
 		this->_soundsUI.setOutlineColor(sf::Color::White);
-		//this->_soundsUI.setOrigin(this->_soundsUI.getGlobalBounds().size / 2.0f);
 
 		// Music text
 		this->_musicUI = sf::Text(this->_gameContext.AssetManager.Get_Font("defaultFont"));
-		this->_musicUI.setPosition({ window_Width * 0.02f, window_Height * 0.55f });
-		this->_musicUI.setCharacterSize(20.0f);
+		this->_musicUI.setPosition({ charPosX, this->_gameContext.PercentOfWindow_Y(55.0f) });
+		this->_musicUI.setCharacterSize(characterSize);
 		this->_musicUI.setLetterSpacing(1.0f);
 		this->_musicUI.setString(this->_musicString);
 		this->_musicUI.setFillColor(sf::Color::Black);
 		this->_musicUI.setOutlineThickness(2.0f);
 		this->_musicUI.setOutlineColor(sf::Color::White);
-		//this->_musicUI.setOrigin(this->_musicUI.getGlobalBounds().size / 2.0f);
 
 		// Images/textures text
 		this->_imagesTexturesUI = sf::Text(this->_gameContext.AssetManager.Get_Font("defaultFont"));
-		this->_imagesTexturesUI.setPosition({ window_Width * 0.02f, window_Height * 0.70f });
-		this->_imagesTexturesUI.setCharacterSize(20.0f);
+		this->_imagesTexturesUI.setPosition({ charPosX, this->_gameContext.PercentOfWindow_Y(70.0f) });
+		this->_imagesTexturesUI.setCharacterSize(characterSize);
 		this->_imagesTexturesUI.setLetterSpacing(1.0f);
 		this->_imagesTexturesUI.setString(this->_imagesTexturesString);
 		this->_imagesTexturesUI.setFillColor(sf::Color::Black);
 		this->_imagesTexturesUI.setOutlineThickness(2.0f);
 		this->_imagesTexturesUI.setOutlineColor(sf::Color::White);
-		//this->_imagesTexturesUI.setOrigin(this->_imagesTexturesUI.getGlobalBounds().size / 2.0f);
 
 		this->_madeWithUI = sf::Text(this->_gameContext.AssetManager.Get_Font("defaultFont"));
-		this->_madeWithUI.setPosition({ window_Width * 0.02f, window_Height * 0.80f });
-		this->_madeWithUI.setCharacterSize(20.0f);
+		this->_madeWithUI.setPosition({ charPosX, this->_gameContext.PercentOfWindow_Y(80.0f) });
+		this->_madeWithUI.setCharacterSize(characterSize);
 		this->_madeWithUI.setLetterSpacing(1.0f);
 		this->_madeWithUI.setString(this->_madeWithString);
 		this->_madeWithUI.setFillColor(sf::Color::Black);
@@ -146,8 +141,5 @@ namespace Snaykee
 		this->_gameContext.CurrentGameState = MR_SFML::MAIN_MENU;
 		this->_gameContext.AudioManager.PlaySound("buttonClick", this->_gameContext.AssetManager);
 		this->_gameContext.GameStateManager.RemoveState();
-
-		// Replace 'Credits Screens' state with 'Main Menu' state.
-		//this->_gameContext.GameStateManager.AddState(std::unique_ptr<GameState_SFML>(new MainMenu_State(this->_gameContext)), true);
 	}
 }

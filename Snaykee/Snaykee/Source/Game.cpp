@@ -95,7 +95,7 @@ namespace Snaykee
 
 		// UI (score text)
 		this->_scoreText_UI = sf::Text(*this->_scoreTextFont_UI);
-		this->_scoreText_UI.setPosition({ this->Get_Window_WidthF() * 0.05f, this->Get_Window_HeightF() * 0.95f });
+		this->_scoreText_UI.setPosition({ this->_gameContext.PercentOfWindow_X(05.f), this->_gameContext.PercentOfWindow_Y(95.0f) });
 		this->_scoreText_UI.setOrigin(this->_scoreText_UI.getGlobalBounds().size / 2.0f);
 		this->_scoreText_UI.setLetterSpacing(2.0f);
 		this->_scoreText_UI.setFillColor(sf::Color::Black);
@@ -104,7 +104,7 @@ namespace Snaykee
 		this->_scoreText_UI.setCharacterSize(20.0f);
 
 		this->_energyText_UI = sf::Text(*this->_energyTextFont_UI);
-		this->_energyText_UI.setPosition({ this->Get_Window_WidthF() * 0.825f, this->Get_Window_HeightF() * 0.95f });
+		this->_energyText_UI.setPosition({ this->_gameContext.PercentOfWindow_X(82.5f), this->_gameContext.PercentOfWindow_Y(95.0f) });
 		this->_energyText_UI.setOrigin(this->_energyText_UI.getGlobalBounds().size / 2.0f);
 		this->_energyText_UI.setLetterSpacing(2.0f);
 		this->_energyText_UI.setFillColor(sf::Color::Black);

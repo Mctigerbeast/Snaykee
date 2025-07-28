@@ -39,7 +39,10 @@ namespace Snaykee
 		MR_SFML::Button_SFML _creditsButton;
 		unsigned int _selectedShipID = 1; // 1 = ship (green), 2 = ship (yellow), 3 = ship (white), 4 = ship (dark)
 
-		std::string _debriefString = "DEBRIEF: \nAs the captain of a lone spacecraft hurtling through the cosmos, your mission is simple: \nSTAY ALIVE. Dodge deadly obstacles, navigate treacherous celestial terrain, \nand collect vital star energy to keep your ship fueled and functional.";
+		std::string _debriefString = "DEBRIEF: \n"
+			"As the captain of a lone spacecraft hurtling through the cosmos, your mission is simple:\n"
+			"STAY ALIVE. Dodge deadly obstacles, navigate treacherous celestial terrain, \n"
+			"and collect vital star energy to keep your ship fueled and functional.";
 
 	private:
 		void SetupText();

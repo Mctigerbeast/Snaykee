@@ -50,6 +50,20 @@ struct GameContext
 	void Toggle_PlayerHitbox() { this->_shwHtbx = (this->_shwHtbx) ? false : true; }
 	bool PlayerHitbox_Enabled() { return this->_shwHtbx; }
 
+	/// <summary>
+	/// Calculates a percentage value (passed-in) of the window's width.
+	/// </summary>
+	/// <param name="value">Pecentage of window.</param>
+	/// <returns>The width value relative-to (based-on) the game window's dimensions.</returns>
+	float PercentOfWindow_X(float value) { return  (value / 100.0f) * this->Get_Window_WidthF(); }
+
+	/// <summary>
+	/// Calculates a percentage value (passed-in) of the window's height.
+	/// </summary>
+	/// <param name="value">Pecentage of window.</param>
+	/// <returns>The height value relative-to (based-on) the game window's dimensions.</returns>
+	float PercentOfWindow_Y(float value) { return  (value / 100.0f) * this->Get_Window_HeightF(); }
+
 private:
 	bool _shwHtbx = false;
 };

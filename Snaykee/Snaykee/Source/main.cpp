@@ -33,7 +33,6 @@ int main()
 
 	// Add the first game state
 	LeGameContext.GameStateManager.AddState(std::unique_ptr<MR_SFML::GameState_SFML>(new Snaykee::SplashScreen_State(LeGameContext)));
-
 	sf::RenderWindow* window = LeGameContext.window;
 	while (window->isOpen())
 	{
@@ -140,7 +139,6 @@ void LoadGameAssets(MR_SFML::AssetManager_SFML& assetManager)
 // TODO: Add space background.
 // TODO: Add background objects (planets, shiprecks, etc.) that slowly move down giving illusion of player flying by them.
 // TODO: Maybe have callback function for resetting player. Callback function will be called from Game and player will listen.
-// TODO: Create function that determines values based (relative-to) on window or screen) Use this function when setting position and size of objects.
 // TODO: Create controls state (page/screen).
 
 // DONE: Game over functionality.
@@ -194,3 +192,4 @@ void LoadGameAssets(MR_SFML::AssetManager_SFML& assetManager)
 // DONE: Make obstacles (asteroids) spin.
 // DONE: Create credits state (page).
 // DONE: [MAYBE] Add projectiles. Cost 2 energy, destroys projectile that it collides with. 0.5 - 1 second cooldown.
+// DONE: Create function that determines values based-on (relative-to) window or screen. Use this function when setting position and size of objects.
