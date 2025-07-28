@@ -119,7 +119,7 @@ void LoadGameAssets(MR_SFML::AssetManager_SFML& assetManager)
 	assetManager.LoadTexture("starEnergy_3_Texture", "Resources/spr_star_energy_3.png");
 
 	assetManager.LoadTexture("shipProjectile", "Resources/spr_circle_plain.png");
-	assetManager.LoadTexture("explosion", "Resources/spr_circle_plain.png");
+	assetManager.LoadTexture("explosion", "Resources/spr_explosion.png");
 
 	// Sounds
 	assetManager.LoadSoundBuffer("buttonClick", "Resources/sfx_button_click.wav");
@@ -141,6 +141,7 @@ void LoadGameAssets(MR_SFML::AssetManager_SFML& assetManager)
 // TODO: Add background objects (planets, shiprecks, etc.) that slowly move down giving illusion of player flying by them.
 // TODO: Maybe have callback function for resetting player. Callback function will be called from Game and player will listen.
 // TODO: Create function that determines values based (relative-to) on window or screen) Use this function when setting position and size of objects.
+// TODO: Create controls state (page/screen).
 
 // DONE: Game over functionality.
 // DONE: Make player energy deplete by 1 every second.

@@ -61,7 +61,7 @@ namespace Snaykee
 		std::string _imagesTexturesString = "IMAGES/TEXTURES\n"
 			"- freepik.com\n"
 			"- cleanpng.com\n"
-			/*"- Explosion created by Luis Zuno (@ansimuz)"*/;
+			"- Explosion created by Luis Zuno (@ansimuz)";
 
 		std::string _madeWithString = "Made With\n"
 			"- C++ | SFML | Photoshop\n";

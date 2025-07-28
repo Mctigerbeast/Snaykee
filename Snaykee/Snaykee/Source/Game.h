@@ -12,6 +12,7 @@
 
 #include "PauseMenu_State.h"
 #include "GameOver_State.h"
+#include "Explosion.h"
 
 namespace Snaykee
 {
@@ -145,7 +146,7 @@ namespace Snaykee
 		std::vector<StarEnergy_PooledObject> _starEnergiesPool;
 
 		// Ship projectiles (shooting/firing)
-		std::vector<ShipProjectile_PooledObject> _shipProjectilesPool;		
+		std::vector<ShipProjectile_PooledObject> _shipProjectilesPool;
 
 		// Screen (window) borders
 		Border* leftBorder = nullptr;
@@ -165,6 +166,9 @@ namespace Snaykee
 		sf::Texture* _starEnergy_1_Texture = nullptr;
 		sf::Texture* _starEnergy_2_Texture = nullptr;
 		sf::Texture* _starEnergy_3_Texture = nullptr;
+
+		std::unique_ptr<Explosion> explosion = nullptr;
+		std::unique_ptr<Explosion> explosion_backup = nullptr; // For when 2 explosions happen in quick succession.
 
 		// UI Visuals
 		sf::Text _scoreText_UI;

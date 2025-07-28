@@ -5,8 +5,8 @@ namespace MR_SFML
 	GameObject_Rectangle_SFML::GameObject_Rectangle_SFML(sf::Vector2f size, sf::Vector2f position, sf::Texture* texture, sf::Color color)
 	{
 		this->_body.setSize(size);
-		this->_body.setPosition(position);
 		this->_body.setOrigin(this->_body.getSize() / 2.0f);
+		this->_body.setPosition(position);
 		this->_body.setFillColor(color);
 
 		if (texture != nullptr)

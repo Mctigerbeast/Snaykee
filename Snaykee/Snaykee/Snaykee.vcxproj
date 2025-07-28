@@ -161,6 +161,7 @@
   <ItemGroup>
     <ClCompile Include="Source\Border.cpp" />
     <ClCompile Include="Source\CreditsScreen_State.cpp" />
+    <ClCompile Include="Source\Explosion.cpp" />
     <ClCompile Include="Source\Game.cpp" />
     <ClCompile Include="Source\GameOver_State.cpp" />
     <ClCompile Include="Source\main.cpp" />
@@ -177,6 +178,7 @@
     <ClInclude Include="Source\Border.h" />
     <ClInclude Include="Source\CreditsScreen_State.h" />
     <ClInclude Include="Source\Defines.h" />
+    <ClInclude Include="Source\Explosion.h" />
     <ClInclude Include="Source\Game.h" />
     <ClInclude Include="Source\GameOver_State.h" />
     <ClInclude Include="Source\MainMenu_State.h" />

@@ -90,6 +90,9 @@ namespace Snaykee
 		if (!this->_playerProjectileShader.loadFromFile("Resources/sh_outer_glow_attn.frag", sf::Shader::Type::Fragment))
 			printf("shader 'sh_outer_glow_attn.frag' was not found/loaded.");
 
+		this->explosion = std::make_unique<Explosion>(Explosion(&this->_gameContext.AssetManager.Get_Texture("explosion"), sf::Vector2u({ 8, 1 }), 0.125f));
+		this->explosion->Init({ 0.0f, 0.0f }, { 0.0f, 0.0f });
+
 		// UI (score text)
 		this->_scoreText_UI = sf::Text(*this->_scoreTextFont_UI);
 		this->_scoreText_UI.setPosition({ this->Get_Window_WidthF() * 0.05f, this->Get_Window_HeightF() * 0.95f });
@@ -192,6 +195,12 @@ namespace Snaykee
 		}
 		else if (this->_isLowEnergy && this->_player.Get_Energy() > 24)
 			this->_isLowEnergy = false;
+
+		// explosion animation
+		if (this->explosion != nullptr)
+			this->explosion->Update(fDeltaTime);
+		if (this->explosion_backup != nullptr)
+			this->explosion_backup->Update(fDeltaTime);
 	}
 
 	void Game::Draw(sf::RenderWindow& window)
@@ -222,6 +231,12 @@ namespace Snaykee
 			if (ob.IsInUse)
 				ob.ObstacleObj.Draw(window);
 		}
+
+		// Draw explosion animation
+		if (this->explosion != nullptr)
+			this->explosion->Draw(window);
+		if (this->explosion_backup != nullptr)
+			this->explosion_backup->Draw(window);
 
 		// Draw Screen (window) borders
 		leftBorder->Draw(window);
@@ -444,6 +459,18 @@ namespace Snaykee
 						ob.IsInUse = false;
 						sp.IsInUse = false;
 						this->_gameContext.AudioManager.PlaySound("explosion", this->_gameContext.AssetManager, 200.0f);
+
+						// Visuals (animation)
+						if (!this->explosion->IsAlive())
+						{
+							this->explosion = std::make_unique<Explosion>(Explosion(&this->_gameContext.AssetManager.Get_Texture("explosion"), sf::Vector2u({ 8, 1 }), 0.125f));
+							this->explosion->Init(ob.ObstacleObj.Get_Position(), ob.ObstacleObj.Get_Size() * 2.0f, 1.0f);
+						}
+						else
+						{
+							this->explosion_backup = std::make_unique<Explosion>(Explosion(&this->_gameContext.AssetManager.Get_Texture("explosion"), sf::Vector2u({ 8, 1 }), 0.125f));
+							this->explosion_backup->Init(ob.ObstacleObj.Get_Position(), ob.ObstacleObj.Get_Size() * 2.0f, 1.0f);
+						}
 					}
 				}
 			}

@@ -21,6 +21,9 @@ namespace Snaykee
 		/// <param name="texture"></param>
 		void Reset(sf::Vector2f size, sf::Vector2f position, float moveSpeed, sf::Texture* texture, sf::Color color = sf::Color::White);
 
+		sf::Vector2f Get_Size();
+		sf::Vector2f Get_Position();
+
 	private:
 		float _movementSpeed = 0.0f;
 		sf::Angle _rotationAngle = sf::Angle::Zero;
