@@ -118,12 +118,9 @@ namespace Snaykee
 	void CreditsScreen_State::SetupButtons()
 	{
 		float midWindowPosX = this->_gameContext.Get_Window_WidthF() / 2.0f;
-		float midWindowPosY = this->_gameContext.Get_Window_HeightF() / 2.0f;
-		float window_Width = this->_gameContext.Get_Window_WidthF();
-		float window_Height = this->_gameContext.Get_Window_HeightF();
 
-		// Play Button
-		this->_menuButton.Set_ButtonPosition(midWindowPosX, window_Height * 0.90f);
+		// Main Menu Button
+		this->_menuButton.Set_ButtonPosition(midWindowPosX, this->_gameContext.PercentOfWindow_Y(90.0f));
 		this->_menuButton.MutiplyButtonSize(3.0f);
 		this->_menuButton.Set_ButtonText(" MENU ");
 		this->_menuButton.Set_ButtonTextFont(this->_gameContext.AssetManager.Get_Font("mainFont"));

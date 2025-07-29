@@ -6,7 +6,8 @@ namespace Snaykee
 		: _gameContext(gameContext), _gameTitleUI(*_menuTextFont), _highScoreUI(*_menuTextFont), _shipSelectUI(*_menuTextFont),
 		_debriefUI(*_menuTextFont), _playButton(gameContext.AssetManager), _selectShipButton_1(_gameContext.AssetManager),
 		_selectShipButton_2(_gameContext.AssetManager), _selectShipButton_3(_gameContext.AssetManager),
-		_selectShipButton_4(_gameContext.AssetManager), _creditsButton(_gameContext.AssetManager) {
+		_selectShipButton_4(_gameContext.AssetManager), _controlsButton(_gameContext.AssetManager),
+		_creditsButton(_gameContext.AssetManager) {
 	}
 
 	MainMenu_State::~MainMenu_State() {}
@@ -49,6 +50,7 @@ namespace Snaykee
 		this->_selectShipButton_2.Update(this->_gameContext.CurrentMousePositionView());
 		this->_selectShipButton_3.Update(this->_gameContext.CurrentMousePositionView());
 		this->_selectShipButton_4.Update(this->_gameContext.CurrentMousePositionView());
+		this->_controlsButton.Update(this->_gameContext.CurrentMousePositionView());
 		this->_creditsButton.Update(this->_gameContext.CurrentMousePositionView());
 	}
 
@@ -64,6 +66,7 @@ namespace Snaykee
 		this->_selectShipButton_3.Draw(window);
 		this->_selectShipButton_4.Draw(window);
 		window.draw(this->_highScoreUI);
+		this->_controlsButton.Draw(window);
 		this->_creditsButton.Draw(window);
 		window.draw(this->_debriefUI);
 	}
@@ -177,10 +180,23 @@ namespace Snaykee
 		this->_selectShipButton_4.Set_ButtonOulineThickness(2.0f);
 		this->_selectShipButton_4.Set_ButtonOulineColor(sf::Color(255, 255, 255, 0));
 
-		// Play Button
-		this->_creditsButton.Set_ButtonPosition(midWindowPosX, this->_gameContext.PercentOfWindow_Y(80.0f));
+		// Controls Button
+		this->_controlsButton.Set_ButtonPosition(this->_gameContext.PercentOfWindow_X(35.0f), this->_gameContext.PercentOfWindow_Y(80.0f));
+		this->_controlsButton.MutiplyButtonSize(2.5f);
+		this->_controlsButton.Set_ButtonText("KEYBINDS");
+		this->_controlsButton.Set_ButtonTextFont(this->_gameContext.AssetManager.Get_Font("mainFont"));
+		this->_controlsButton.Set_ButtonPressedFunction([this]() {this->OnControlsButtonPressed(); });
+
+		this->_controlsButton.Set_ButtonColor_Idle(sf::Color(170, 170, 170));
+		this->_controlsButton.Set_ButtonColor_Hover(sf::Color(85, 85, 85));
+		this->_controlsButton.Set_ButtonOulineThickness(2.0f);
+		this->_controlsButton.Set_ButtonTextOulineThickness(2.0f);
+		this->_controlsButton.Set_ButtonTextOulineColor(sf::Color::White);
+
+		// Credits Button
+		this->_creditsButton.Set_ButtonPosition(this->_gameContext.PercentOfWindow_X(65.0f), this->_gameContext.PercentOfWindow_Y(80.0f));
 		this->_creditsButton.MutiplyButtonSize(2.5f);
-		this->_creditsButton.Set_ButtonText(" CREDITS ");
+		this->_creditsButton.Set_ButtonText("CREDITS");
 		this->_creditsButton.Set_ButtonTextFont(this->_gameContext.AssetManager.Get_Font("mainFont"));
 		this->_creditsButton.Set_ButtonPressedFunction([this]() {this->OnCreditsButtonPressed(); });
 
@@ -225,6 +241,17 @@ namespace Snaykee
 		this->_gameContext.AudioManager.PlaySound("buttonClick", this->_gameContext.AssetManager); // Play audio
 	}
 
+	void MainMenu_State::OnControlsButtonPressed()
+	{
+		this->_gameContext.GameStateManager.Get_CurrentActiveState()->PauseState();
+		this->_gameContext.CurrentGameState = MR_SFML::CONTROLS;
+		this->_gameContext.GameStateManager.AddState(std::unique_ptr<GameState_SFML>(new GameControls_State(this->_gameContext)), false);
+
+		// Play Audio
+		this->_gameContext.AudioManager.PlaySound(
+			this->_gameContext.AssetManager.Get_SoundBuffer("buttonClick"));
+	}
+	
 	void MainMenu_State::OnCreditsButtonPressed()
 	{
 		this->_gameContext.GameStateManager.Get_CurrentActiveState()->PauseState();

@@ -26,12 +26,6 @@ namespace Snaykee
 		bool IsAlive();
 
 	private:
-		/// <summary>
-		/// Funtionality/logic for when explosion is 'dead' (gone/over).
-		/// </summary>
-		void OnLifeTimerEnd();
-
-	private:
 		bool _isAlive = true;
 		float _lifeDuration = 1.0f;
 		MR_Utils::CountdownTimer _lifeTimer;
@@ -41,5 +35,11 @@ namespace Snaykee
 
 		unsigned int _animationRow = 0;
 		bool _animationFaceRight = false;
+
+	private:
+		/// <summary>
+		/// Funtionality/logic for when explosion is 'dead' (gone/over).
+		/// </summary>
+		void OnLifeTimerEnd();
 	};
 }
