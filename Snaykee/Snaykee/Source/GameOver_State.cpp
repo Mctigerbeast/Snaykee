@@ -15,13 +15,13 @@ namespace Snaykee
 	{
 		float midWindowPosX = this->_gameContext.Get_Window_WidthF() / 2.0f;
 
-		this->_gameOverBackground = sf::RectangleShape({ 1800.0f /*this->Get_Window_WidthF()*/, this->_gameContext.Get_Window_HeightF() });
-		this->_gameOverBackground.setTexture(&this->_gameContext.AssetManager.Get_Texture("purpleBackground"));
-		this->_gameOverBackground.setFillColor(sf::Color{ 255,255,255,50 });
+		this->_gameOverBackground = sf::RectangleShape({ this->_gameContext.Get_Window_WidthF(), this->_gameContext.Get_Window_HeightF() });
+		this->_gameOverBackground.setTexture(&this->_gameContext.AssetManager.Get_Texture("nebulaBackground"));
+		this->_gameOverBackground.setFillColor(sf::Color(255, 255, 255, 50));
 
 		this->_newHighscoreVisuals = sf::RectangleShape({ this->_gameContext.Get_Window_WidthF(), this->_gameContext.Get_Window_HeightF() });
 		this->_newHighscoreVisuals.setTexture(&this->_gameContext.AssetManager.Get_Texture("confetti"));
-		this->_newHighscoreVisuals.setFillColor(sf::Color{ 255,255,255,100 });
+		this->_newHighscoreVisuals.setFillColor(sf::Color(255, 255, 255, 100));
 
 		this->_pauseMenuFont = &this->_gameContext.AssetManager.Get_Font("mainFont");
 
@@ -66,7 +66,7 @@ namespace Snaykee
 #pragma region UI Buttons
 		// Resume Button
 		this->_restartButton.Set_ButtonPosition(midWindowPosX, this->_gameContext.PercentOfWindow_Y(60.0f));
-		this->_restartButton.MutiplyButtonSize(3.0f);
+		this->_restartButton.MutiplyButtonSize(this->_gameContext.PercentOfWindow_X(0.25f));
 		this->_restartButton.Set_ButtonText("RESTART");
 		this->_restartButton.Set_ButtonTextFont(this->_gameContext.AssetManager.Get_Font("mainFont"));
 
@@ -79,7 +79,7 @@ namespace Snaykee
 
 		// Main Menu Button
 		this->_mainMenuButton.Set_ButtonPosition(midWindowPosX, this->_gameContext.PercentOfWindow_Y(75.0f));
-		this->_mainMenuButton.MutiplyButtonSize(3.0f);
+		this->_mainMenuButton.MutiplyButtonSize(this->_gameContext.PercentOfWindow_X(0.25f));
 		this->_mainMenuButton.Set_ButtonText(" MENU ");
 		this->_mainMenuButton.Set_ButtonTextFont(this->_gameContext.AssetManager.Get_Font("mainFont"));
 
@@ -113,6 +113,9 @@ namespace Snaykee
 
 	void GameOver_State::Update(float fDeltaTime)
 	{
+		if (!this->_gameContext.window->hasFocus())
+			return;
+
 		this->HandleInput();
 		this->_playNewHighscoreEffectsTimer.UpdateTimer(fDeltaTime);
 		this->_restartButton.Update(this->_gameContext.CurrentMousePositionView());

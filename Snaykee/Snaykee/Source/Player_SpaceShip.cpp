@@ -48,7 +48,6 @@ namespace Snaykee
 
 	void Player_SpaceShip::OnObstacleHit()
 	{
-		// TODO: May have to tweak after play test; for better gameplay.
 		this->RemoveEnergy(7);
 
 		// Player is hit and no more energy = DEAD

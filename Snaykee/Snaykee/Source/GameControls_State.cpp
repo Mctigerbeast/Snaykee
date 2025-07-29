@@ -12,9 +12,9 @@ namespace Snaykee
 	void GameControls_State::Initialize()
 	{
 		this->_menuBackgroundTexture = &this->_gameContext.AssetManager.Get_Texture("purpleBackground");
-		this->_menuBackground = sf::RectangleShape({ 1800.0f /*this->Get_Window_WidthF()*/, this->_gameContext.Get_Window_HeightF() });
+		this->_menuBackground = sf::RectangleShape({ this->_gameContext.Get_Window_WidthF() * 1.5f, this->_gameContext.Get_Window_HeightF() });
 		this->_menuBackground.setTexture(this->_menuBackgroundTexture);
-		this->_menuBackground.setFillColor(sf::Color{ 255,255,255,50 });
+		this->_menuBackground.setFillColor(sf::Color(255, 255, 255, 60));
 
 		this->SetupText();
 		this->SetupButtons();
@@ -31,6 +31,9 @@ namespace Snaykee
 
 	void GameControls_State::Update(float fDeltaTime)
 	{
+		if (!this->_gameContext.window->hasFocus())
+			return;
+
 		this->HandleInput();
 		this->_menuButton.Update(this->_gameContext.CurrentMousePositionView());
 	}
@@ -78,7 +81,7 @@ namespace Snaykee
 
 		// Main Menu Button
 		this->_menuButton.Set_ButtonPosition(midWindowPosX, this->_gameContext.PercentOfWindow_Y(90.0f));
-		this->_menuButton.MutiplyButtonSize(3.0f);
+		this->_menuButton.MutiplyButtonSize(this->_gameContext.PercentOfWindow_X(0.25f));
 		this->_menuButton.Set_ButtonText(" MENU ");
 		this->_menuButton.Set_ButtonTextFont(this->_gameContext.AssetManager.Get_Font("mainFont"));
 		this->_menuButton.Set_ButtonPressedFunction([this]() {this->onMainMenu_ButtonPressed(); });

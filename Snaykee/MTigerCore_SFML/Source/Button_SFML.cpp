@@ -108,6 +108,13 @@ namespace MR_SFML
 		this->_buttonTextString = newText;
 	}
 
+	void Button_SFML::Set_ButtonText(const std::string& newText, float newCharSize)
+	{
+		this->_buttonText.setString(newText);
+		this->_buttonTextString = newText;
+		this->_buttonText.setCharacterSize(newCharSize);
+	}
+
 	void Button_SFML::Set_ButtonTextFont(sf::Font& newFont)
 	{
 		this->_buttonTextFont = &newFont;

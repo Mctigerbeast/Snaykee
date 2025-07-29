@@ -26,7 +26,7 @@ int main()
 	// Create game context
 	GameContext LeGameContext("SNAYKEE", windowX, windowY);
 	LeGameContext.SaveSystem.LoadPlayerData();
-	LeGameContext.window->setFramerateLimit(120.0f); // TODO: Maybe update the way that frame limit is being set.
+	LeGameContext.window->setFramerateLimit(120.0f);
 
 	// Load all game assets
 	LoadGameAssets(LeGameContext.AssetManager);
@@ -101,7 +101,8 @@ void LoadGameAssets(MR_SFML::AssetManager_SFML& assetManager)
 	// Textures
 	assetManager.LoadTexture("splashScreenBanner", "Resources/spr_splashscreen_logo_banner.jpg");
 	assetManager.LoadTexture("purpleBackground", "Resources/bg_space_purple.jpg");
-	assetManager.LoadTexture("confetti", "Resources/spr_confetti_3.png");
+	assetManager.LoadTexture("nebulaBackground", "Resources/bg_space_nebula_clouds.jpg");
+	assetManager.LoadTexture("confetti", "Resources/spr_fireworks.png");
 
 	assetManager.LoadTexture("greenShip", "Resources/spr_spaceship_green.png");
 	assetManager.LoadTexture("yellowShip", "Resources/spr_spaceship_yellow.png");
@@ -136,7 +137,6 @@ void LoadGameAssets(MR_SFML::AssetManager_SFML& assetManager)
 
 
 
-// TODO: Add space background.
 // TODO: Add background objects (planets, shiprecks, etc.) that slowly move down giving illusion of player flying by them.
 // TODO: Maybe have callback function for resetting player. Callback function will be called from Game and player will listen.
 
@@ -193,3 +193,4 @@ void LoadGameAssets(MR_SFML::AssetManager_SFML& assetManager)
 // DONE: [MAYBE] Add projectiles. Cost 2 energy, destroys projectile that it collides with. 0.5 - 1 second cooldown.
 // DONE: Create function that determines values based-on (relative-to) window or screen. Use this function when setting position and size of objects.
 // DONE: Create controls state (page/screen).
+// DONE: Add space background.

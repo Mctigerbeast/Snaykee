@@ -53,6 +53,13 @@ namespace MR_SFML
 		void Set_ButtonText(const std::string& newText);
 
 		/// <summary>
+		/// [Overloaded] Changes the button's text AND text's character size.
+		/// </summary>
+		/// <param name="newText">The button's new text.</param>
+		/// <param name="newCharSize">The button's new text.</param>
+		void Set_ButtonText(const std::string& newText, float newCharSize);
+
+		/// <summary>
 		/// Changes the button's text font
 		/// </summary>
 		/// <param name="newFont">The button's new text font.</param>

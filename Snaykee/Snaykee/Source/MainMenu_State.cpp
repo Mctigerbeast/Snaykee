@@ -18,9 +18,9 @@ namespace Snaykee
 		this->_gameContext.SaveSystem.LoadPlayerData();
 
 		this->_menuBackgroundTexture = &this->_gameContext.AssetManager.Get_Texture("purpleBackground");
-		this->_menuBackground = sf::RectangleShape({ 1800.0f /*this->Get_Window_WidthF()*/, this->_gameContext.Get_Window_HeightF() });
+		this->_menuBackground = sf::RectangleShape({ this->_gameContext.Get_Window_WidthF() * 1.5f, this->_gameContext.Get_Window_HeightF() });
 		this->_menuBackground.setTexture(this->_menuBackgroundTexture);
-		this->_menuBackground.setFillColor(sf::Color{ 255,255,255,50 });
+		this->_menuBackground.setFillColor(sf::Color(255, 255, 255, 60));
 
 		this->_gameContext.AssetManager.Get_SoundBuffer("buttonClick");
 
@@ -44,6 +44,9 @@ namespace Snaykee
 
 	void MainMenu_State::Update(float fDeltaTime)
 	{
+		if (!this->_gameContext.window->hasFocus())
+			return;
+
 		this->HandleInput();
 		this->_playButton.Update(this->_gameContext.CurrentMousePositionView());
 		this->_selectShipButton_1.Update(this->_gameContext.CurrentMousePositionView());
@@ -127,7 +130,7 @@ namespace Snaykee
 
 		// Play Button
 		this->_playButton.Set_ButtonPosition(midWindowPosX, this->_gameContext.PercentOfWindow_Y(30.0f));
-		this->_playButton.MutiplyButtonSize(3.0f);
+		this->_playButton.MutiplyButtonSize(this->_gameContext.PercentOfWindow_X(0.30f));
 		this->_playButton.Set_ButtonText("  PLAY  ");
 		this->_playButton.Set_ButtonTextFont(this->_gameContext.AssetManager.Get_Font("mainFont"));
 		this->_playButton.Set_ButtonPressedFunction([this]() {this->OnPlayButtonPressed(); });
@@ -182,8 +185,8 @@ namespace Snaykee
 
 		// Controls Button
 		this->_controlsButton.Set_ButtonPosition(this->_gameContext.PercentOfWindow_X(35.0f), this->_gameContext.PercentOfWindow_Y(80.0f));
-		this->_controlsButton.MutiplyButtonSize(2.5f);
-		this->_controlsButton.Set_ButtonText("KEYBINDS");
+		this->_controlsButton.MutiplyButtonSize(this->_gameContext.PercentOfWindow_X(0.20f));
+		this->_controlsButton.Set_ButtonText("CONTROLS", 60.0f);
 		this->_controlsButton.Set_ButtonTextFont(this->_gameContext.AssetManager.Get_Font("mainFont"));
 		this->_controlsButton.Set_ButtonPressedFunction([this]() {this->OnControlsButtonPressed(); });
 
@@ -195,8 +198,8 @@ namespace Snaykee
 
 		// Credits Button
 		this->_creditsButton.Set_ButtonPosition(this->_gameContext.PercentOfWindow_X(65.0f), this->_gameContext.PercentOfWindow_Y(80.0f));
-		this->_creditsButton.MutiplyButtonSize(2.5f);
-		this->_creditsButton.Set_ButtonText("CREDITS");
+		this->_creditsButton.MutiplyButtonSize(this->_gameContext.PercentOfWindow_X(0.20f));
+		this->_creditsButton.Set_ButtonText(" CREDITS", 60.0f);
 		this->_creditsButton.Set_ButtonTextFont(this->_gameContext.AssetManager.Get_Font("mainFont"));
 		this->_creditsButton.Set_ButtonPressedFunction([this]() {this->OnCreditsButtonPressed(); });
 
@@ -251,7 +254,7 @@ namespace Snaykee
 		this->_gameContext.AudioManager.PlaySound(
 			this->_gameContext.AssetManager.Get_SoundBuffer("buttonClick"));
 	}
-	
+
 	void MainMenu_State::OnCreditsButtonPressed()
 	{
 		this->_gameContext.GameStateManager.Get_CurrentActiveState()->PauseState();

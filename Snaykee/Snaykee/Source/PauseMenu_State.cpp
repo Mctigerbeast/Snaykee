@@ -14,9 +14,9 @@ namespace Snaykee
 	{
 		float midWindowPosX = this->_gameContext.Get_Window_WidthF() / 2.0f;
 
-		this->_pauseMenuBackground = sf::RectangleShape({ 1800.0f /*this->Get_Window_WidthF()*/, this->_gameContext.Get_Window_HeightF() });
-		this->_pauseMenuBackground.setTexture(&this->_gameContext.AssetManager.Get_Texture("purpleBackground"));
-		this->_pauseMenuBackground.setFillColor(sf::Color{ 255,255,255,50 });
+		this->_pauseMenuBackground = sf::RectangleShape({ this->_gameContext.Get_Window_WidthF(), this->_gameContext.Get_Window_HeightF() });
+		this->_pauseMenuBackground.setTexture(&this->_gameContext.AssetManager.Get_Texture("nebulaBackground"));
+		this->_pauseMenuBackground.setFillColor(sf::Color(255, 255, 255, 50));
 
 		// Pause menu title text
 		this->_pauseMenuFont = &this->_gameContext.AssetManager.Get_Font("mainFont");
@@ -32,8 +32,8 @@ namespace Snaykee
 
 		// Resume Button
 		this->_resumeButton.Set_ButtonPosition(midWindowPosX, this->_gameContext.PercentOfWindow_Y(40.0f));
-		this->_resumeButton.MutiplyButtonSize(3.0f);
-		this->_resumeButton.Set_ButtonText(" RESUME");
+		this->_resumeButton.MutiplyButtonSize(this->_gameContext.PercentOfWindow_X(0.25f));
+		this->_resumeButton.Set_ButtonText(" RESUME ");
 		this->_resumeButton.Set_ButtonTextFont(this->_gameContext.AssetManager.Get_Font("mainFont"));
 
 		this->_resumeButton.Set_ButtonColor_Idle(sf::Color(170, 170, 170));
@@ -45,8 +45,8 @@ namespace Snaykee
 
 		// Main Menu Button
 		this->_mainMenuButton.Set_ButtonPosition(midWindowPosX, this->_gameContext.PercentOfWindow_Y(55.0f));
-		this->_mainMenuButton.MutiplyButtonSize(3.0f);
-		this->_mainMenuButton.Set_ButtonText(" MENU");
+		this->_mainMenuButton.MutiplyButtonSize(this->_gameContext.PercentOfWindow_X(0.25f));
+		this->_mainMenuButton.Set_ButtonText(" MENU ");
 		this->_mainMenuButton.Set_ButtonTextFont(this->_gameContext.AssetManager.Get_Font("mainFont"));
 
 		this->_mainMenuButton.Set_ButtonColor_Idle(sf::Color(170, 170, 170));
@@ -58,8 +58,8 @@ namespace Snaykee
 
 		// Show player hitbox button
 		this->_showPlayerHitboxBtn.Set_ButtonPosition(midWindowPosX, this->_gameContext.PercentOfWindow_Y(70.0f));
-		this->_showPlayerHitboxBtn.MutiplyButtonSize(2.5f);
-		this->_showPlayerHitboxBtn.Set_ButtonText(" Hitbox");
+		this->_showPlayerHitboxBtn.MutiplyButtonSize(this->_gameContext.PercentOfWindow_X(0.25f));
+		this->_showPlayerHitboxBtn.Set_ButtonText(" HITBOX ");
 		this->_showPlayerHitboxBtn.Set_ButtonTextFont(this->_gameContext.AssetManager.Get_Font("mainFont"));
 
 		this->_showPlayerHitboxBtn.Set_ButtonOulineThickness(2.0f);
@@ -85,6 +85,9 @@ namespace Snaykee
 
 	void PauseMenu_State::Update(float fDeltaTime)
 	{
+		if (!this->_gameContext.window->hasFocus())
+			return;
+
 		this->HandleInput();
 		this->_resumeButton.Update(this->_gameContext.CurrentMousePositionView());
 		this->_mainMenuButton.Update(this->_gameContext.CurrentMousePositionView());

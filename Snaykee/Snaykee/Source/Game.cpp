@@ -45,7 +45,7 @@ namespace Snaykee
 
 
 		// Set resources
-		this->_backgroundTexture = &this->_gameContext.AssetManager.Get_Texture("purpleBackground");
+		this->_backgroundTexture = &this->_gameContext.AssetManager.Get_Texture("nebulaBackground");
 
 		this->_playerTexture_1 = &this->_gameContext.AssetManager.Get_Texture("greenShip");
 		this->_playerTexture_2 = &this->_gameContext.AssetManager.Get_Texture("yellowShip");
@@ -83,9 +83,9 @@ namespace Snaykee
 		this->_player.ShowHitbox(this->_gameContext.PlayerHitbox_Enabled());
 
 		// Other Visuals
-		this->_background = sf::RectangleShape({ 1800.0f /*this->Get_Window_WidthF()*/, this->Get_Window_HeightF() });
+		this->_background = sf::RectangleShape({ this->Get_Window_WidthF(), this->Get_Window_HeightF() });
 		this->_background.setTexture(this->_backgroundTexture);
-		this->_background.setFillColor(sf::Color{ 255,255,255,100 });
+		this->_background.setFillColor(sf::Color(255, 255, 255, 85));
 
 		if (!this->_playerProjectileShader.loadFromFile("Resources/sh_outer_glow_attn.frag", sf::Shader::Type::Fragment))
 			printf("shader 'sh_outer_glow_attn.frag' was not found/loaded.");
@@ -153,6 +153,15 @@ namespace Snaykee
 
 	void Game::Update(float fDeltaTime)
 	{
+		// Pausing the game if window goes out of focus
+		if (!this->_gameContext.window->hasFocus() && !this->_isGamePaused)
+		{
+			this->_gameContext.CurrentGameState = MR_SFML::PAUSE_MENU;
+			this->_gameContext.AudioManager.PauseMusic();
+			this->_gameContext.GameStateManager.AddState(std::unique_ptr<GameState_SFML>(new PauseMenu_State(this->_gameContext)), false);
+			return;
+		}
+
 		if (this->_isGamePaused)
 			return;
 
@@ -317,7 +326,7 @@ namespace Snaykee
 		// In this case, obstcles won't spawn within the outer 5% of the window.
 		float percentage = this->Get_Window_WidthF() * 0.05f; // (5%)
 
-		float randSize = MR_Math::RandomFloatRange(20.0f, 50.0f); // TODO: May need to tweak
+		float randSize = MR_Math::RandomFloatRange(20.0f, 50.0f);
 		float randPosX = MR_Math::RandomFloatRange(percentage, (this->Get_Window_WidthF() - percentage));
 		float randPosY = MR_Math::RandomFloat(this->Get_Window_HeightF() * 0.05f);
 		float randSpeed = MR_Math::RandomFloat(1.0f);
