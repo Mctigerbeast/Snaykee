@@ -51,7 +51,7 @@ namespace Snaykee
 
 	private:
 		sf::RectangleShape _body;
-		unsigned int _energyPower;
+		unsigned int _energyPower = 0;
 
 		sf::Texture** _starEnergy_1_Texture = nullptr;
 		sf::Texture** _starEnergy_2_Texture = nullptr;

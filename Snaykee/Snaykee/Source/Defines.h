@@ -6,14 +6,6 @@
 
 struct GameContext
 {
-	GameContext(const std::string& gameTitle, int windowWidth, int windowHeight)
-		: GAME_TITLE(gameTitle), WINDOW_WIDTH(windowWidth), WINDOW_HEIGHT(windowHeight)
-	{
-		this->window = new sf::RenderWindow(sf::VideoMode({ this->WINDOW_WIDTH, this->WINDOW_HEIGHT }), gameTitle);
-
-		this->AudioManager.Initialize();
-	}
-
 	// Game save system
 	SaveLoadSystem SaveSystem;
 
@@ -29,8 +21,28 @@ struct GameContext
 	// Tracks game's current state
 	MR_SFML::CurrentGameState CurrentGameState = MR_SFML::SPLASH_SCREEN;
 
-	// Creat game window
-	sf::RenderWindow* window;
+	// Game's Title
+	const std::string GAME_TITLE;
+
+	// Game window && size (dimensions)
+	const unsigned int WINDOW_WIDTH = 0;
+	const unsigned int WINDOW_HEIGHT = 0;
+	sf::VideoMode* vidMode = nullptr;
+	sf::RenderWindow* window = nullptr;
+
+	GameContext(const std::string& gameTitle, unsigned int windowWidth, unsigned int windowHeight)
+		: GAME_TITLE(gameTitle), WINDOW_WIDTH(windowWidth), WINDOW_HEIGHT(windowHeight)
+	{
+		this->vidMode = new sf::VideoMode({ windowWidth, windowHeight });
+		this->window = new sf::RenderWindow(*vidMode, "SNAYKEE");
+		this->AudioManager.Initialize();
+	}
+
+	~GameContext()
+	{
+		delete this->vidMode;
+		delete this->window;
+	}
 
 	// Keep track of mouse position (relative to window).
 	sf::Vector2f CurrentMousePositionView()
@@ -38,14 +50,8 @@ struct GameContext
 		return this->window->mapPixelToCoords(sf::Mouse::getPosition(*window));
 	}
 
-	// Game window size (dimensions)
-	const unsigned int WINDOW_WIDTH;
-	const unsigned int WINDOW_HEIGHT;
 	float Get_Window_WidthF() { return static_cast<float>(this->WINDOW_WIDTH); }
 	float Get_Window_HeightF() { return static_cast<float>(this->WINDOW_HEIGHT); }
-
-	// Game's Title
-	const std::string GAME_TITLE;
 
 	void Toggle_PlayerHitbox() { this->_shwHtbx = (this->_shwHtbx) ? false : true; }
 	bool PlayerHitbox_Enabled() { return this->_shwHtbx; }

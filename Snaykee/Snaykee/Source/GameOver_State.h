@@ -19,8 +19,8 @@ namespace Snaykee
 		void StartState() override {}
 
 	private:
-		float _playerScore;
-		bool _isNewHighscore;
+		float _playerScore = 0;
+		bool _isNewHighscore = false;
 
 		GameContext& _gameContext;
 

@@ -20,8 +20,8 @@ int main()
 
 	// Screen/window dimensions
 	//std::cout << "Screen Dimensions: " << sf::VideoMode::getDesktopMode().size.x << " x " << sf::VideoMode::getDesktopMode().size.y << "\n";
-	int windowX = sf::VideoMode::getDesktopMode().size.y * 0.80f;
-	int windowY = sf::VideoMode::getDesktopMode().size.y * 0.80f;
+	unsigned int windowX = sf::VideoMode::getDesktopMode().size.y * 0.80f;
+	unsigned int windowY = sf::VideoMode::getDesktopMode().size.y * 0.80f;
 
 	// Create game context
 	GameContext LeGameContext("SNAYKEE", windowX, windowY);
@@ -63,7 +63,6 @@ int main()
 		window->display();
 	}
 
-	delete window;
 	return 0;
 }
 

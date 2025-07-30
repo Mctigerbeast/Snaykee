@@ -41,7 +41,7 @@ namespace Snaykee
 		switch (choice)
 		{
 		case 1:
-			this->_energyPower = 3;
+			this->_energyPower = 4;
 			this->_body.setTexture(*this->_starEnergy_1_Texture);
 			break;
 

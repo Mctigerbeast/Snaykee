@@ -186,7 +186,7 @@ namespace Snaykee
 		// Controls Button
 		this->_controlsButton.Set_ButtonPosition(this->_gameContext.PercentOfWindow_X(35.0f), this->_gameContext.PercentOfWindow_Y(80.0f));
 		this->_controlsButton.MutiplyButtonSize(this->_gameContext.PercentOfWindow_X(0.20f));
-		this->_controlsButton.Set_ButtonText("CONTROLS", 60.0f);
+		this->_controlsButton.Set_ButtonText("CONTROLS", this->_gameContext.PercentOfWindow_X(5.25f));
 		this->_controlsButton.Set_ButtonTextFont(this->_gameContext.AssetManager.Get_Font("mainFont"));
 		this->_controlsButton.Set_ButtonPressedFunction([this]() {this->OnControlsButtonPressed(); });
 
@@ -199,7 +199,7 @@ namespace Snaykee
 		// Credits Button
 		this->_creditsButton.Set_ButtonPosition(this->_gameContext.PercentOfWindow_X(65.0f), this->_gameContext.PercentOfWindow_Y(80.0f));
 		this->_creditsButton.MutiplyButtonSize(this->_gameContext.PercentOfWindow_X(0.20f));
-		this->_creditsButton.Set_ButtonText(" CREDITS", 60.0f);
+		this->_creditsButton.Set_ButtonText(" CREDITS", this->_gameContext.PercentOfWindow_X(5.25f));
 		this->_creditsButton.Set_ButtonTextFont(this->_gameContext.AssetManager.Get_Font("mainFont"));
 		this->_creditsButton.Set_ButtonPressedFunction([this]() {this->OnCreditsButtonPressed(); });
 
