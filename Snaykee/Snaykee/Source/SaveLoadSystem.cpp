@@ -1,10 +1,5 @@
 #include "SaveLoadSystem.h"
 
-SaveLoadSystem::SaveLoadSystem()
-{
-	this->_playerData = { 0.0f, 1 };
-}
-
 void SaveLoadSystem::SavePlayerData()
 {
 	std::ofstream outFile("playerData.save", std::ios::binary);
@@ -18,6 +13,7 @@ void SaveLoadSystem::SavePlayerData()
 	// Write data (binary) to file
 	outFile.write(reinterpret_cast<const char*>(&this->_playerData.HighScore), sizeof(this->_playerData.HighScore));
 	outFile.write(reinterpret_cast<const char*>(&this->_playerData.SelectedShip), sizeof(this->_playerData.SelectedShip));
+	outFile.write(reinterpret_cast<const char*>(&this->_playerData.ShowPlayerHitbox), sizeof(this->_playerData.ShowPlayerHitbox));
 	outFile.close();
 }
 
@@ -34,6 +30,7 @@ void SaveLoadSystem::LoadPlayerData()
 	// Read data (binary) from file
 	inFile.read(reinterpret_cast<char*>(&this->_playerData.HighScore), sizeof(this->_playerData.HighScore));
 	inFile.read(reinterpret_cast<char*>(&this->_playerData.SelectedShip), sizeof(this->_playerData.SelectedShip));
+	inFile.read(reinterpret_cast<char*>(&this->_playerData.ShowPlayerHitbox), sizeof(this->_playerData.ShowPlayerHitbox));
 	inFile.close();
 }
 
@@ -51,6 +48,12 @@ void SaveLoadSystem::SavePlayer_HighScore(float newHighsScore)
 void SaveLoadSystem::SavePlayer_SelectedShip(unsigned int newSelShip)
 {
 	this->_playerData.SelectedShip = newSelShip;
+	this->SavePlayerData();
+}
+
+void SaveLoadSystem::SavePlayer_ShowPlayerHitbox(bool newState)
+{
+	this->_playerData.ShowPlayerHitbox = newState;
 	this->SavePlayerData();
 }
 

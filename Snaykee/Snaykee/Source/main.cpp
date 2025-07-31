@@ -22,6 +22,7 @@ int main()
 	//std::cout << "Screen Dimensions: " << sf::VideoMode::getDesktopMode().size.x << " x " << sf::VideoMode::getDesktopMode().size.y << "\n";
 	unsigned int windowX = sf::VideoMode::getDesktopMode().size.y * 0.80f;
 	unsigned int windowY = sf::VideoMode::getDesktopMode().size.y * 0.80f;
+	float aspectRatio = windowX / windowY; // Should be 1.0f
 
 	// Create game context
 	GameContext LeGameContext("SNAYKEE", windowX, windowY);
@@ -46,6 +47,20 @@ int main()
 		{
 			if (event->is<sf::Event::Closed>())
 				window->close();
+
+			// Maintain aspect ratio
+			if (event->is<sf::Event::Resized>())
+			{
+				sf::Vector2u currWindowSize = window->getSize();
+				float currAspectRatio = static_cast<float>(currWindowSize.x) / static_cast<float>(currWindowSize.y);
+
+				if (currAspectRatio < aspectRatio) // Height is too big. Resize height to fit
+					currWindowSize.y = static_cast<unsigned int>(currWindowSize.x * aspectRatio);
+				else if (currAspectRatio > aspectRatio) // Width is too big. Resize width to fit
+					currWindowSize.x = static_cast<unsigned int>(currWindowSize.y * aspectRatio);
+
+				window->setSize(currWindowSize);
+			}
 		}
 
 		LeGameContext.GameStateManager.HandleStateChange();

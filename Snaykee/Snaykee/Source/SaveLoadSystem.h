@@ -7,12 +7,13 @@ class SaveLoadSystem
 private:
 	struct PlayerData
 	{
-		float HighScore;
-		unsigned int SelectedShip;
+		float HighScore = 0.0f;
+		unsigned int SelectedShip = 1;
+		bool ShowPlayerHitbox = false;
 	};
 
 public:
-	SaveLoadSystem();
+	SaveLoadSystem() = default;
 	~SaveLoadSystem() = default;
 
 	/// <summary>
@@ -42,6 +43,12 @@ public:
 	/// </summary>
 	/// <param name="newSelShip"></param>
 	void SavePlayer_SelectedShip(unsigned int newSelShip);
+
+	/// <summary>
+	/// Saves players option for enabling/showing hitbox.
+	/// </summary>
+	/// <param name="newState"></param>
+	void SavePlayer_ShowPlayerHitbox(bool newState);
 
 	/// <summary>
 	/// Checks to see if a save file exists ("playerData").

@@ -29,6 +29,7 @@ namespace Snaykee
 			this->_energyTimer.StartCountdown();
 
 			this->_playerDamageEffectTimer = MR_Utils::CountdownTimer(0.5f, [this]() {this->_playerBody.setFillColor(sf::Color::White); });
+			this->_playerCollectStarEffectTimer = MR_Utils::CountdownTimer(0.5f, [this]() {this->_playerBody.setFillColor(sf::Color::White); });
 			this->_playerBody.setOutlineColor(sf::Color(255, 255, 255, 100));
 		}
 	}
@@ -43,6 +44,7 @@ namespace Snaykee
 			this->_energyTimer.UpdateTimer(fDeltaTime);
 			this->_fireRateTimer.UpdateTimer(fDeltaTime);
 			this->_playerDamageEffectTimer.UpdateTimer(fDeltaTime);
+			this->_playerCollectStarEffectTimer.UpdateTimer(fDeltaTime);
 		}
 	}
 
@@ -55,6 +57,7 @@ namespace Snaykee
 			this->_isAlive = false;
 
 		// Visual effects
+		this->_playerCollectStarEffectTimer.StopCountdown(); // In case collect star visual effect was taking place.
 		this->_playerBody.setFillColor(sf::Color::Red);
 		this->_playerDamageEffectTimer.StartCountdown();
 	}
@@ -63,6 +66,12 @@ namespace Snaykee
 	{
 		this->_energy += energyToAdd;
 		this->CheckEnergyBounds();
+
+		// Visual effects
+		this->_playerDamageEffectTimer.StopCountdown(); // In case take damage visual effect was taking place.
+		//this->_playerBody.setFillColor(sf::Color::Green);
+		this->_playerBody.setFillColor(sf::Color(100, 250, 160, 255));
+		this->_playerCollectStarEffectTimer.StartCountdown();
 	}
 
 	void Player_SpaceShip::RemoveEnergy(int energyToRemove)

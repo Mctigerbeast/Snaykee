@@ -80,7 +80,7 @@ namespace Snaykee
 		this->_player.Set_PlayerSize({ 80.0f, 100.0f });
 		this->_player.Set_PlayerPostition({ this->Get_Window_WidthF() / 2.0f,  this->Get_Window_HeightF() / 2.0f });
 		this->_player.Start();
-		this->_player.ShowHitbox(this->_gameContext.PlayerHitbox_Enabled());
+		this->_player.ShowHitbox(this->_gameContext.SaveSystem.Get_PlayerData().ShowPlayerHitbox);
 
 		// Other Visuals
 		this->_background = sf::RectangleShape({ this->Get_Window_WidthF(), this->Get_Window_HeightF() });
@@ -277,7 +277,7 @@ namespace Snaykee
 	void Game::StartState()
 	{
 		this->_isGamePaused = false;
-		this->_player.ShowHitbox(this->_gameContext.PlayerHitbox_Enabled());
+		this->_player.ShowHitbox(this->_gameContext.SaveSystem.Get_PlayerData().ShowPlayerHitbox);
 	}
 
 	void Game::Execute_GameOver()

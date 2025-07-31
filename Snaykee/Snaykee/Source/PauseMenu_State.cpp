@@ -68,7 +68,7 @@ namespace Snaykee
 		this->_showPlayerHitboxBtn.Set_ButtonPressedFunction([this]() {this->OnToggle_ShowPlayerHitBox(); });
 
 		this->_showPlayerHitboxBtn.Set_ButtonOulineThickness(2.0f);
-		if (this->_gameContext.PlayerHitbox_Enabled())
+		if (this->_gameContext.SaveSystem.Get_PlayerData().ShowPlayerHitbox)
 			this->_showPlayerHitboxBtn.Set_ButtonStateColors(sf::Color::Green, sf::Color::Green, sf::Color::Green);
 		else
 			this->_showPlayerHitboxBtn.Set_ButtonStateColors(sf::Color::Red, sf::Color::Red, sf::Color::Red);
@@ -123,13 +123,17 @@ namespace Snaykee
 		this->_gameContext.GameStateManager.AddState(std::unique_ptr<GameState_SFML>(new MainMenu_State(this->_gameContext)), true);
 	}
 
-	void  PauseMenu_State::OnToggle_ShowPlayerHitBox()
+	void PauseMenu_State::OnToggle_ShowPlayerHitBox()
 	{
-		this->_gameContext.Toggle_PlayerHitbox();
-
-		if (this->_gameContext.PlayerHitbox_Enabled())
-			this->_showPlayerHitboxBtn.Set_ButtonStateColors(sf::Color::Green, sf::Color::Green, sf::Color::Green);
-		else
+		if (this->_gameContext.SaveSystem.Get_PlayerData().ShowPlayerHitbox)
+		{
+			this->_gameContext.SaveSystem.SavePlayer_ShowPlayerHitbox(false);
 			this->_showPlayerHitboxBtn.Set_ButtonStateColors(sf::Color::Red, sf::Color::Red, sf::Color::Red);
+		}
+		else
+		{
+			this->_gameContext.SaveSystem.SavePlayer_ShowPlayerHitbox(true);
+			this->_showPlayerHitboxBtn.Set_ButtonStateColors(sf::Color::Green, sf::Color::Green, sf::Color::Green);
+		}
 	}
 }

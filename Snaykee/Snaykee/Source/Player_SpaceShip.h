@@ -104,6 +104,7 @@ namespace Snaykee
 		bool _isAlive = true;
 		MR_Utils::CountdownTimer _energyTimer;
 		MR_Utils::CountdownTimer _playerDamageEffectTimer;
+		MR_Utils::CountdownTimer _playerCollectStarEffectTimer;
 
 		MR_Utils::CountdownTimer _fireRateTimer;
 		float _fireRate = 0.5f;
