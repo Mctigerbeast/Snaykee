@@ -34,6 +34,7 @@ int main()
 
 	// Add the first game state
 	LeGameContext.GameStateManager.AddState(std::unique_ptr<MR_SFML::GameState_SFML>(new Snaykee::SplashScreen_State(LeGameContext)));
+
 	sf::RenderWindow* window = LeGameContext.window;
 	while (window->isOpen())
 	{

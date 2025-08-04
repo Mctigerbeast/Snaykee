@@ -1,8 +1,36 @@
 #include "SaveLoadSystem.h"
 
+std::string GetLocalAppData_Safe()
+{
+	char* buffer = nullptr;
+	size_t size = 0;
+
+	if (_dupenv_s(&buffer, &size, "LOCALAPPDATA") != 0 || buffer == nullptr)
+		throw std::runtime_error("Failed to get LOCALAPPDATA.");
+
+	std::unique_ptr<char[], decltype(&free)> localAppData(buffer, free);
+	return std::string(localAppData.get());
+}
+
 void SaveLoadSystem::SavePlayerData()
 {
-	std::ofstream outFile("playerData.save", std::ios::binary);
+	std::ofstream outFile;
+	if (IS_IN_DEBUG)
+		outFile = std::ofstream("playerData.save", std::ios::binary);
+	else
+	{
+		std::filesystem::path saveDir = std::filesystem::path(GetLocalAppData_Safe()) / "SNAYKEE";
+
+		// Create folder if it does not already exist.
+		if (!std::filesystem::exists(saveDir))
+		{
+			std::filesystem::create_directories(saveDir);
+			std::cout << "Creating save file directory...\n";
+		}
+
+		std::filesystem::path filePath(saveDir / "playerData.save");
+		outFile = std::ofstream(filePath, std::ios::binary);
+	}
 
 	if (!outFile)
 	{
@@ -19,7 +47,15 @@ void SaveLoadSystem::SavePlayerData()
 
 void SaveLoadSystem::LoadPlayerData()
 {
-	std::ifstream inFile("playerData.save", std::ios::binary);
+	std::ifstream inFile;
+	if (IS_IN_DEBUG)
+		inFile = std::ifstream("playerData.save", std::ios::binary);
+	else
+	{
+		std::filesystem::path saveDir = std::filesystem::path(GetLocalAppData_Safe()) / "SNAYKEE";
+		std::filesystem::path filePath(saveDir / "playerData.save");
+		inFile = std::ifstream(filePath, std::ios::binary);
+	}
 
 	if (!inFile)
 	{
@@ -59,7 +95,15 @@ void SaveLoadSystem::SavePlayer_ShowPlayerHitbox(bool newState)
 
 bool SaveLoadSystem::DoesSaveFileExist()
 {
-	std::ifstream inFile("playerData.save", std::ios::binary);
+	std::ifstream inFile;
+	if (IS_IN_DEBUG)
+		inFile = std::ifstream("playerData.save", std::ios::binary);
+	else
+	{
+		std::filesystem::path saveDir = std::filesystem::path(GetLocalAppData_Safe()) / "SNAYKEE";
+		std::filesystem::path filePath(saveDir / "playerData.save");
+		inFile = std::ifstream(filePath, std::ios::binary);
+	}
 
 	if (inFile.is_open())
 	{

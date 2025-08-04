@@ -1,6 +1,14 @@
 #pragma once
 #include <iostream>
-#include "fstream"
+#include <fstream>
+#include <filesystem>
+
+#ifdef  _DEBUG
+const bool IS_IN_DEBUG = true;
+//  _DEBUG
+#else
+const bool IS_IN_DEBUG = false;
+#endif
 
 class SaveLoadSystem
 {
